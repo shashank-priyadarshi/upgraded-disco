@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: upgraded-disco
+    image: upgraded-disco
+    build:
+      context: .
+      target: production
+    ports:
+      - 10000:10000
