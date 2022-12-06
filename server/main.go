@@ -26,27 +26,28 @@ func handleRequests() {
 
 func returnBiodata(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnBiodata")
-	//enableCors(&w)
+	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("resume")))
 }
 
 func returnTodos(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnTodos")
-	//enableCors(&w)
+	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("todo")))
 }
 
 func returnArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnArticles")
-	//enableCors(&w)
+	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("articles")))
 }
 
-//func enableCors(w *http.ResponseWriter) {
-//(*w).Header().Set("Access-Control-Allow-Origin", "*")
-//(*w).Header().Set("Access-Control-Allow-Methods", "GET")
-//(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-//}
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	(*w).Header().Set("Access-Control-Allow-Methods", "GET")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Referrer-Policy", "no-referrer")
+}
 
 func setMongoConnection() *mongo.Client {
 	// Set client options
