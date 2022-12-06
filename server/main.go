@@ -43,15 +43,14 @@ func returnArticles(w http.ResponseWriter, r *http.Request) {
 }
 
 func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "GET")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-	(*w).Header().Set("Referrer-Policy", "no-referrer")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Referrer-Policy")
 }
 
 func setMongoConnection() *mongo.Client {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://root:pass12345@192.46.212.144:27017/?authSource=admin")
+	clientOptions := options.Client().ApplyURI("mongodb://root:pass12345@127.0.0.1:27017/?authSource=admin")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
