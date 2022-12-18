@@ -4,53 +4,65 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
+	"os"
 )
 
 var db *mongo.Database
 
+func routes() *mux.Router {
+	r := mux.NewRouter()
+	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
+	r.HandleFunc("/todos", returnTodos).Methods("GET")
+	r.HandleFunc("/articles", returnArticles).Methods("GET")
+	return r
+}
+
+//func originValidator(origin string) bool {
+//	valid := false
+//	err := pool.QueryRow("SELECT IF(origin=?, True, False) as 'valid' FROM origins", origin).Scan(&valid)
+//	if err != nil {
+//		return false
+//	}
+//	return valid
+//}
+
 func handleRequests() {
-	//myRouter := mux.NewRouter().StrictSlash(true)
-	//mux.NewRouter().StrictSlash(true)
-	//http.HandleFunc("/", homePage)
-	http.HandleFunc("/biodata", returnBiodata)
-	http.HandleFunc("/todos", returnTodos)
-	http.HandleFunc("/articles", returnArticles)
-	//myRouter.HandleFunc("/newdata", editData).Methods("POST")
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	router := routes()
+
+	credentials := handlers.AllowCredentials()
+	origins := handlers.AllowedOrigins([]string{"*"})
+	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
+	methods := handlers.AllowedMethods([]string{"GET", "OPTIONS"})
+	//ttl := handlers.MaxAge(3600)
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", os.Getenv("API_PORT")), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func returnBiodata(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnBiodata")
-	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("resume")))
 }
 
 func returnTodos(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnTodos")
-	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("todo")))
 }
 
 func returnArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnArticles")
-	enableCors(&w)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("articles")))
-}
-
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methods", "GET")
-	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Referrer-Policy")
 }
 
 func setMongoConnection() *mongo.Client {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://root:pass12345@127.0.0.1:27017/?authSource=admin")
+	clientOptions := options.Client().ApplyURI(os.Getenv("MongoURI"))
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
@@ -108,7 +120,7 @@ func readDataFromCollection(collection *mongo.Collection) []interface{} {
 
 func main() {
 	client := setMongoConnection()
-	db = client.Database("portfolio")
+	db = client.Database(os.Getenv("DB_NAME"))
 
 	handleRequests()
 }
