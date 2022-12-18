@@ -13,6 +13,9 @@ COPY . .
 RUN go build -o app ./server
 
 FROM alpine:3.14 as production
+ENV DB_NAME=""
+ENV API_PORT=
+ENV MongoURI=""
 # Add certificates
 RUN apk add --no-cache ca-certificates
 # Copy built binary from builder
