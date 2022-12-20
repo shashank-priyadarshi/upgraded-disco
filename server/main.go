@@ -9,10 +9,19 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
+
+type schedule struct {
+	Name    string    `json:"name"`
+	Email   string    `json:"email"`
+	Comment string    `json:"comment"`
+	Date    time.Time `json:"date"`
+}
 
 var db *mongo.Database
 
@@ -21,6 +30,7 @@ func routes() *mux.Router {
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/todos", returnTodos).Methods("GET")
 	r.HandleFunc("/articles", returnArticles).Methods("GET")
+	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
 	return r
 }
 
@@ -39,7 +49,7 @@ func handleRequests() {
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"*"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
-	methods := handlers.AllowedMethods([]string{"GET", "OPTIONS"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", os.Getenv("API_PORT")), handlers.CORS(credentials, headers, methods, origins)(router)))
@@ -58,6 +68,12 @@ func returnTodos(w http.ResponseWriter, r *http.Request) {
 func returnArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnArticles")
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("articles")))
+}
+
+func writeNewSchedule(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("Endpoint Hit: writing articles")
+	reqStatus := writeDataToCollection(db.Collection("schedule"), req)
+	json.NewEncoder(w).Encode(reqStatus)
 }
 
 func setMongoConnection() *mongo.Client {
@@ -116,6 +132,31 @@ func readDataFromCollection(collection *mongo.Collection) []interface{} {
 	cur.Close(context.TODO())
 
 	return results
+}
+
+func writeDataToCollection(collection *mongo.Collection, req *http.Request) *http.ResponseWriter {
+	var response *http.ResponseWriter
+	fmt.Println("collection: ", collection)
+	fmt.Println("request: ")
+	var ifa schedule
+	reqBody, err := io.ReadAll(req.Body)
+	if err != nil {
+		fmt.Println("Error while reading request body: ", err)
+	}
+	err = json.Unmarshal(reqBody, &ifa)
+	if err != nil {
+		fmt.Println("Error while unmarshaling request body: ", err)
+	} else {
+		fmt.Println(ifa)
+		insertResult, err := collection.InsertOne(context.TODO(), ifa)
+		if err != nil {
+			fmt.Println("Error while Inserting new schedule to MongoDB")
+		} else {
+			fmt.Println("New schedule saved successfully! ", insertResult)
+		}
+	}
+
+	return response
 }
 
 func main() {
