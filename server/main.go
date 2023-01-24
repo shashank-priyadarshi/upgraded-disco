@@ -1,19 +1,20 @@
-package main
+package server
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type schedule struct {
@@ -30,6 +31,7 @@ func routes() *mux.Router {
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/todos", returnTodos).Methods("GET")
 	r.HandleFunc("/articles", returnArticles).Methods("GET")
+	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
 	return r
 }
@@ -68,6 +70,11 @@ func returnTodos(w http.ResponseWriter, r *http.Request) {
 func returnArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnArticles")
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("articles")))
+}
+
+func returnGitHubData(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint Hit: returnArticles")
+	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("githubdata")))
 }
 
 func writeNewSchedule(w http.ResponseWriter, req *http.Request) {
@@ -155,11 +162,10 @@ func writeDataToCollection(collection *mongo.Collection, req *http.Request) *htt
 			fmt.Println("New schedule saved successfully! ", insertResult)
 		}
 	}
-
 	return response
 }
 
-func main() {
+func StartServer() {
 	client := setMongoConnection()
 	db = client.Database(os.Getenv("DB_NAME"))
 
