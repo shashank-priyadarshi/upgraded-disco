@@ -73,7 +73,7 @@ func returnArticles(w http.ResponseWriter, r *http.Request) {
 }
 
 func returnGitHubData(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnArticles")
+	fmt.Println("Endpoint Hit: returnGitHubData")
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("githubdata")))
 }
 
@@ -105,9 +105,12 @@ func setMongoConnection() *mongo.Client {
 }
 
 func readDataFromCollection(collection *mongo.Collection) []interface{} {
+	var sortDoc interface{} = make(map[string]interface{})
+	sortDoc.(map[string]interface{})["_id"] = -1
 	// Pass these options to the Find method
 	findOptions := options.Find()
-	//findOptions.SetLimit(2)
+	findOptions.SetSort(sortDoc)
+	findOptions.SetLimit(1)
 
 	// Here's an array in which you can store the decoded documents
 	var results []interface{}
