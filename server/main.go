@@ -33,6 +33,7 @@ func routes() *mux.Router {
 	r.HandleFunc("/articles", returnArticles).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
+	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
 	return r
 }
 
@@ -58,29 +59,34 @@ func handleRequests() {
 }
 
 func returnBiodata(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnBiodata")
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("resume")))
 }
 
 func returnTodos(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnTodos")
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("todo")))
 }
 
 func returnArticles(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnArticles")
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("articles")))
 }
 
 func returnGitHubData(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnGitHubData")
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	json.NewEncoder(w).Encode(readDataFromCollection(db.Collection("githubdata")))
 }
 
-func writeNewSchedule(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("Endpoint Hit: writing articles")
-	reqStatus := writeDataToCollection(db.Collection("schedule"), req)
+func writeNewSchedule(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	reqStatus := writeDataToCollection(db.Collection("schedule"), r)
 	json.NewEncoder(w).Encode(reqStatus)
+}
+
+func invalidEndpoint(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	http.Error(w, "Endpoint does not exist", http.StatusNotFound)
 }
 
 func setMongoConnection() *mongo.Client {
