@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"server/config"
+	"server/middleware"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -14,7 +15,7 @@ func handleRequests() {
 	router := routes()
 
 	credentials := handlers.AllowCredentials()
-	origins := handlers.AllowedOrigins([]string{"*"})
+	origins := handlers.AllowedOrigins([]string{config.FetchConfig().SERVERORIGIN})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
 	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
@@ -25,7 +26,10 @@ func handleRequests() {
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/graphql", reqHandler).Methods("POST")
+	r.Use(middleware.OriginMiddleware)
+	r.HandleFunc("/new", reqHandler).Methods("POST")
+	r.HandleFunc("/list", ReturnTodos).Methods("GET") // add todo to mongo, add new issue to respective repo
+	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github
 	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
 	return r
 }

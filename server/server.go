@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"server/config"
+	"server/todos"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -13,11 +14,11 @@ import (
 func routes() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
+
+	r.HandleFunc("/todos", todos.ReturnTodos).Methods("GET")
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
-	r.HandleFunc("/todos", returnTodos).Methods("GET")
-	r.HandleFunc("/articles", returnArticles).Methods("GET")
-	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
+	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
 	return r
 }
