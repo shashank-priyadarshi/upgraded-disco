@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+	"server/config"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -16,15 +16,16 @@ func handleRequests() {
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{"*"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
-	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
+	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", os.Getenv("API_PORT")), handlers.CORS(credentials, headers, methods, origins)(router)))
+	fmt.Println("Starting server on port: ", config.FetchConfig().TODOAPIPORT)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/graphql", reqHandler).Methods("GET")
+	r.HandleFunc("/graphql", reqHandler).Methods("POST")
 	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
 	return r
 }
