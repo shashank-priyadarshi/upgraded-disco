@@ -1,7 +1,11 @@
 package main
 
-import "resume-backend/server"
+import (
+	"server/server"
+	"server/todos"
+)
 
 func main() {
 	server.StartServer()
+	todos.StartServer()
 }

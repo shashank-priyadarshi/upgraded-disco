@@ -1,4 +1,4 @@
-module resume-backend
+module server
 
 go 1.18
 
