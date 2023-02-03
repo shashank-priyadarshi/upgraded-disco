@@ -38,11 +38,17 @@ func setMongoConnection() {
 		select {
 		case <-done:
 			// Task finished, close the MongoDB connection
-			client.Disconnect(context.TODO())
+			err := client.Disconnect(context.TODO())
+			if client.Disconnect(context.TODO()) != nil {
+				log.Fatal("Error while closing connection to mongo after task completion: ", err)
+			}
 			fmt.Println("MongoDB connection closed after task completion")
 		case <-time.After(20 * time.Second):
 			// Timeout, close the MongoDB connection
-			client.Disconnect(context.TODO())
+			err := client.Disconnect(context.TODO())
+			if err != nil {
+				log.Fatal("Error while closing connection to mongo due to timeout: ", err)
+			}
 			fmt.Println("MongoDB connection closed due to timeout")
 		}
 	}()

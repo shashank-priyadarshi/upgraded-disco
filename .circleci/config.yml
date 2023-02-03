@@ -9,7 +9,8 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-            - v1-golang-dependencies
+            - lint-dependencies
+            - test-dependencies
       - run:
           name: Install Go Dependencies
           command: go mod download
@@ -21,14 +22,14 @@ jobs:
           name: Install Lint Dependencies
           command: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
       - save_cache:
-          key: v1-golang-dependencies
+          key: lint-dependencies
           paths:
             - "/go/bin/golangci-lint"
       - run:
           name: Install Test Dependencies
           command: go install gotest.tools/gotestsum@latest
       - save_cache:
-          key: v1-golang-dependencies
+          key: test-dependencies
           paths:
             - "/go/bin/gotestsum"
       - run:
