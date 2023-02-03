@@ -46,10 +46,11 @@ jobs:
           path: /tmp/test-reports
 
 workflows:
-  code_qlty:
+  build_test:
     jobs:
       - qlty:
-          context: portfolio-projects
+          context:
+            - portfolio-projects
           filters:
             branches:
               - dev
