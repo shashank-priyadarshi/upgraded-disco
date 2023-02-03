@@ -6,12 +6,14 @@ import (
 )
 
 type Configuration struct {
-	MongoURI     string
-	DBNAME       string
-	SERVERPORT   string
-	TODOAPIPORT  string
-	SERVERORIGIN string
-	TODOORIGIN   string
+	MongoURI            string
+	DBNAME              string
+	SERVERPORT          string
+	TODOAPIPORT         string
+	SERVERORIGIN        string
+	TODOORIGIN          string
+	GHINTEGRATIONORIGIN string
+	GITHUBTOKEN         string
 	Collections
 }
 
@@ -25,12 +27,14 @@ type Collections struct {
 
 func FetchConfig() Configuration {
 	return Configuration{
-		MongoURI:     os.Getenv("MONGO_URI"),
-		DBNAME:       os.Getenv("DB_NAME"),
-		SERVERPORT:   os.Getenv("SERVER_PORT"),
-		TODOAPIPORT:  os.Getenv("TODO_API_PORT"),
-		SERVERORIGIN: fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
-		TODOORIGIN:   fmt.Sprintf("http://localhost:%v", os.Getenv("TODO_API_PORT")),
+		MongoURI:            os.Getenv("MONGO_URI"),
+		DBNAME:              os.Getenv("DB_NAME"),
+		SERVERPORT:          os.Getenv("SERVER_PORT"),
+		TODOAPIPORT:         os.Getenv("TODO_API_PORT"),
+		GITHUBTOKEN:         os.Getenv("GITHUB_TOKEN"),
+		GHINTEGRATIONORIGIN: os.Getenv("GH_INTEGRATION_ORIGIN"),
+		SERVERORIGIN:        fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
+		TODOORIGIN:          fmt.Sprintf("http://localhost:%v", os.Getenv("TODO_API_PORT")),
 		Collections: Collections{
 			BIODATA:    os.Getenv("COLLECTION_BIODATA"),
 			GITHUBDATA: os.Getenv("COLLECTION_GITHUBDATA"),

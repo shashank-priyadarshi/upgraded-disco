@@ -1,4 +1,4 @@
-package todos
+package ghintegration
 
 import (
 	"fmt"
@@ -19,22 +19,21 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
 
-	fmt.Println("Starting server on port: ", config.FetchConfig().TODOAPIPORT)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONORIGIN)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONORIGIN), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
 	// r.Use(middleware.OriginMiddleware)
-	r.HandleFunc("/new", reqHandler).Methods("POST")
-	r.HandleFunc("/list", ReturnTodos).Methods("GET") // add todo to mongo, add new issue to respective repo
-	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github
+	r.HandleFunc("/trigger", reqHandler).Methods("POST")
 	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
 	return r
 }
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	go main()
 }
 
 func invalidEndpoint(w http.ResponseWriter, r *http.Request) {

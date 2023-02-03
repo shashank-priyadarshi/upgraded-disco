@@ -26,8 +26,8 @@ func returnGitHubData(w http.ResponseWriter, r *http.Request) {
 
 func writeNewSchedule(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
-	reqStatus := mongoconnection.WriteDataToCollection(config.FetchConfig().Collections.SCHEDULE, r)
-	json.NewEncoder(w).Encode(reqStatus)
+	// reqStatus := mongoconnection.WriteDataToCollection(config.FetchConfig().Collections.SCHEDULE, r)
+	// json.NewEncoder(w).Encode(reqStatus)
 }
 
 func invalidEndpoint(w http.ResponseWriter, r *http.Request) {

@@ -2,11 +2,8 @@ package mongoconnection
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"server/config"
 	"time"
 
@@ -14,13 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-type schedule struct {
-	Name    string    `json:"name"`
-	Email   string    `json:"email"`
-	Comment string    `json:"comment"`
-	Date    time.Time `json:"date"`
-}
 
 var done = make(chan bool)
 var db *mongo.Database
@@ -99,25 +89,17 @@ func ReadDataFromCollection(collection string) []interface{} {
 	return results
 }
 
-func WriteDataToCollection(collection string, req *http.Request) *http.ResponseWriter {
+func WriteDataToCollection(collectionName string, gitHubData interface{}) error {
 	setMongoConnection()
-	var response *http.ResponseWriter
-	var ifa schedule
-	reqBody, err := io.ReadAll(req.Body)
+	collection := db.Collection(collectionName)
+
+	insertResult, err := collection.InsertOne(context.TODO(), gitHubData)
 	if err != nil {
-		fmt.Println("Error while reading request body: ", err)
-	}
-	err = json.Unmarshal(reqBody, &ifa)
-	if err != nil {
-		fmt.Println("Error while unmarshaling request body: ", err)
+		fmt.Println("Error while Inserting github data to MongoDB!", err)
 	} else {
-		insertResult, err := db.Collection(collection).InsertOne(context.TODO(), ifa)
-		if err != nil {
-			fmt.Println("Error while Inserting new schedule to MongoDB")
-		} else {
-			fmt.Println("New schedule saved successfully! ", insertResult)
-		}
+		fmt.Println("GitHub data saved successfully! ", insertResult)
 	}
+
 	done <- true
-	return response
+	return err
 }
