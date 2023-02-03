@@ -21,11 +21,18 @@ jobs:
             - v1-golang-dependencies
       - run:
           name: Install Dependencies
-          command: go mod download
+          commands:
+            - go mod download
+            - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
+          timeout:
+            minutes: 15
       - save_cache:
-          key: go-mod-v4-{{ checksum "go.sum" }}
+          keys:
+            - go-mod-v4-{{ checksum "go.sum" }}
+            - v1-golang-dependencies
           paths:
             - "/go/pkg/mod"
+            - "~/go/pkg/mod"
       - run:
           name: Run tests
           command: |
@@ -35,18 +42,13 @@ jobs:
             curl -Os https://uploader.codecov.io/latest/linux/codecov 
             chmod +x codecov 
             ./codecov
-      - store_test_results:
-          path: /tmp/test-reports
       - run:
           name: Lint
-          command: |
-            go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
-            golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
-          timeout: 15
-      - save_cache:
+          command: golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
+      - store_test_results:
           paths:
-            - ~/go/pkg/mod
-          key: v1-golang-dependencies
+            - /tmp/test-reports
+            - /tmp/lint-reports
           # go install honnef.co/go/tools/cmd/staticcheck@latest
           # staticcheck ./...
           # go install github.com/roblaszczak/go-cleanarch@latest
