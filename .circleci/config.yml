@@ -18,6 +18,7 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
+            - v1-golang-dependencies
       - run:
           name: Install Dependencies
           command: go mod download
@@ -41,6 +42,11 @@ jobs:
           command: |
             go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
             golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
+          timeout: 15
+      - save_cache:
+          paths:
+            - ~/go/pkg/mod
+          key: v1-golang-dependencies
           # go install honnef.co/go/tools/cmd/staticcheck@latest
           # staticcheck ./...
           # go install github.com/roblaszczak/go-cleanarch@latest
