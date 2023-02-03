@@ -41,12 +41,27 @@ jobs:
           command: |
             go install honnef.co/go/tools/cmd/staticcheck@latest
             go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
-            go install github.com/roblaszczak/go-cleanarch@latest
-            go install github.com/quasilyte/go-consistent@latest
-            go install github.com/quasilyte/go-namecheck@latest
             golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
             staticcheck ./...
             go-cleanarch
+          # go install github.com/roblaszczak/go-cleanarch@latest
+          # go install github.com/quasilyte/go-consistent@latest
+          # go install github.com/quasilyte/go-namecheck@latest
+          # go install github.com/alexkohler/prealloc@latest
+          # go install github.com/alexkohler/nakedret@latest
+          # go install github.com/alexkohler/ineffassign@latest
+          # go install github.com/alexkohler/structcheck@latest
+          # go install github.com/alexkohler/varcheck@latest
+          # go install github.com/alexkohler/interfacer@latest
+          # go install github.com/alexkohler/unconvert@latest
+          # go install github.com/alexkohler/deadcode@latest
+          # go install github.com/alexkohler/gosec@latest
+          # go install github.com/alexkohler/goconst@latest
+          # go install github.com/alexkohler/gocritic@latest
+          # go install github.com/alexkohler/gochecknoglobals@latest
+          # go install github.com/alexkohler/gochecknoinits@latest
+          # go install github.com/alexkohler/gochecknoinits@latest
+          # go install github.com/alexkohler/gochecknoinits@latest
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
