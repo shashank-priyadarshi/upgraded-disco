@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  qlty:
     working_directory: ~/repo
     docker:
       - image: golang:1.19.5-bullseye
@@ -41,11 +41,16 @@ jobs:
             cd /tmp/test-reports
             curl -Os https://uploader.codecov.io/latest/linux/codecov 
             chmod +x codecov 
-            ./codecov
+            ./codecov -t $CODECOV_TOKEN
       - store_test_results:
           path: /tmp/test-reports
 
 workflows:
   code_qlty:
     jobs:
-      - build
+      - qlty:
+          context: portfolio-projects
+          filters:
+            branches:
+              - dev
+              - main
