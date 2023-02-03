@@ -9,7 +9,7 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-            - v1-golang-dependencies
+            # - v1-golang-dependencies
       - run:
           name: Install Go Dependencies
           command: go mod download
