@@ -1,18 +1,9 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
     working_directory: ~/repo
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: golang:1.19.5-bullseye
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - restore_cache:
@@ -48,7 +39,7 @@ jobs:
       - store_test_results:
           paths:
             - /tmp/test-reports
-            - /tmp/lint-reports
+            - /tmp/test-reports/lint.xml
           # go install honnef.co/go/tools/cmd/staticcheck@latest
           # staticcheck ./...
           # go install github.com/roblaszczak/go-cleanarch@latest
@@ -70,10 +61,7 @@ jobs:
           # go install github.com/alexkohler/gochecknoinits@latest
           # go install github.com/alexkohler/gochecknoinits@latest
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  code_qlty: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  code_qlty:
     jobs:
       - build
