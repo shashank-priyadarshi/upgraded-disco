@@ -37,8 +37,10 @@ jobs:
           command: |
             mkdir -p /tmp/test-reports
             gotestsum --junitfile /tmp/test-reports/unit-tests.xml
-            golangci-lint run
+            golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
             cd /tmp/test-reports
+            cat unit-tests.xml
+            cat lint.xml
             curl -Os https://uploader.codecov.io/latest/linux/codecov 
             chmod +x codecov 
             ./codecov -t $CODECOV_TOKEN
