@@ -12,20 +12,18 @@ jobs:
             - v1-golang-dependencies
       - run:
           name: Install Go Dependencies
-          commands:
-            - go mod download
+          command: go mod download
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
-          path: "/go/pkg/mod"
+          path:
+            - "/go/pkg/mod"
       - run:
           name: Install Lint Dependencies
-          commands:
-            - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
-          timeout:
-            minutes: 15
+          command: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
       - save_cache:
           key: v1-golang-dependencies
-          path: ~/go/pkg/mod
+          path:
+            - "/go/bin/golangci-lint"
       - run:
           name: Run tests
           command: |
@@ -35,31 +33,13 @@ jobs:
             curl -Os https://uploader.codecov.io/latest/linux/codecov 
             chmod +x codecov 
             ./codecov
+      - store_test_results:
+          path: /tmp/test-reports
       - run:
-          name: Lint
+          name: Run Lint
           command: golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
       - store_test_results:
-          paths: /tmp/test-reports
-          # go install honnef.co/go/tools/cmd/staticcheck@latest
-          # staticcheck ./...
-          # go install github.com/roblaszczak/go-cleanarch@latest
-          # go install github.com/quasilyte/go-consistent@latest
-          # go install github.com/quasilyte/go-namecheck@latest
-          # go install github.com/alexkohler/prealloc@latest
-          # go install github.com/alexkohler/nakedret@latest
-          # go install github.com/alexkohler/ineffassign@latest
-          # go install github.com/alexkohler/structcheck@latest
-          # go install github.com/alexkohler/varcheck@latest
-          # go install github.com/alexkohler/interfacer@latest
-          # go install github.com/alexkohler/unconvert@latest
-          # go install github.com/alexkohler/deadcode@latest
-          # go install github.com/alexkohler/gosec@latest
-          # go install github.com/alexkohler/goconst@latest
-          # go install github.com/alexkohler/gocritic@latest
-          # go install github.com/alexkohler/gochecknoglobals@latest
-          # go install github.com/alexkohler/gochecknoinits@latest
-          # go install github.com/alexkohler/gochecknoinits@latest
-          # go install github.com/alexkohler/gochecknoinits@latest
+          path: /tmp/test-reports
 
 workflows:
   code_qlty:
