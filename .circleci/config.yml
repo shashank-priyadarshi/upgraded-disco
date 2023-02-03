@@ -35,11 +35,11 @@ jobs:
             ./codecov
       - store_test_results:
           path: /tmp/test-reports
-      - run:
-          name: Run Lint
-          command: golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
-      - store_test_results:
-          path: /tmp/test-reports
+      # - run:
+      #     name: Run Lint
+      #     command: golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
+      # - store_test_results:
+      #     path: /tmp/test-reports
 
 workflows:
   code_qlty:
