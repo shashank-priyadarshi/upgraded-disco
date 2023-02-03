@@ -9,7 +9,7 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-            - "v1-golang-dependencies"
+            - v1-golang-dependencies
       - run:
           name: Install Go Dependencies
           command: go mod download
@@ -20,26 +20,29 @@ jobs:
       - run:
           name: Install Lint Dependencies
           command: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.0
-      # - save_cache:
-      #     key: "v1-golang-dependencies"
-      #     path:
-      #       - "/go/bin/golangci-lint"
+      - save_cache:
+          key: v1-golang-dependencies
+          paths:
+            - "/go/bin/golangci-lint"
       - run:
-          name: Run tests
+          name: Install Test Dependencies
+          command: go install gotest.tools/gotestsum@latest
+      - save_cache:
+          key: v1-golang-dependencies
+          paths:
+            - "/go/bin/gotestsum"
+      - run:
+          name: Run Lint and Tests
           command: |
             mkdir -p /tmp/test-reports
-            go install gotest.tools/gotestsum@latest
             gotestsum --junitfile /tmp/test-reports/unit-tests.xml
+            golangci-lint run
+            cd /tmp/test-reports
             curl -Os https://uploader.codecov.io/latest/linux/codecov 
             chmod +x codecov 
             ./codecov
       - store_test_results:
           path: /tmp/test-reports
-      - run:
-          name: Run Lint
-          command: golangci-lint run --out-format=checkstyle > /tmp/test-reports/lint.xml
-      # - store_test_results:
-      #     path: /tmp/test-reports
 
 workflows:
   code_qlty:
