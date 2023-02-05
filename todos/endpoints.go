@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"server/common"
 	"server/config"
 
 	"github.com/gorilla/handlers"
@@ -20,7 +21,7 @@ func handleRequests() {
 	//ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().TODOAPIPORT)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
@@ -29,17 +30,12 @@ func routes() *mux.Router {
 	r.HandleFunc("/list", ReturnTodos).Methods("GET")
 	r.HandleFunc("/new", reqHandler).Methods("POST")  // add todo to mongo, add new issue to respective repo
 	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github
-	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
+	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
 }
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
-}
-
-func invalidEndpoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
-	http.Error(w, "Endpoint does not exist", http.StatusNotFound)
 }
 
 func StartServer() {

@@ -22,14 +22,14 @@ func setMongoConnection() {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	fmt.Println("MongoDB connection succeeded:")
 
@@ -39,15 +39,15 @@ func setMongoConnection() {
 		case <-done:
 			// Task finished, close the MongoDB connection
 			err := client.Disconnect(context.TODO())
-			if client.Disconnect(context.TODO()) != nil {
-				log.Fatal("Error while closing connection to mongo after task completion: ", err)
+			if err != nil {
+				log.Println("Error while closing connection to mongo after task completion: ", err)
 			}
 			fmt.Println("MongoDB connection closed after task completion")
 		case <-time.After(20 * time.Second):
 			// Timeout, close the MongoDB connection
 			err := client.Disconnect(context.TODO())
 			if err != nil {
-				log.Fatal("Error while closing connection to mongo due to timeout: ", err)
+				log.Println("Error while closing connection to mongo due to timeout: ", err)
 			}
 			fmt.Println("MongoDB connection closed due to timeout")
 		}
@@ -69,7 +69,7 @@ func ReadDataFromCollection(collection string) []interface{} {
 	var results []interface{}
 	cur, err := db.Collection(collection).Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Finding multiple documents returns a cursor
@@ -79,14 +79,14 @@ func ReadDataFromCollection(collection string) []interface{} {
 		var elem *interface{}
 		err := cur.Decode(&elem)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 		results = append(results, *elem)
 	}
 
 	if err := cur.Err(); err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Close the cursor once finished

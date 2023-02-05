@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"server/common"
 	"strings"
 	"time"
 )
@@ -17,10 +18,10 @@ func fetchRepoWiseData() (int, []RepoList, []SCMActivity) {
 	scmActivity := addDate()
 
 	repoCount := 0
-	rawRepoList := bearerAuthAPICall("https://api.github.com/user/repos?per_page=100&page=1&sort=pushed", authToken)
+	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/user/repos?per_page=100&page=1&sort=pushed", authToken)
 	err := json.Unmarshal(rawRepoList, &repoListData)
 	if err != nil {
-		log.Fatalln("Unable to unmarshal raw repo response: ", err)
+		log.Println("Unable to unmarshal raw repo response: ", err)
 	}
 
 	for _, repo := range repoListData {
@@ -34,17 +35,17 @@ func fetchRepoWiseData() (int, []RepoList, []SCMActivity) {
 		})
 
 		// api call to fetch commits in repo.Name for this iteration
-		rawCommitResponse := bearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.CommitsURL, "{/sha}")[0]), authToken)
+		rawCommitResponse, _ := common.BearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.CommitsURL, "{/sha}")[0]), authToken)
 		err = json.Unmarshal(rawCommitResponse, &commitList)
 		if err != nil {
-			log.Fatalln("Unable to unmarshal raw commit response: ", err)
+			log.Println("Unable to unmarshal raw commit response: ", err)
 		}
 
 		// api call to fetch pull requests in repo.Name for this iteration
-		rawPullRequestResponse := bearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.PRURL, "{/number}")[0]), authToken)
+		rawPullRequestResponse, _ := common.BearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.PRURL, "{/number}")[0]), authToken)
 		err = json.Unmarshal(rawPullRequestResponse, &pullRequestList)
 		if err != nil {
-			log.Fatalln("Unable to unmarshal raw pull request response: ", err)
+			log.Println("Unable to unmarshal raw pull request response: ", err)
 		}
 
 		scmActivity = appendRepoWiseData(scmActivity, commitList, pullRequestList)

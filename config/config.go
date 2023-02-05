@@ -11,7 +11,6 @@ type Configuration struct {
 	SERVERPORT          string
 	TODOAPIPORT         string
 	SERVERORIGIN        string
-	TODOORIGIN          string
 	GHINTEGRATIONORIGIN string
 	GITHUBTOKEN         string
 	Collections
@@ -34,7 +33,6 @@ func FetchConfig() Configuration {
 		GITHUBTOKEN:         os.Getenv("GITHUB_TOKEN"),
 		GHINTEGRATIONORIGIN: os.Getenv("GH_INTEGRATION_ORIGIN"),
 		SERVERORIGIN:        fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
-		TODOORIGIN:          fmt.Sprintf("http://localhost:%v", os.Getenv("TODO_API_PORT")),
 		Collections: Collections{
 			BIODATA:    os.Getenv("COLLECTION_BIODATA"),
 			GITHUBDATA: os.Getenv("COLLECTION_GITHUBDATA"),

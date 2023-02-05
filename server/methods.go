@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"server/common"
 	"server/config"
 	"server/mongoconnection"
 )
@@ -36,7 +37,12 @@ func writeNewSchedule(w http.ResponseWriter, r *http.Request) {
 	// json.NewEncoder(w).Encode(reqStatus)
 }
 
-func invalidEndpoint(w http.ResponseWriter, r *http.Request) {
+func triggerPlugin(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
-	http.Error(w, "Endpoint does not exist", http.StatusNotFound)
+	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/trigger", config.FetchConfig().GHINTEGRATIONORIGIN), fmt.Sprintf("%v/trigger", config.FetchConfig().SERVERORIGIN))
+	if statusCode != http.StatusOK {
+		http.Error(w, fmt.Sprintf("Error while triggering plugin: %v", string(response)), statusCode)
+	} else {
+		w.Write([]byte("Plugin triggered successfully!"))
+	}
 }

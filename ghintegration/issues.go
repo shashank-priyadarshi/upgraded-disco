@@ -3,6 +3,7 @@ package ghintegration
 import (
 	"encoding/json"
 	"log"
+	"server/common"
 	"time"
 )
 
@@ -11,10 +12,10 @@ func getIssueData(scmActivity []SCMActivity) ([]SCMActivity, []string) {
 	var issues []string
 
 	// api call to fetch list of all issues
-	rawIssueResposne := bearerAuthAPICall("https://api.github.com/user/issues?per_page=100&page=1", authToken)
+	rawIssueResposne, _ := common.BearerAuthAPICall("https://api.github.com/user/issues?per_page=100&page=1", authToken)
 	err := json.Unmarshal(rawIssueResposne, &issueList)
 	if err != nil {
-		log.Fatalln("Unable to unmarshal raw issue list response: ", err)
+		log.Println("Unable to unmarshal raw issue list response: ", err)
 	}
 	// according to date, increment issue count
 	// recording issue count & issue names for corresponding duration

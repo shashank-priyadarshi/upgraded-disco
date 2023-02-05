@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"server/common"
 	"server/config"
 	"server/todos"
 
@@ -13,13 +14,13 @@ import (
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
-	r.HandleFunc("/trigger", invalidEndpoint).Methods("POST")
-	r.HandleFunc("/todos", todos.ReturnTodos).Methods("GET")
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
-	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
+	r.HandleFunc("/trigger", triggerPlugin).Methods("GET")
+	r.HandleFunc("/todos", todos.ReturnTodos).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
-	r.NotFoundHandler = http.HandlerFunc(invalidEndpoint)
+	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
+	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
+	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
 }
 
@@ -42,7 +43,7 @@ func handleRequests() {
 	//ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().SERVERPORT)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().SERVERPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().SERVERPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func StartServer() {

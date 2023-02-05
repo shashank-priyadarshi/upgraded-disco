@@ -3,16 +3,17 @@ package ghintegration
 import (
 	"encoding/json"
 	"log"
+	"server/common"
 )
 
 func fetchStarredRepos() Repo {
 	var repoList []RepoResponse
 	var repoData Repo = Repo{}
 
-	rawRepoList := bearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred?per_page=100&page=1&sort=pushed", authToken)
+	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred?per_page=100&page=1&sort=pushed", authToken)
 	err := json.Unmarshal(rawRepoList, &repoList)
 	if err != nil {
-		log.Fatalln("Unable to unmarshal raw repo response: ", err)
+		log.Println("Unable to unmarshal raw repo response: ", err)
 	}
 
 	for _, repo := range repoList {
