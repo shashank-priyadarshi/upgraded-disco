@@ -45,13 +45,13 @@ func BearerAuthAPICall(reqURL, authToken string) ([]byte, int) {
 	return respBody, resp.StatusCode
 }
 
-func NoAuthAPICall(reqURL, origin string) ([]byte, int) {
+func NoAuthAPICall(reqURL, origin string, reqBody []byte) ([]byte, int) {
 	timeOut := time.Duration(5 * time.Second)
 	client := http.Client{
 		Timeout: timeOut,
 	}
 
-	request, err := http.NewRequest("POST", reqURL, bytes.NewBuffer([]byte("")))
+	request, err := http.NewRequest("POST", reqURL, bytes.NewBuffer(reqBody))
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Origin", origin)
 	if err != nil {
