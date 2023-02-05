@@ -2,6 +2,7 @@ package ghintegration
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"server/common"
 )
@@ -19,7 +20,7 @@ func getIssueData() []string {
 	// according to date, increment issue count
 	// recording issue count & issue names for corresponding duration
 	for _, issue := range issueList {
-		issues = append(issues, issue.Title)
+		issues = append(issues, fmt.Sprintf("%v,%v", issue.Title, issue.URL))
 	}
 	return issues
 }

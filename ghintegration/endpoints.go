@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var pluginTriggeredRecently = make(chan bool)
+var pluginTriggeredRecently = make(chan bool, 1)
 
 func handleRequests() {
 	router := routes()
@@ -51,5 +51,6 @@ func reqHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartServer() {
+	pluginTriggeredRecently <- false
 	handleRequests()
 }

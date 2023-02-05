@@ -60,8 +60,3 @@ type SCMActivity struct {
 	Date   string `json:"date"`
 	Commit int    `json:"commit"`
 }
-
-type Issue struct {
-	Title string `json:"title"`
-	URL   string `json:"url"`
-}
