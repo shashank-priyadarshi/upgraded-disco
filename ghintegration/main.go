@@ -30,7 +30,7 @@ func main() {
 	}
 	err = mongoconnection.WriteDataToCollection(issueCollection, struct {
 		Issues []string `json:"issues"`
-	}{Issues: githubData.Issues})
+	}{Issues: getIssueData()})
 	if err != nil {
 		panic(err)
 	}
@@ -48,11 +48,9 @@ func triggerIntegration() ([]byte, error) {
 	fmt.Println("Time: ", time.Now().In(time.FixedZone("Asia/Kolkata", 5*60*60+30*60)))
 
 	scmActivity := fetchRepoWiseData()
-	issues := getIssueData()
 
 	gitHubData := GitHubData{
 		WeekData:     scmActivity,
-		Issues:       issues,
 		StarredRepos: fetchStarredRepos(),
 		Time:         time.Now().In(time.FixedZone("Asia/Kolkata", 5*60*60+30*60)),
 	}

@@ -45,7 +45,6 @@ type IssueRequest struct {
 type GitHubData struct {
 	Time         time.Time     `json:"execution_time"`
 	StarredRepos Repo          `json:"starredrepos"`
-	Issues       []string      `json:"issues"`
 	WeekData     []SCMActivity `json:"weekdata"`
 }
 

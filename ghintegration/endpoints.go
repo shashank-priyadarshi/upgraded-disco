@@ -40,6 +40,7 @@ func reqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	if <-pluginTriggeredRecently {
 		fmt.Println("Plugin already triggered recently")
+		pluginTriggeredRecently <- true
 		http.Error(w, "Plugin already triggered recently, try again after an hour", http.StatusTooManyRequests)
 		return
 	}
