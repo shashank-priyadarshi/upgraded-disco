@@ -44,7 +44,10 @@ func triggerPlugin(w http.ResponseWriter, r *http.Request) {
 	if statusCode != http.StatusOK {
 		http.Error(w, fmt.Sprintf("Error while triggering plugin: %v", string(response)), statusCode)
 	} else {
-		w.Write([]byte("Plugin triggered successfully!"))
+		_, err := w.Write([]byte("Plugin triggered successfully!"))
+		if err != nil {
+			fmt.Printf("error while writing response for endpoint %v: %v\n", r.URL.Path, err)
+		}
 	}
 }
 
