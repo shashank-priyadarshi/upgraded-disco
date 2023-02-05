@@ -32,6 +32,7 @@ type PullRequestResponse struct {
 }
 
 type IssueRequest struct {
+	URL       string `json:"url"`
 	Title     string `json:"title"`
 	State     string `json:"state"`
 	CreatedAt string `json:"created_at"`
@@ -43,31 +44,24 @@ type IssueRequest struct {
 
 type GitHubData struct {
 	Time         time.Time     `json:"execution_time"`
-	Repos        Repo          `json:"repos"`
 	StarredRepos Repo          `json:"starredrepos"`
 	Issues       []string      `json:"issues"`
 	WeekData     []SCMActivity `json:"weekdata"`
 }
 
 type Repo struct {
-	Count int        `json:"count"`
-	List  []RepoList `json:"list"`
-}
-
-type RepoList struct {
-	Name    string `json:"name"`
-	RepoURL string `json:"repourl"`
+	Count int      `json:"count"`
+	List  []string `json:"list"`
 }
 
 type SCMActivity struct {
-	PR           int     `json:"pr"`
-	LOC          int     `json:"loc"`
-	Date         string  `json:"date"`
-	Commit       int     `json:"commit"`
-	Issues       []Issue `json:"issues"`
-	ClosedIssues int     `json:"closed_issues"`
+	PR     int    `json:"pr"`
+	LOC    int    `json:"loc"`
+	Date   string `json:"date"`
+	Commit int    `json:"commit"`
 }
 
 type Issue struct {
 	Title string `json:"title"`
+	URL   string `json:"url"`
 }

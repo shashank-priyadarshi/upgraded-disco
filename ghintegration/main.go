@@ -10,6 +10,7 @@ import (
 
 func main() {
 	fmt.Println("Plugin execution started!")
+	pluginTriggeredRecently <- true
 	rawData, err := triggerIntegration()
 	if err != nil {
 		panic(err)
@@ -46,14 +47,10 @@ func triggerIntegration() ([]byte, error) {
 	fmt.Println("Location: ", loc)
 	fmt.Println("Time: ", time.Now().In(time.FixedZone("Asia/Kolkata", 5*60*60+30*60)))
 
-	repoCount, repoList, scmActivity := fetchRepoWiseData()
-	scmActivity, issues := getIssueData(scmActivity)
+	scmActivity := fetchRepoWiseData()
+	issues := getIssueData()
 
 	gitHubData := GitHubData{
-		Repos: Repo{
-			List:  repoList,
-			Count: repoCount,
-		},
 		WeekData:     scmActivity,
 		Issues:       issues,
 		StarredRepos: fetchStarredRepos(),

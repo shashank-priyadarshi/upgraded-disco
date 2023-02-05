@@ -7,10 +7,13 @@ import (
 	"server/common"
 	"server/config"
 	"server/middleware"
+	"time"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
+
+var pluginTriggeredRecently = make(chan bool)
 
 func handleRequests() {
 	router := routes()
@@ -21,8 +24,8 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
 
-	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONORIGIN)
-	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONORIGIN), handlers.CORS(credentials, headers, methods, origins)(router)))
+	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONPORT)
+	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
@@ -35,6 +38,15 @@ func routes() *mux.Router {
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	if <-pluginTriggeredRecently {
+		fmt.Println("Plugin already triggered recently")
+		http.Error(w, "Plugin already triggered recently, try again after an hour", http.StatusTooManyRequests)
+		return
+	}
+	go func() {
+		time.Sleep(time.Hour)
+		pluginTriggeredRecently <- false
+	}()
 	go main()
 }
 

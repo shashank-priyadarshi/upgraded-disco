@@ -9,15 +9,13 @@ import (
 	"time"
 )
 
-func fetchRepoWiseData() (int, []RepoList, []SCMActivity) {
+func fetchRepoWiseData() []SCMActivity {
 	var repoListData []RepoResponse
 	var commitList []CommitResponse
 	var pullRequestList []PullRequestResponse
 
-	repoList := []RepoList{}
 	scmActivity := addDate()
 
-	repoCount := 0
 	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/user/repos?per_page=100&page=1&sort=pushed", authToken)
 	err := json.Unmarshal(rawRepoList, &repoListData)
 	if err != nil {
@@ -28,11 +26,6 @@ func fetchRepoWiseData() (int, []RepoList, []SCMActivity) {
 		if repo.Forked {
 			continue
 		}
-
-		repoCount++
-		repoList = append(repoList, RepoList{
-			Name: repo.Name,
-		})
 
 		// api call to fetch commits in repo.Name for this iteration
 		rawCommitResponse, _ := common.BearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.CommitsURL, "{/sha}")[0]), authToken)
@@ -50,7 +43,7 @@ func fetchRepoWiseData() (int, []RepoList, []SCMActivity) {
 
 		scmActivity = appendRepoWiseData(scmActivity, commitList, pullRequestList)
 	}
-	return repoCount, repoList, scmActivity
+	return scmActivity
 }
 
 func appendRepoWiseData(scmActivity []SCMActivity, commitList []CommitResponse, pullRequestList []PullRequestResponse) []SCMActivity {

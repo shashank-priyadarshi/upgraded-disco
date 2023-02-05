@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"server/common"
-	"time"
 )
 
-func getIssueData(scmActivity []SCMActivity) ([]SCMActivity, []string) {
+func getIssueData() []string {
 	var issueList []IssueRequest
 	var issues []string
 
@@ -20,28 +19,7 @@ func getIssueData(scmActivity []SCMActivity) ([]SCMActivity, []string) {
 	// according to date, increment issue count
 	// recording issue count & issue names for corresponding duration
 	for _, issue := range issueList {
-		var issueClosedDate time.Time
-
-		issueCreatedDate, _ := time.Parse("2006-01-02", issue.CreatedAt[:10])
-
-		if issue.ClosedAt != "" {
-			issueClosedDate, _ = time.Parse("2006-01-02", issue.ClosedAt[:10])
-			timeElapsed := int(issueClosedDate.Unix()/(24*60*60)) - days
-			if timeElapsed < 7 && timeElapsed >= 0 {
-				scmActivity[timeElapsed].ClosedIssues++
-			}
-			continue
-		}
-
 		issues = append(issues, issue.Title)
-
-		timeElapsed := 7 - (int(issueCreatedDate.Unix()/(24*60*60)) - days)
-		if timeElapsed < 7 && timeElapsed >= 0 {
-			scmActivity[timeElapsed].Issues = append(scmActivity[timeElapsed].Issues, Issue{
-				Title: issue.Title,
-			})
-		}
-
 	}
-	return scmActivity, issues
+	return issues
 }

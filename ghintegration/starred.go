@@ -2,6 +2,7 @@ package ghintegration
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"server/common"
 )
@@ -19,10 +20,7 @@ func fetchStarredRepos() Repo {
 	for _, repo := range repoList {
 		repoData = Repo{
 			Count: repoData.Count + 1,
-			List: append(repoData.List, RepoList{
-				Name:    repo.Name,
-				RepoURL: repo.URL,
-			}),
+			List:  append(repoData.List, fmt.Sprintf("%v,%v", repo.Name, repo.URL)),
 		}
 	}
 
