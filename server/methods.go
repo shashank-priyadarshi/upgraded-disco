@@ -1,7 +1,6 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,19 +16,13 @@ func graphqlHandler(w http.ResponseWriter, r *http.Request) {
 func returnBiodata(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	response := mongoconnection.ReadDataFromCollection(config.FetchConfig().Collections.BIODATA)
-	err := json.NewEncoder(w).Encode(response)
-	if err != nil {
-		fmt.Printf("error while encoding request data for endpoint %v: %v\n", r.URL.Path, err)
-	}
+	w.Write(response)
 }
 
 func returnGitHubData(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	response := mongoconnection.ReadDataFromCollection(config.FetchConfig().Collections.GITHUBDATA)
-	err := json.NewEncoder(w).Encode(response)
-	if err != nil {
-		fmt.Printf("error while encoding request data for endpoint %v: %v\n", r.URL.Path, err)
-	}
+	w.Write(response)
 }
 
 func writeNewSchedule(w http.ResponseWriter, r *http.Request) {
@@ -62,9 +55,6 @@ func todos(w http.ResponseWriter, r *http.Request) {
 	if statusCode != http.StatusOK {
 		http.Error(w, fmt.Sprintf("Error while fetching todos list: %v", string(response)), statusCode)
 	} else {
-		err := json.NewEncoder(w).Encode(string(response))
-		if err != nil {
-			fmt.Printf("error while encoding request data for endpoint %v: %v\n", r.URL.Path, err)
-		}
+		w.Write(response)
 	}
 }

@@ -30,7 +30,7 @@ func handleRequests() {
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.Use(middleware.OriginMiddleware)
+	r.Use(middleware.InternalOriginMiddleware)
 	r.HandleFunc("/trigger", reqHandler).Methods("POST")
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r

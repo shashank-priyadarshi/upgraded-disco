@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"server/common"
 	"server/config"
+	"server/middleware"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -13,6 +14,7 @@ import (
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
+	r.Use(middleware.ExternalOriginMiddleware)
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/todos", todos).Methods("POST")
@@ -27,7 +29,7 @@ func handleRequests() {
 	router := routes()
 
 	credentials := handlers.AllowCredentials()
-	origins := handlers.AllowedOrigins([]string{"*"})
+	origins := handlers.AllowedOrigins([]string{"http://localhost:4200", "https://ssnk.in"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	//ttl := handlers.MaxAge(3600)
