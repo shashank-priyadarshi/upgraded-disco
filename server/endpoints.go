@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"server/common"
 	"server/config"
-	"server/middleware"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -14,8 +13,8 @@ import (
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.Use(middleware.ExternalOriginMiddleware)
-	r.Use(middleware.AddResponseHeaders)
+	// r.Use(middleware.ExternalOriginMiddleware)
+	// r.Use(middleware.AddResponseHeaders)
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/todos", todos).Methods("POST")
