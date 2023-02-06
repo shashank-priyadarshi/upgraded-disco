@@ -10,7 +10,7 @@ RUN go mod download
 # Copy app files
 COPY . .
 # Build app
-RUN go build -o app ./server
+RUN go build -o app ./
 
 FROM alpine:3.14 as production
 ENV SERVER_PORT=""
