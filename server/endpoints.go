@@ -15,6 +15,7 @@ import (
 func routes() *mux.Router {
 	r := mux.NewRouter()
 	r.Use(middleware.ExternalOriginMiddleware)
+	r.Use(middleware.AddResponseHeaders)
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/todos", todos).Methods("POST")
