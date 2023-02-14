@@ -22,7 +22,7 @@ func handleRequests() {
 	origins := handlers.AllowedOrigins([]string{config.FetchConfig().SERVERORIGIN + "/trigger"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
 	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
-	//ttl := handlers.MaxAge(3600)
+	// ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONPORT)
 	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
