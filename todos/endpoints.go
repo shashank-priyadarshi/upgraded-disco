@@ -28,7 +28,7 @@ func handleRequests() {
 
 func routes() *mux.Router {
 	r := mux.NewRouter()
-	r.Use(middleware.OriginMiddleware)
+	r.Use(middleware.InternalOriginMiddleware)
 	r.HandleFunc("/list", returnTodos).Methods("POST")
 	r.HandleFunc("/new", reqHandler).Methods("POST")  // add todo to mongo, add new issue to respective repo
 	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github

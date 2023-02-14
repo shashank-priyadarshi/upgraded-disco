@@ -2,12 +2,14 @@ package mongoconnection
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"server/config"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -58,7 +60,7 @@ func setMongoConnection() {
 	db = client.Database(config.FetchConfig().DBNAME)
 }
 
-func ReadDataFromCollection(collection string) []interface{} {
+func ReadDataFromCollection(collection string) []byte {
 	setMongoConnection()
 	var sortDoc interface{} = make(map[string]interface{})
 	sortDoc.(map[string]interface{})["_id"] = -1
@@ -68,7 +70,7 @@ func ReadDataFromCollection(collection string) []interface{} {
 	findOptions.SetLimit(1)
 
 	// Here's an array in which you can store the decoded documents
-	var results []interface{}
+	var results []byte
 	cur, err := db.Collection(collection).Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
 		log.Println(err)
@@ -84,7 +86,15 @@ func ReadDataFromCollection(collection string) []interface{} {
 			log.Println(err)
 		}
 
-		results = append(results, *elem)
+		if b, ok := (*elem).(primitive.D); ok {
+			marshalledJson, err := json.Marshal(b.Map())
+			if err != nil {
+				log.Println("error while marshaling mongo data: ", err)
+			}
+			results = append(results, marshalledJson...)
+		}
+
+		// results = append(results, *elem)
 	}
 
 	if err := cur.Err(); err != nil {
