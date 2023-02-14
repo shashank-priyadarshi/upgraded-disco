@@ -33,13 +33,7 @@ jobs:
             -Dsonar.organization=${{secrets.SONAR_ORGANIZATION}}
 
       - name: Upload coverage reports to Codecov
-
-        uses: codecov/codecov-action@v3
-        with:
-          flags: unittests
-          name: codecov-umbrella
-          verbose: true
-          run: | 
-              curl -Os https://uploader.codecov.io/latest/linux/codecov 
-              chmod +x codecov 
-              ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+        run: | 
+            curl -Os https://uploader.codecov.io/latest/linux/codecov 
+            chmod +x codecov 
+            ./codecov -t ${{ secrets.CODECOV_TOKEN }}
