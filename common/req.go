@@ -36,7 +36,6 @@ func BearerAuthAPICall(reqURL, authToken string) ([]byte, int) {
 	}
 
 	respBody, err := io.ReadAll(resp.Body)
-
 	if err != nil {
 		log.Println("err in reading req response: ", err)
 		return []byte{}, 503
@@ -72,7 +71,6 @@ func NoAuthAPICall(reqURL, origin string, reqBody []byte) ([]byte, int) {
 	}
 
 	respBody, err := io.ReadAll(resp.Body)
-
 	if err != nil {
 		log.Println("err in reading req response: ", err)
 		return []byte{}, 503
