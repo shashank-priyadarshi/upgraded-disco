@@ -30,7 +30,7 @@ func handleRequests() {
 	origins := handlers.AllowedOrigins([]string{"*"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
-	//ttl := handlers.MaxAge(3600)
+	// ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().SERVERPORT)
 	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().SERVERPORT), handlers.CORS(credentials, headers, methods, origins)(router)))

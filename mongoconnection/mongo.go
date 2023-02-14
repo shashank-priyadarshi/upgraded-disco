@@ -12,8 +12,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var done = make(chan bool)
-var db *mongo.Database
+var (
+	done = make(chan bool)
+	db   *mongo.Database
+)
 
 func setMongoConnection() {
 	// Set client options
