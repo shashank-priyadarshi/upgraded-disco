@@ -3,11 +3,76 @@ package server
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"server/auth"
 	"server/common"
 	"server/config"
-	"server/mongoconnection"
+	mongoconnection "server/db/mongo"
 )
+
+func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("endpoint %v with method %v\n", r.URL.Path, r.Method)
+	// email/phone, password
+	// loggedin: bool, jwt token
+	rawResp, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = auth.VerifyCredentials(rawResp)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func signup(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("endpoint %v with method %v\n", r.URL.Path, r.Method)
+	// name, email, password, phone
+	// loggedin: bool, jwt token
+	rawResp, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = auth.AddNewUser(rawResp)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func forgotPassword(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("endpoint %v with method %v\n", r.URL.Path, r.Method)
+	// email/phone
+	// resp true/false
+	// await otp
+	rawResp, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = auth.ResetPassword(rawResp)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	// err = auth.SendOTP(rawResp)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	return
+	// }
+}
 
 func graphqlHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)

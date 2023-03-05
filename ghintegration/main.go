@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"server/config"
-	"server/mongoconnection"
 	"time"
+
+	mongoconnection "server/db/mongo"
 )
 
 func main() {
