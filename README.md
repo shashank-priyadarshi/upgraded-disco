@@ -31,9 +31,18 @@ This backend has several packages:
 1. trigger
    </i><br>
 
+- auth: handles authorization
+
+- db: handles connection to sql & nosql db
+  <br>
+  <i>Packages:
+
+1. mongoconnection: MongoDB connection
+2. sqlconnection: MySQL connection
+   </i><br>
+
 - config: reads and stores all environment variables
 - middleware
-- mongoconnection
 - common
   <br>
 
