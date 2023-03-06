@@ -8,12 +8,17 @@ This backend has several packages:
 
 1. biodata: GET
 2. githubdata: GET
-3. graphql: POST
-4. trigger: POST
-5. todos: POST
-6. schedule: POST
-   </i>
-   <br>
+3. login: POST <b>planned</b>
+4. todos: POST
+5. logout: POST <b>planned</b>
+6. graphql: POST
+7. trigger: POST
+8. schedule: POST
+9. register: POST
+10. temptoken: POST <b>planned</b>
+11. resetpassword: POST <b>planned</b>
+    </i>
+    <br>
 
 - todos: returns open todos list from MongoDB
   <br>
@@ -28,10 +33,31 @@ This backend has several packages:
   <br>
   <i>Endpoints:
 
-1. trigger
+1. trigger: POST
    </i><br>
 
 - auth: handles authorization
+  <br>
+  <i>Endpoints:
+
+1. signup: POST
+2. login: POST <b>planned</b>
+3. logout: POST <b>planned</b>
+4. temptoken: POST <b>planned</b>
+5. resetpassword: POST <b>planned</b>
+   </i><br>
+   <br>
+   <i>Packages:
+   1. session: <b>planned</b>
+      - limit sessions for user,
+      - fetch list of open sesssions,
+      - allow session termination before login,
+      - invalidate session in a week
+        <br>
+        <i>Endpoints:
+      1. </i><br>
+
+</i><br>
 
 - db: handles connection to sql & nosql db
   <br>
