@@ -1,14 +1,14 @@
 package auth
 
-type SignUp struct {
+type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	Phone    string `json:"phone"`
+	Username string `json:"username"`
 }
 
-type Login struct {
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Password string `json:"password"`
+type Account interface {
+	addNewUser(raw []byte) error
+	verifyCredentials(raw []byte) error
+	resetPassword(raw []byte) error
 }

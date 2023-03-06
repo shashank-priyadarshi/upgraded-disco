@@ -21,7 +21,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	err = auth.VerifyCredentials(rawResp)
+	user := auth.User{}
+	err = user.VerifyCredentials(rawResp)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusUnauthorized)
@@ -40,7 +41,8 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	err = auth.AddNewUser(rawResp)
+	user := auth.User{}
+	err = user.AddNewUser(rawResp)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -60,7 +62,8 @@ func forgotPassword(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	err = auth.ResetPassword(rawResp)
+	user := auth.User{}
+	err = user.ResetPassword(rawResp)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return

@@ -27,6 +27,8 @@ ENV GITHUB_DATA=""
 ENV ISSUE_DATA=""
 ENV GH_INTEGRATION_ORIGIN=""
 ENV ALLOWED_ORIGIN=""
+ENV GITHUB_USERNAME=""
+ENV SECRET_KEY=""
 # Add certificates
 RUN apk add --no-cache ca-certificates
 # Copy built binary from builder

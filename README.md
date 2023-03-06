@@ -8,7 +8,7 @@ This backend has several packages:
 
 1. biodata: GET
 2. githubdata: GET
-3. login: POST <b>planned</b>
+3. login: POST
 4. todos: POST
 5. logout: POST <b>planned</b>
 6. graphql: POST

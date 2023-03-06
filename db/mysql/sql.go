@@ -10,8 +10,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// var close chan bool
+type User struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
 
+// var close chan bool
 func createConnection(dsn string) (*sql.DB, error) {
 	// close <- false
 	// create connection
@@ -39,12 +45,7 @@ func createConnection(dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-func pushUserToUsers(user struct {
-	Name     string
-	Email    string
-	Password string
-	Phone    string
-}) error {
+func (user *User) pushUserToUsers() error {
 	db, err := createConnection("")
 	if err != nil {
 		return fmt.Errorf("error while creating connection for pushUserToUsers: %v", err)
@@ -65,7 +66,7 @@ func pushUserToUsers(user struct {
 	}
 
 	// Insert the user record
-	_, err = db.Exec("INSERT INTO users (name, email, phone, password_id) VALUES (?, ?, ?, ?)", user.Name, user.Email, user.Phone, passwordID)
+	_, err = db.Exec("INSERT INTO users (name, email, username, password_id) VALUES (?, ?, ?, ?)", user.Name, user.Email, user.Username, passwordID)
 	// close <- true
 	if err != nil {
 		return fmt.Errorf("error while inserting user data: %v", err)
@@ -73,19 +74,14 @@ func pushUserToUsers(user struct {
 	return nil
 }
 
-func SearchUserInUsers(user struct {
-	Name     string
-	Email    string
-	Password string
-	Phone    string
-}) error {
+func (user *User) SearchUserInUsers() error {
 	db, err := createConnection("")
 	if err != nil {
 		return fmt.Errorf("error while creating connection for SearchUserInUsers: %v", err)
 	}
 
 	// Search the user record
-	rows, err := db.Query("SELECT * FROM users WHERE email = ? OR phone = ?", user.Email, user.Phone)
+	rows, err := db.Query("SELECT * FROM users WHERE email = ? OR username = ?", user.Email, user.Username)
 	if err != nil {
 		// close <- true
 		return fmt.Errorf("error while checking if user exists: %v", err)
@@ -97,7 +93,7 @@ func SearchUserInUsers(user struct {
 		// close <- true
 		return errors.New("user already exists")
 	} else {
-		err := pushUserToUsers(user)
+		err := user.pushUserToUsers()
 		if err != nil {
 			// close <- true
 			return fmt.Errorf("error while adding user to db in SearchUserInUsers sql.go: %v", err)
@@ -107,10 +103,7 @@ func SearchUserInUsers(user struct {
 	return nil
 }
 
-func VerifyCredentials(user struct {
-	Identifier string
-	Password   string
-}) error {
+func (user *User) VerifyCredentials() error {
 	db, err := createConnection("")
 	if err != nil {
 		return fmt.Errorf("error while creating connection for SearchUserInUsers: %v", err)
@@ -118,11 +111,7 @@ func VerifyCredentials(user struct {
 
 	// Search the user record
 	var rows *sql.Rows
-	if strings.Contains(user.Identifier, "@") {
-		rows, err = db.Query("SELECT * FROM users WHERE email = ?", user.Identifier)
-	} else {
-		rows, err = db.Query("SELECT * FROM users WHERE phone = ?", user.Identifier)
-	}
+	rows, err = db.Query("SELECT * FROM users WHERE email = ? OR username = ?", user.Email, user.Username)
 
 	if err != nil {
 		// close <- true
@@ -137,11 +126,11 @@ func VerifyCredentials(user struct {
 		var id int
 		var name string
 		var email string
-		var phone string
+		var username string
 		var passwordID int
 		var createdAt string
 
-		err = rows.Scan(&id, &name, &email, &phone, &createdAt, &passwordID)
+		err = rows.Scan(&id, &name, &email, &username, &createdAt, &passwordID)
 		if err != nil {
 			return errors.New("error while retrieving user data")
 		}
@@ -164,10 +153,8 @@ func VerifyCredentials(user struct {
 	return errors.New("user does not exist")
 }
 
-func ResetPassword(user struct {
-	Identifier string
-}) error {
-	// Find user based on email/phone
+func (user *User) ResetPassword() error {
+	// Find user based on email
 	// Read password id cell value from response
 	// Replace password in passwords table using password id
 	db, err := createConnection("")
@@ -177,11 +164,7 @@ func ResetPassword(user struct {
 
 	// Search the user record
 	var rows *sql.Rows
-	if strings.Contains(user.Identifier, "@") {
-		rows, err = db.Query("SELECT * FROM users WHERE email = ?", user.Identifier)
-	} else {
-		rows, err = db.Query("SELECT * FROM users WHERE phone = ?", user.Identifier)
-	}
+	rows, err = db.Query("SELECT * FROM users WHERE email = ? OR username = ?", user.Email, user.Username)
 
 	if err != nil {
 		// close <- true
@@ -195,11 +178,11 @@ func ResetPassword(user struct {
 		var id int
 		var name string
 		var email string
-		var phone string
+		var username string
 		var passwordID int
 		var createdAt string
 
-		err = rows.Scan(&id, &name, &email, &phone, &createdAt, &passwordID)
+		err = rows.Scan(&id, &name, &email, &username, createdAt, &passwordID)
 		if err != nil {
 			return errors.New("error while retrieving user data")
 		}

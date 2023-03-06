@@ -15,6 +15,7 @@ type Configuration struct {
 	GITHUBTOKEN       string
 	GITHUBUSERNAME    string
 	ALLOWEDORIGIN     string
+	SECRETKEY         string
 	Collections
 }
 
@@ -37,6 +38,7 @@ func FetchConfig() Configuration {
 		GITHUBUSERNAME:    os.Getenv("GITHUB_USERNAME"),
 		GHINTEGRATIONPORT: os.Getenv("GH_INTEGRATION_ORIGIN"),
 		SERVERORIGIN:      fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
+		SECRETKEY:         os.Getenv("SECRET_KEY"),
 		Collections: Collections{
 			BIODATA:    os.Getenv("COLLECTION_BIODATA"),
 			GITHUBDATA: os.Getenv("COLLECTION_GITHUBDATA"),
