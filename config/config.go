@@ -1,11 +1,13 @@
 package config
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 )
 
 type Configuration struct {
+	SQLURI            string
 	MongoURI          string
 	DBNAME            string
 	SERVERPORT        string
@@ -15,7 +17,7 @@ type Configuration struct {
 	GITHUBTOKEN       string
 	GITHUBUSERNAME    string
 	ALLOWEDORIGIN     string
-	SECRETKEY         string
+	SECRETKEY         []byte
 	Collections
 }
 
@@ -29,6 +31,7 @@ type Collections struct {
 
 func FetchConfig() Configuration {
 	return Configuration{
+		SQLURI:            os.Getenv("SQL_URI"),
 		DBNAME:            os.Getenv("DB_NAME"),
 		MongoURI:          os.Getenv("MONGO_URI"),
 		SERVERPORT:        os.Getenv("SERVER_PORT"),
@@ -38,7 +41,7 @@ func FetchConfig() Configuration {
 		GITHUBUSERNAME:    os.Getenv("GITHUB_USERNAME"),
 		GHINTEGRATIONPORT: os.Getenv("GH_INTEGRATION_ORIGIN"),
 		SERVERORIGIN:      fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
-		SECRETKEY:         os.Getenv("SECRET_KEY"),
+		SECRETKEY:         fetchSecretKey(),
 		Collections: Collections{
 			BIODATA:    os.Getenv("COLLECTION_BIODATA"),
 			GITHUBDATA: os.Getenv("COLLECTION_GITHUBDATA"),
@@ -47,4 +50,15 @@ func FetchConfig() Configuration {
 			SCHEDULE:   os.Getenv("COLLECTION_SCHEDULE"),
 		},
 	}
+}
+
+func fetchSecretKey() (key []byte) {
+	// Read the secret key from the environment variable
+	encodedKey := os.Getenv("SECRET_KEY")
+	key, err := base64.StdEncoding.DecodeString(encodedKey)
+	if err != nil {
+		fmt.Printf("error while decoding secret key: %v", err)
+		return []byte("")
+	}
+	return
 }

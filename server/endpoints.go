@@ -18,12 +18,10 @@ func routes() *mux.Router {
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/todos", todos).Methods("POST")
-	r.HandleFunc("/login", login).Methods("POST")
-	r.HandleFunc("/signup", signup).Methods("POST")
+	r.HandleFunc("/credentials", credentials).Methods("POST")
 	r.HandleFunc("/trigger", triggerPlugin).Methods("POST")
 	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
 	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
-	r.HandleFunc("/forgotpassword", forgotPassword).Methods("POST")
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
 }

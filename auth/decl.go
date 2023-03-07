@@ -5,10 +5,9 @@ type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Username string `json:"username"`
+	Action   int    `json:"action"`
 }
 
 type Account interface {
-	addNewUser(raw []byte) error
-	verifyCredentials(raw []byte) error
-	resetPassword(raw []byte) error
+	ParseCredentials([]byte) error
 }

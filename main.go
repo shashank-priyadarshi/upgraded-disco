@@ -1,6 +1,9 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/base64"
+	"os"
 	"server/ghintegration"
 	"server/server"
 	"server/todos"
@@ -8,6 +11,7 @@ import (
 )
 
 func main() {
+	generateSigningKey()
 	var wg sync.WaitGroup
 	wg.Add(3)
 
@@ -27,4 +31,19 @@ func main() {
 	}()
 
 	wg.Wait()
+}
+
+func generateSigningKey() {
+	key := make([]byte, 1024)
+	_, err := rand.Read(key)
+	if err != nil {
+		panic(err)
+	}
+
+	// Encode the key as base64 and store it in an environment variable
+	encodedKey := base64.StdEncoding.EncodeToString(key)
+	err = os.Setenv("SECRET_KEY", encodedKey)
+	if err != nil {
+		panic(err)
+	}
 }

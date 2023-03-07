@@ -33,16 +33,16 @@ func (user User) GenerateToken() (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secretkey)
 	if err != nil {
-		return "", errors.New("error while generating token")
+		return "", fmt.Errorf("error while generating token %v", err)
 	}
-	return signedToken, err
+	return signedToken, nil
 }
 
 func (user User) ValidateToken(tokenString string) (err error) {
 	// parse token, verify signing method is RSA
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-			return nil, errors.New("invalid token")
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("token sign invalid")
 		}
 		return secretkey, nil
 	})
@@ -54,20 +54,17 @@ func (user User) ValidateToken(tokenString string) (err error) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		sub, ok := claims["sub"].(string)
 		if !ok || sub != user.Username {
-			fmt.Println("Invalid subject")
-			return
+			return errors.New("token subject invalid")
 		}
 
 		// Verify that the "exp" claim matches the expected expiration time
 		exp, ok := claims["exp"].(float64)
 		if !ok || int64(exp) < time.Now().Unix() {
-			fmt.Println("Invalid expiration time")
-			return
+			return errors.New("token expired")
 		}
-
-		fmt.Println("Valid token")
 	} else {
-		fmt.Println("Invalid token")
+		return errors.New("token claims invalid")
 	}
+	fmt.Printf("Token validated: %v\n", tokenString)
 	return nil
 }
