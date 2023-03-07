@@ -3,11 +3,34 @@ package server
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"server/auth"
 	"server/common"
 	"server/config"
-	"server/mongoconnection"
+	mongoconnection "server/db/mongo"
 )
+
+func credentials(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("endpoint %v with method %v\n", r.URL.Path, r.Method)
+	// name, email, password, phone
+	// loggedin: bool, jwt token
+	rawResp, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	user := auth.User{}
+	token, err := user.ParseCredentials(rawResp)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(token))
+}
 
 func graphqlHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)

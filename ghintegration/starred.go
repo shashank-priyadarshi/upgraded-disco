@@ -7,9 +7,10 @@ import (
 	"server/common"
 )
 
-func fetchStarredRepos() Repo {
+// fetching starred repo list
+func fetchStarredRepos() (repoData Repo) {
 	var repoList []RepoResponse
-	var repoData Repo = Repo{}
+	repoData = Repo{}
 
 	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred?per_page=100&page=1&sort=pushed", authToken)
 	err := json.Unmarshal(rawRepoList, &repoList)
@@ -24,5 +25,5 @@ func fetchStarredRepos() Repo {
 		}
 	}
 
-	return repoData
+	return
 }

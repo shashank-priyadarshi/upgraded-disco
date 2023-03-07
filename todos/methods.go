@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"server/config"
-	"server/mongoconnection"
+	mongoconnection "server/db/mongo"
 )
 
 func returnTodos(w http.ResponseWriter, r *http.Request) {

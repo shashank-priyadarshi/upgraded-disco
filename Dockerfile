@@ -1,4 +1,4 @@
-FROM golang:1.16.5 as builder
+FROM golang:1.18 as builder
 # Define build env
 ENV GOOS linux
 ENV CGO_ENABLED 0
@@ -12,7 +12,7 @@ COPY . .
 # Build app
 RUN go build -o app ./
 
-FROM alpine:3.14 as production
+FROM alpine:3.15 as production
 ENV SERVER_PORT=""
 ENV TODO_API_PORT=""
 ENV MONGO_URI=""
@@ -27,6 +27,10 @@ ENV GITHUB_DATA=""
 ENV ISSUE_DATA=""
 ENV GH_INTEGRATION_ORIGIN=""
 ENV ALLOWED_ORIGIN=""
+ENV GITHUB_USERNAME=""
+ENV SECRET_KEY=""
+ENV SQL_URI=""
+
 # Add certificates
 RUN apk add --no-cache ca-certificates
 # Copy built binary from builder

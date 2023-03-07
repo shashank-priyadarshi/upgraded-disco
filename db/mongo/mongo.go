@@ -107,11 +107,11 @@ func ReadDataFromCollection(collection string) []byte {
 	return results
 }
 
-func WriteDataToCollection(collectionName string, gitHubData interface{}) error {
+func WriteDataToCollection(collectionName string, data interface{}) error {
 	setMongoConnection()
 	collection := db.Collection(collectionName)
 
-	insertResult, err := collection.InsertOne(context.TODO(), gitHubData)
+	insertResult, err := collection.InsertOne(context.TODO(), data)
 	if err != nil {
 		fmt.Println("Error while Inserting github data to MongoDB!", err)
 	} else {

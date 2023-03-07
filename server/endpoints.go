@@ -18,6 +18,7 @@ func routes() *mux.Router {
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
 	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
 	r.HandleFunc("/todos", todos).Methods("POST")
+	r.HandleFunc("/credentials", credentials).Methods("POST")
 	r.HandleFunc("/trigger", triggerPlugin).Methods("POST")
 	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
 	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")

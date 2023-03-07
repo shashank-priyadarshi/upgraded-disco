@@ -1,3 +1,4 @@
-output.json
+*.json
 .vscode/
 coverage.out
+*.exe

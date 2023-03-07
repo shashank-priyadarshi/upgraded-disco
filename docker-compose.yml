@@ -1,11 +1,88 @@
 version: "3.8"
-
 services:
-  app:
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: tunnel
+    command: tunnel --no-autoupdate run --token
+    networks:
+      - common
+    restart: always
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - 
+      - 
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+  express:
+    image: mongo-express
+    container_name: express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=
+      - ME_CONFIG_BASICAUTH_USERNAME=
+      - ME_CONFIG_BASICAUTH_PASSWORD=
+    volumes:
+      - 
+    depends_on:
+      - 
+    networks:
+      - 
+      - 
+    healthcheck:
+      test:  wget --quiet --tries=3 --spider http://:@mongodb:27017 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - 
+    restart: always
+  backend:
     container_name: upgraded-disco
     image: upgraded-disco
-    build:
-      context: .
-      target: production
-    ports:
-      - 10000:10000
+    depends_on:
+      - mongodb
+    networks:
+      - 
+    restart: always
+  portfolio:
+    container_name: portfolio
+    image: portfolio
+    depends_on:
+      - backend
+    networks:
+      - 
+    restart: always
+
+volumes:
+  mongodb-data:
+    name: 
+  mysql:
+networks:
+  common:
+    name: 
+  mongodb_network:
+    name: 

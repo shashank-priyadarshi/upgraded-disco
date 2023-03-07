@@ -11,6 +11,7 @@ type RepoResponse struct {
 	Forked     bool   `json:"fork"`
 	CommitsURL string `json:"commits_url"`
 	PRURL      string `json:"pulls_url"`
+	PushedAt   string `json:"pushed_at"`
 }
 
 type CommitResponse struct {
