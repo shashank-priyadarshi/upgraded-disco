@@ -21,7 +21,6 @@ type Token interface {
 var secretkey = config.FetchConfig().SECRETKEY
 
 func (user User) GenerateToken() (string, error) {
-
 	expirationTime := time.Now().AddDate(0, 0, 7)
 	claims := jwt.MapClaims{
 		"iss": user.Username,
