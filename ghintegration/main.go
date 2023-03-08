@@ -17,7 +17,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	var githubData, graphData = GitHubData{}, GraphData{}
+	githubData, graphData := GitHubData{}, GraphData{}
 	err = json.Unmarshal(rawGitHubData, &githubData)
 	if err != nil {
 		fmt.Println(err)
