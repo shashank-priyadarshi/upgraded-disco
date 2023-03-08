@@ -12,24 +12,35 @@ import (
 func main() {
 	fmt.Println("Plugin execution started!")
 	pluginTriggeredRecently <- true
-	rawData, err := triggerIntegration() // github integration core logic to fetch data
+	rawGitHubData, rawGraphData, err := triggerIntegration() // github integration core logic to fetch data
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
-	var githubData GitHubData
-	err = json.Unmarshal(rawData, &githubData)
+	var githubData, graphData = GitHubData{}, GraphData{}
+	err = json.Unmarshal(rawGitHubData, &githubData)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+	}
+
+	err = json.Unmarshal(rawGraphData, &graphData)
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	// getting collection names from environment
-	gitHubDataCollection, issueCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().Collections.TODOS
+	gitHubDataCollection, issueCollection, graphCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().Collections.TODOS, config.FetchConfig().GRAPHDATA
 
 	// writing githubdata data to mongodb
 	err = mongoconnection.WriteDataToCollection(gitHubDataCollection, githubData)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+	}
+
+	// writing graph data to mongodb
+	err = mongoconnection.WriteDataToCollection(graphCollection, graphData)
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	// writing issue data to mongodb
@@ -37,29 +48,27 @@ func main() {
 		Issues []string `json:"issues"`
 	}{Issues: getIssueData()})
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	fmt.Println("Data written to MongoDB successfully!")
 }
 
 // Fetching & saving raw data for past 30 days
-func triggerIntegration() ([]byte, error) {
+func triggerIntegration() (gitHubData, graphData []byte, err error) {
 	fmt.Println("Triggered Integration...")
+	// fetching week wise pr, commit, loc data
+	// saving date for past 30 days in array
+	graphData, _ = json.Marshal(GraphData{
+		WeekData: fetchRepoWiseData(),
+	})
 
-	_, err := time.LoadLocation("Asia/Kolkata")
-	if err != nil {
-		fmt.Println(time.LoadLocation("Asia/Calcutta"))
-	}
-
-	scmActivity := fetchRepoWiseData() // fetching week wise pr, commit, loc data
-
-	gitHubData := GitHubData{
-		WeekData:     scmActivity,                                                  // saving week wise pr, commit, loc data
+	// saving week wise pr, commit, loc data
+	gitHubData, _ = json.Marshal(GitHubData{
 		StarredRepos: fetchStarredRepos(),                                          // fetching list of starred repos
 		Time:         time.Now().In(time.FixedZone("Asia/Kolkata", 5*60*60+30*60)), // saving time for latest trigger
-	}
+	})
 	fmt.Println("Plugin execution completed!")
-	return json.Marshal(gitHubData)
+	return
 }
 
 // saving date for past 30 days in arraya

@@ -76,6 +76,5 @@ func NoAuthAPICall(reqURL, origin string, reqBody []byte) ([]byte, int) {
 		return []byte{}, 503
 	}
 
-	log.Println(string(respBody))
 	return respBody, resp.StatusCode
 }

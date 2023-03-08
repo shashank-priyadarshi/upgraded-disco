@@ -29,6 +29,6 @@ func getURLWithCredentials(repoURL string) (urlWithCredentials string) {
 
 func cloneRepo(reqURL, path string) (err error) {
 	urlWithCredentials := getURLWithCredentials(reqURL)
-	err = common.RunCommand(fmt.Sprintf("%v %v %v", "git", "clone", urlWithCredentials), path)
+	err = common.RunCommand(fmt.Sprintf("%s %s", "git clone", urlWithCredentials), path)
 	return
 }

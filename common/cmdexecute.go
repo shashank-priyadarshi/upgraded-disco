@@ -6,12 +6,14 @@ import (
 )
 
 func RunCommand(command, path string) (err error) {
-	cmd := exec.Command(command)
-	cmd.Dir = path
-	fmt.Println(cmd.Dir)
-	fmt.Println(command)
-	fmt.Println(cmd.Args)
-	fmt.Println(cmd)
-	err = cmd.Run()
+	cmd := exec.Command(command, path)
+	// cmd.Dir = path
+	// err = cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + string(output))
+		return
+	}
+	fmt.Println(output)
 	return
 }

@@ -13,26 +13,26 @@ COPY . .
 RUN go build -o app ./
 
 FROM alpine:3.15 as production
+ENV SQL_URI=""
+ENV MONGO_URI=""
+ENV DB_NAME=""
 ENV SERVER_PORT=""
 ENV TODO_API_PORT=""
-ENV MONGO_URI=""
-ENV GITHUB_TOKEN=""
-ENV DB_NAME=""
-ENV COLLECTION_GITHUBDATA=""
-ENV COLLECTION_TODOS=""
-ENV COLLECTION_BIODATA=""
-ENV COLLECTION_SCHEDULE=""
-ENV COLLECTION_ARTICLES=""
-ENV GITHUB_DATA=""
-ENV ISSUE_DATA=""
 ENV GH_INTEGRATION_ORIGIN=""
-ENV ALLOWED_ORIGIN=""
+ENV GITHUB_TOKEN=""
 ENV GITHUB_USERNAME=""
+ENV ALLOWED_ORIGIN=""
 ENV SECRET_KEY=""
-ENV SQL_URI=""
+ENV BIO=""
+ENV GITHUB=""
+ENV TODOS=""
+ENV GRAPH=""
+ENV SCHEDULE=""
 
 # Add certificates
+RUN apk update
 RUN apk add --no-cache ca-certificates
+RUN apk add git
 # Copy built binary from builder
 COPY --from=builder app .
 # Expose port

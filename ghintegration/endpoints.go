@@ -21,7 +21,7 @@ func handleRequests() {
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{config.FetchConfig().SERVERORIGIN + "/trigger"})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
-	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
+	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONPORT)
@@ -29,8 +29,9 @@ func handleRequests() {
 }
 
 func routes() *mux.Router {
+	routeHandler := middleware.RouteHandler{}
 	r := mux.NewRouter()
-	r.Use(middleware.InternalOriginMiddleware)
+	r.Use(routeHandler.InternalOriginMiddleware)
 	r.HandleFunc("/trigger", reqHandler).Methods("POST")
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
@@ -42,6 +43,7 @@ func reqHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Plugin already triggered recently")
 		pluginTriggeredRecently <- true
 		http.Error(w, "Plugin already triggered recently, try again after an hour", http.StatusTooManyRequests)
+		w.Write([]byte("Plugin already triggered recently, try again after an hour"))
 		return
 	}
 	go func() {
