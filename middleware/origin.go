@@ -64,7 +64,7 @@ func (*RouteHandler) AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		var err, credentials = error(nil), []byte{}
+		err, credentials := error(nil), []byte{}
 
 		switch authHeaderParts[0] {
 		case "Basic":
@@ -112,6 +112,5 @@ func (*RouteHandler) AuthMiddleware(next http.Handler) http.Handler {
 			w.Write([]byte(token))
 		}
 		next.ServeHTTP(w, r)
-
 	})
 }
