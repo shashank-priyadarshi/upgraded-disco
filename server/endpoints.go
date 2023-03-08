@@ -6,22 +6,28 @@ import (
 	"net/http"
 	"server/common"
 	"server/config"
+	"server/middleware"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
 func routes() *mux.Router {
+	routeHandler := middleware.RouteHandler{}
 	r := mux.NewRouter()
 	// r.Use(middleware.ExternalOriginMiddleware)
 	// r.Use(middleware.AddResponseHeaders)
 	r.HandleFunc("/biodata", returnBiodata).Methods("GET")
-	r.HandleFunc("/githubdata", returnGitHubData).Methods("GET")
-	r.HandleFunc("/todos", todos).Methods("POST")
-	r.HandleFunc("/credentials", credentials).Methods("POST")
-	r.HandleFunc("/trigger", triggerPlugin).Methods("POST")
+	r.HandleFunc("/graphdata", returnGraphData).Methods("GET")
+
 	r.HandleFunc("/graphql", graphqlHandler).Methods("POST")
-	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST")
+	r.HandleFunc("/credentials", credentials).Methods("POST")
+
+	r.HandleFunc("/githubdata", returnGitHubData).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(returnGitHubData)))
+	r.HandleFunc("/todos", todos).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(todos)))
+	r.HandleFunc("/trigger", triggerPlugin).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(triggerPlugin)))
+	r.HandleFunc("/schedule", writeNewSchedule).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(writeNewSchedule)))
+
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
 }

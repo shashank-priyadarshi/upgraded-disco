@@ -49,6 +49,10 @@ type GitHubData struct {
 	WeekData     []SCMActivity `json:"weekdata"`
 }
 
+type GraphData struct {
+	WeekData []SCMActivity `json:"weekdata"`
+}
+
 type Repo struct {
 	Count int      `json:"count"`
 	List  []string `json:"list"`

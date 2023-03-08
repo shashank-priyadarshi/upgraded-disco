@@ -111,11 +111,11 @@ func WriteDataToCollection(collectionName string, data interface{}) error {
 	setMongoConnection()
 	collection := db.Collection(collectionName)
 
-	insertResult, err := collection.InsertOne(context.TODO(), data)
+	_, err := collection.InsertOne(context.TODO(), data)
 	if err != nil {
 		fmt.Println("Error while Inserting github data to MongoDB!", err)
 	} else {
-		fmt.Println("GitHub data saved successfully! ", insertResult)
+		fmt.Println("GitHub data saved successfully! ")
 	}
 
 	done <- true

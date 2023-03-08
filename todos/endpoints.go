@@ -19,7 +19,7 @@ func handleRequests() {
 	credentials := handlers.AllowCredentials()
 	origins := handlers.AllowedOrigins([]string{config.FetchConfig().SERVERORIGIN})
 	headers := handlers.AllowedHeaders([]string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "Referrer-Policy"})
-	methods := handlers.AllowedMethods([]string{"POST", "OPTIONS"})
+	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
 	fmt.Println("Starting server on port: ", config.FetchConfig().TODOAPIPORT)
@@ -27,8 +27,9 @@ func handleRequests() {
 }
 
 func routes() *mux.Router {
+	routeHandler := middleware.RouteHandler{}
 	r := mux.NewRouter()
-	r.Use(middleware.InternalOriginMiddleware)
+	r.Use(routeHandler.InternalOriginMiddleware)
 	r.HandleFunc("/list", returnTodos).Methods("POST")
 	r.HandleFunc("/new", reqHandler).Methods("POST")  // add todo to mongo, add new issue to respective repo
 	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github
