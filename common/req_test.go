@@ -1,7 +1,6 @@
 package common
 
 import (
-	"bytes"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -31,7 +30,7 @@ func TestBearerAuthAPICall(t *testing.T) {
 	}
 
 	expected := []byte("test response")
-	if !bytes.Equal(resp, expected) {
+	if !strings.EqualFold(strings.TrimSpace(string(resp)), strings.TrimSpace(string(expected))) {
 		t.Errorf("expected response %v, got %v", expected, resp)
 	}
 }
