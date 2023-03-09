@@ -66,7 +66,7 @@ func NoAuthAPICall(reqURL, origin string, reqBody []byte) ([]byte, int) {
 	}
 
 	if err != nil {
-		log.Println("err in making bearerAuth req: ", err)
+		log.Println("err in making noAuth req: ", err)
 		return []byte{}, resp.StatusCode
 	}
 
