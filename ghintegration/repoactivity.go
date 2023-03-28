@@ -4,26 +4,37 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"server/common"
 	"strings"
 	"time"
 )
 
 func fetchRepoWiseData() (scmActivity []SCMActivity) {
-	var repoListData []RepoResponse
-	var commitList []CommitResponse
-	var pullRequestList []PullRequestResponse
+	var rawData []byte
+	repoListData, statusCode, page := []RepoResponse{}, http.StatusOK, 0
 
 	scmActivity = addDate()
 
-	// fetching repos for user
-	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/user/repos?per_page=100&page=1&sort=pushed", authToken)
-	err := json.Unmarshal(rawRepoList, &repoListData)
-	if err != nil {
-		log.Println("Unable to unmarshal raw repo response: ", err)
+	commonqueryParams := []string{"per_page 100", "page 1"}
+	repoQueryParams := commonqueryParams
+	repoQueryParams = append([]string{"sort pushed"}, repoQueryParams...)
+
+	for statusCode == http.StatusOK {
+		// fetching repos for user
+		tempRepoList := []RepoResponse{}
+		page++
+		repoQueryParams[2] = fmt.Sprintf("page %v", page)
+		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/user/repos", authToken, repoQueryParams...)
+		err := json.Unmarshal(rawData, &tempRepoList)
+		if err != nil {
+			log.Println("Unable to unmarshal raw repo response: ", err)
+		} else {
+			repoListData = append(repoListData, tempRepoList...)
+		}
 	}
 
-	err = createCleanDir()
+	err := createCleanDir()
 	if err != nil {
 		log.Println("Unable to create clean dir: ", err)
 	}
@@ -42,28 +53,47 @@ func fetchRepoWiseData() (scmActivity []SCMActivity) {
 		}
 
 		// cloning repo
-		err = cloneRepo(repo.URL, fmt.Sprintf("./%v/", "cloned-repos"))
+		err = cloneRepo(repo.URL, fmt.Sprintf("./../%v/%v", "cloned-repos", repo.Name))
 		if err != nil {
 			log.Println("Unable to clone repo: ", err)
 		}
-
-		// api call to fetch commits in repo.Name for this iteration
-		rawCommitResponse, _ := common.BearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.CommitsURL, "{/sha}")[0]), authToken)
-		err = json.Unmarshal(rawCommitResponse, &commitList)
-		if err != nil {
-			log.Println("Unable to unmarshal raw commit response: ", err)
-		}
-
-		// api call to fetch pull requests in repo.Name for this iteration
-		rawPullRequestResponse, _ := common.BearerAuthAPICall(fmt.Sprintf("%v?per_page=100&page=1", strings.Split(repo.PRURL, "{/number}")[0]), authToken)
-		err = json.Unmarshal(rawPullRequestResponse, &pullRequestList)
-		if err != nil {
-			log.Println("Unable to unmarshal raw pull request response: ", err)
-		}
-
+		commitList, pullRequestList := fetchPaginatedRepoWiseData(repo.CommitsURL, repo.PRURL, commonqueryParams)
 		scmActivity = appendRepoWiseData(scmActivity, commitList, pullRequestList)
 	}
 	return
+}
+
+func fetchPaginatedRepoWiseData(commitsURL, prURL string, commonQueryParams []string) ([]CommitResponse, []PullRequestResponse) {
+	page, prFlag, commitFlag, commitList, prList := 0, false, false, []CommitResponse{}, []PullRequestResponse{}
+	for !prFlag || !commitFlag {
+		// fetching repos for user
+		page++
+		tempCommitList, tempPRList := []CommitResponse{}, []PullRequestResponse{}
+		commonQueryParams[1] = fmt.Sprintf("page %v", page)
+
+		rawData, statusCode := common.BearerAuthAPICall(strings.Split(commitsURL, "{/sha}")[0], authToken, commonQueryParams...)
+		if statusCode != http.StatusOK {
+			commitFlag = true
+		} else {
+			if err := json.Unmarshal(rawData, &tempCommitList); err != nil {
+				log.Println("Unable to unmarshal raw pr response: ", err)
+			} else {
+				commitList = append(commitList, tempCommitList...)
+			}
+		}
+
+		rawData, statusCode = common.BearerAuthAPICall(strings.Split(prURL, "{/number}")[0], authToken, commonQueryParams...)
+		if statusCode != http.StatusOK {
+			prFlag = true
+		} else {
+			if err := json.Unmarshal(rawData, &tempPRList); err != nil {
+				log.Println("Unable to unmarshal raw pr response: ", err)
+			} else {
+				prList = append(prList, tempPRList...)
+			}
+		}
+	}
+	return commitList, prList
 }
 
 func appendRepoWiseData(scmActivity []SCMActivity, commitList []CommitResponse, pullRequestList []PullRequestResponse) (temp []SCMActivity) {

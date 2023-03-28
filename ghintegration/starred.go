@@ -4,19 +4,31 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"server/common"
 )
 
 // fetching starred repo list
 func fetchStarredRepos() (repoData Repo) {
-	var repoList []RepoResponse
-	repoData = Repo{}
+	var rawData []byte
+	page, statusCode, params, repoList := 0, 200, queryParams, []RepoResponse{}
+	params = append([]string{"sort pushed"}, params...)
 
-	rawRepoList, _ := common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred?per_page=100&page=1&sort=pushed", authToken)
-	err := json.Unmarshal(rawRepoList, &repoList)
-	if err != nil {
-		log.Println("Unable to unmarshal raw repo response: ", err)
+	for statusCode == http.StatusOK {
+		// fetching issues for user
+		page++
+		tempIssueList := []RepoResponse{}
+		params[2] = fmt.Sprintf("page %v", page)
+		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred", authToken, params...)
+		err := json.Unmarshal(rawData, &tempIssueList)
+		if err != nil {
+			log.Println("Unable to unmarshal raw repo response: ", err)
+		} else {
+			repoList = append(repoList, tempIssueList...)
+		}
 	}
+
+	repoData = Repo{}
 
 	for _, repo := range repoList {
 		repoData = Repo{

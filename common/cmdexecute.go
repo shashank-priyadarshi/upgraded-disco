@@ -14,6 +14,5 @@ func RunCommand(command, path string) (err error) {
 		fmt.Println(fmt.Sprint(err) + ": " + string(output))
 		return
 	}
-	fmt.Println(output)
 	return
 }
