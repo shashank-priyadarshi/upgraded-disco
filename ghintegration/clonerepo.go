@@ -3,18 +3,19 @@ package ghintegration
 import (
 	"fmt"
 	"os"
-	"server/common"
 	"strings"
+
+	"github.com/go-git/go-git/v5"
 )
 
 func createCleanDir() (err error) {
 	// if dir exists delete the directory
 	// create clean dir
-	err = os.RemoveAll("cloned-repos")
+	err = os.RemoveAll("./../cloned-repos")
 	if err != nil {
 		return
 	}
-	err = os.Mkdir("cloned-repos", 0600)
+	err = os.Mkdir("./../cloned-repos", 0600)
 	if err != nil {
 		return
 	}
@@ -29,6 +30,12 @@ func getURLWithCredentials(repoURL string) (urlWithCredentials string) {
 
 func cloneRepo(reqURL, path string) (err error) {
 	urlWithCredentials := getURLWithCredentials(reqURL)
-	err = common.RunCommand(fmt.Sprintf("%s %s", "git clone", urlWithCredentials), path)
+
+	_, err = git.PlainClone(path, false, &git.CloneOptions{
+		URL:      urlWithCredentials,
+		Progress: os.Stdout,
+	})
+
+	// err = common.RunCommand(fmt.Sprintf("%s %s", "git clone", urlWithCredentials), path)
 	return
 }
