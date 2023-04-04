@@ -3,7 +3,6 @@ package keygen
 import (
 	"errors"
 	"fmt"
-	"log"
 	"server/config"
 	"time"
 
@@ -65,6 +64,5 @@ func (user User) ValidateToken(tokenString string) (err error) {
 	} else {
 		return errors.New("token claims invalid")
 	}
-	log.Println("Token validated: ")
 	return nil
 }
