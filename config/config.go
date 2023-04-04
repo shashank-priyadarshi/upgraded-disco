@@ -4,8 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
-
-	logger "github.com/rs/zerolog/log"
 )
 
 type Configuration struct {
@@ -37,8 +35,6 @@ type Collections struct {
 }
 
 func FetchConfig() Configuration {
-	logger.Info().Msg(os.Getenv("MONGO_URI"))
-	logger.Info().Msg(os.Getenv("SQL_URI"))
 	return Configuration{
 		DBNAME:            os.Getenv("DB_NAME"),
 		SQLURI:            os.Getenv("SQL_URI"),
