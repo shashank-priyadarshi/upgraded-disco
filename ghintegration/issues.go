@@ -21,7 +21,7 @@ func getIssueData() []string {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/user/issues", authToken, params...)
 		err := json.Unmarshal(rawData, &tempIssueList)
 		if err != nil {
-			logger.Info().Err(err).Msg("Error unmarshalling data: ")
+			logger.Info().Err(err).Msg("Error unmarshalling issue data from github api: ")
 		} else {
 			issueList = append(issueList, tempIssueList...)
 		}

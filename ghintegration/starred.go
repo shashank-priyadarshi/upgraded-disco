@@ -23,7 +23,7 @@ func fetchStarredRepos() (repoData Repo) {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred", authToken, params...)
 		err := json.Unmarshal(rawData, &tempIssueList)
 		if err != nil {
-			logger.Info().Err(err).Msg("Error unmarshalling data: ")
+			logger.Info().Err(err).Msg("Error unmarshalling data starred repo data for user from github api: ")
 		} else {
 			repoList = append(repoList, tempIssueList...)
 		}

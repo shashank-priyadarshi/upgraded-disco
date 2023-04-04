@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 type Configuration struct {
@@ -67,7 +69,7 @@ func fetchSecretKey() (key []byte) {
 	encodedKey := os.Getenv("SECRET_KEY")
 	key, err := base64.StdEncoding.DecodeString(encodedKey)
 	if err != nil {
-		fmt.Printf("error while decoding secret key: %v", err)
+		logger.Info().Err(err).Msg("failed to decode secret key: ")
 		return []byte("")
 	}
 	return

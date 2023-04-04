@@ -30,7 +30,7 @@ func fetchRepoWiseData() (scmActivity []SCMActivity) {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/user/repos", authToken, repoQueryParams...)
 		err := json.Unmarshal(rawData, &tempRepoList)
 		if err != nil {
-			logger.Info().Err(err).Msg("Error unmarshalling data: ")
+			logger.Info().Err(err).Msg("Error unmarshalling data repo data from github api: ")
 		} else {
 			repoListData = append(repoListData, tempRepoList...)
 		}

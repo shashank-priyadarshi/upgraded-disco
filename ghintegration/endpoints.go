@@ -38,7 +38,7 @@ func routes() *mux.Router {
 }
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	logger.Info().Msg(fmt.Sprintf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method))
 	if <-pluginTriggeredRecently {
 		logger.Info().Msg("Plugin already triggered recently")
 		pluginTriggeredRecently <- true

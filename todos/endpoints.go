@@ -38,7 +38,7 @@ func routes() *mux.Router {
 }
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
+	logger.Info().Msg(fmt.Sprintf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method))
 	var body RequestBody
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
