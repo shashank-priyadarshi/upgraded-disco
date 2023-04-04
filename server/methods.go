@@ -18,14 +18,14 @@ func credentials(w http.ResponseWriter, r *http.Request) {
 	// loggedin: bool, jwt token
 	rawResp, err := io.ReadAll(r.Body)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while reading request body: ")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	user := auth.User{}
 	token, err := user.ParseCredentials(rawResp)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while parsing credentials: ")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

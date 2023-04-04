@@ -26,14 +26,14 @@ func setMongoConnection() {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while creating mongo client:")
 	}
 
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
 
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while pinging mongo: ")
 	}
 
 	go func() {
@@ -70,7 +70,7 @@ func ReadDataFromCollection(collection string) []byte {
 	var results []byte
 	cur, err := db.Collection(collection).Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while reading data from MongoDB: ")
 	}
 
 	// Finding multiple documents returns a cursor
@@ -80,7 +80,7 @@ func ReadDataFromCollection(collection string) []byte {
 		var elem *interface{}
 		err := cur.Decode(&elem)
 		if err != nil {
-			logger.Info().Err(err)
+			logger.Info().Err(err).Msg("error while decoding data from MongoDB: ")
 		}
 
 		if b, ok := (*elem).(primitive.D); ok {
@@ -95,7 +95,7 @@ func ReadDataFromCollection(collection string) []byte {
 	}
 
 	if err := cur.Err(); err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while reading data from MongoDB: ")
 	}
 
 	// Close the cursor once finished

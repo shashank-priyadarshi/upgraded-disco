@@ -14,18 +14,18 @@ func main() {
 	pluginTriggeredRecently <- true
 	rawGitHubData, rawGraphData, err := triggerIntegration() // github integration core logic to fetch data
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while fetching integration data: ")
 	}
 
 	githubData, graphData := GitHubData{}, GraphData{}
 	err = json.Unmarshal(rawGitHubData, &githubData)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while unmarshalling github data: ")
 	}
 
 	err = json.Unmarshal(rawGraphData, &graphData)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while unmarshalling graph data: ")
 	}
 
 	// getting collection names from environment
@@ -34,13 +34,13 @@ func main() {
 	// writing githubdata data to mongodb
 	err = mongoconnection.WriteDataToCollection(gitHubDataCollection, githubData)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while writing github data to mongodb: ")
 	}
 
 	// writing graph data to mongodb
 	err = mongoconnection.WriteDataToCollection(graphCollection, graphData)
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while writing graph data to mongodb: ")
 	}
 
 	// writing issue data to mongodb
@@ -48,7 +48,7 @@ func main() {
 		Issues []string `json:"issues"`
 	}{Issues: getIssueData()})
 	if err != nil {
-		logger.Info().Err(err)
+		logger.Info().Err(err).Msg("error while writing issue data to mongodb: ")
 	}
 }
 

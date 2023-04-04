@@ -8,6 +8,8 @@ import (
 	"server/server"
 	"server/todos"
 	"sync"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func main() {
@@ -26,14 +28,14 @@ func generateSigningKey() {
 	key := make([]byte, 1024)
 	_, err := rand.Read(key)
 	if err != nil {
-		panic(err)
+		logger.Info().Err(err).Msg("Failed to generate signing key")
 	}
 
 	// Encode the key as base64 and store it in an environment variable
 	encodedKey := base64.StdEncoding.EncodeToString(key)
 	err = os.Setenv("SECRET_KEY", encodedKey)
 	if err != nil {
-		panic(err)
+		logger.Info().Err(err).Msg("Failed to set SECRET_KEY environment variable")
 	}
 }
 
