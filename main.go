@@ -12,25 +12,14 @@ import (
 
 func main() {
 	generateSigningKey()
-	var wg sync.WaitGroup
-	wg.Add(3)
 
-	go func() {
-		defer wg.Done()
-		server.StartServer()
-	}()
-
-	go func() {
-		defer wg.Done()
-		todos.StartServer()
-	}()
-
-	go func() {
-		defer wg.Done()
-		ghintegration.StartServer()
-	}()
-
-	wg.Wait()
+	servers := []Server{
+		&PrimaryServer{},
+		&TodosServer{},
+		&GHIntegrationServer{},
+	}
+	as := &AbstractServer{}
+	as.StartServers(servers)
 }
 
 func generateSigningKey() {
@@ -46,4 +35,31 @@ func generateSigningKey() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (as *AbstractServer) StartServers(servers []Server) {
+	var wg sync.WaitGroup
+	wg.Add(len(servers))
+
+	for _, server := range servers {
+		go func(s Server) {
+			defer wg.Done()
+			s.StartServer()
+		}(server)
+	}
+
+	wg.Wait()
+}
+
+func (ps *PrimaryServer) StartServer() {
+	// implementation for starting server1
+	server.StartServer()
+}
+
+func (ts *TodosServer) StartServer() {
+	todos.StartServer()
+}
+
+func (ghis *GHIntegrationServer) StartServer() {
+	ghintegration.StartServer()
 }

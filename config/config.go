@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 type Configuration struct {
@@ -18,9 +20,14 @@ type Configuration struct {
 	GITHUBUSERNAME    string
 	ALLOWEDORIGIN     string
 	SECRETKEY         []byte
+	NewRelic
 	Collections
 }
-
+type NewRelic struct {
+	Application string
+	License     string
+	LogForward  bool
+}
 type Collections struct {
 	BIODATA    string
 	GITHUBDATA string
@@ -30,6 +37,8 @@ type Collections struct {
 }
 
 func FetchConfig() Configuration {
+	logger.Info().Msg(os.Getenv("MONGO_URI"))
+	logger.Info().Msg(os.Getenv("SQL_URI"))
 	return Configuration{
 		DBNAME:            os.Getenv("DB_NAME"),
 		SQLURI:            os.Getenv("SQL_URI"),
@@ -48,6 +57,11 @@ func FetchConfig() Configuration {
 			TODOS:      os.Getenv("TODOS"),
 			GRAPHDATA:  os.Getenv("GRAPH"),
 			SCHEDULE:   os.Getenv("SCHEDULE"),
+		},
+		NewRelic: NewRelic{
+			Application: os.Getenv("NEWRELIC_APP"),
+			License:     os.Getenv("NEWRELIC_LICENSE"),
+			LogForward:  os.Getenv("NEWRELIC_LOG_FORWARD") == "true",
 		},
 	}
 }

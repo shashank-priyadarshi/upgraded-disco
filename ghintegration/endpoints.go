@@ -2,7 +2,6 @@ package ghintegration
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"server/common"
 	"server/config"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	logger "github.com/rs/zerolog/log"
 )
 
 var pluginTriggeredRecently = make(chan bool, 1)
@@ -24,8 +24,8 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
-	fmt.Println("Starting server on port: ", config.FetchConfig().GHINTEGRATIONPORT)
-	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().GHINTEGRATIONPORT))
+	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
@@ -40,7 +40,7 @@ func routes() *mux.Router {
 func reqHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method)
 	if <-pluginTriggeredRecently {
-		fmt.Println("Plugin already triggered recently")
+		logger.Info().Msg("Plugin already triggered recently")
 		pluginTriggeredRecently <- true
 		http.Error(w, "Plugin already triggered recently, try again after an hour", http.StatusTooManyRequests)
 		w.Write([]byte("Plugin already triggered recently, try again after an hour"))

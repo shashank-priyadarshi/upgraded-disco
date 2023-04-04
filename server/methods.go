@@ -3,12 +3,13 @@ package server
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"server/auth"
 	"server/common"
 	"server/config"
 	mongoconnection "server/db/mongo"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func credentials(w http.ResponseWriter, r *http.Request) {
@@ -17,14 +18,14 @@ func credentials(w http.ResponseWriter, r *http.Request) {
 	// loggedin: bool, jwt token
 	rawResp, err := io.ReadAll(r.Body)
 	if err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	user := auth.User{}
 	token, err := user.ParseCredentials(rawResp)
 	if err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

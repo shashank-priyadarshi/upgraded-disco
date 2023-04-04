@@ -3,9 +3,10 @@ package ghintegration
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"server/common"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func getIssueData() []string {
@@ -20,7 +21,7 @@ func getIssueData() []string {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/user/issues", authToken, params...)
 		err := json.Unmarshal(rawData, &tempIssueList)
 		if err != nil {
-			log.Println("Unable to unmarshal raw repo response: ", err)
+			logger.Info().Err(err).Msg("Error unmarshalling data: ")
 		} else {
 			issueList = append(issueList, tempIssueList...)
 		}

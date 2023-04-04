@@ -3,11 +3,11 @@ package mongoconnection
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"log"
+	"errors"
 	"server/config"
 	"time"
 
+	logger "github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,16 +26,15 @@ func setMongoConnection() {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 	}
 
 	// Check the connection
 	err = client.Ping(context.TODO(), nil)
 
 	if err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 	}
-	fmt.Println("MongoDB connection succeeded:")
 
 	go func() {
 		// Wait for the task to finish or for a timeout
@@ -44,16 +43,14 @@ func setMongoConnection() {
 			// Task finished, close the MongoDB connection
 			err := client.Disconnect(context.TODO())
 			if err != nil {
-				log.Println("Error while closing connection to mongo after task completion: ", err)
+				logger.Info().Err(err).Msg("Error while closing connection to mongo due to timeout: ")
 			}
-			fmt.Println("MongoDB connection closed after task completion")
 		case <-time.After(20 * time.Second):
 			// Timeout, close the MongoDB connection
 			err := client.Disconnect(context.TODO())
 			if err != nil {
-				log.Println("Error while closing connection to mongo due to timeout: ", err)
+				logger.Info().Err(err).Msg("Error while closing connection to mongo due to timeout: ")
 			}
-			fmt.Println("MongoDB connection closed due to timeout")
 		}
 	}()
 
@@ -73,7 +70,7 @@ func ReadDataFromCollection(collection string) []byte {
 	var results []byte
 	cur, err := db.Collection(collection).Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 	}
 
 	// Finding multiple documents returns a cursor
@@ -83,13 +80,13 @@ func ReadDataFromCollection(collection string) []byte {
 		var elem *interface{}
 		err := cur.Decode(&elem)
 		if err != nil {
-			log.Println(err)
+			logger.Info().Err(err)
 		}
 
 		if b, ok := (*elem).(primitive.D); ok {
 			marshalledJson, err := json.Marshal(b.Map())
 			if err != nil {
-				log.Println("error while marshaling mongo data: ", err)
+				logger.Info().Err(err).Msg("Error while marshalling JSON")
 			}
 			results = append(results, marshalledJson...)
 		}
@@ -98,7 +95,7 @@ func ReadDataFromCollection(collection string) []byte {
 	}
 
 	if err := cur.Err(); err != nil {
-		log.Println(err)
+		logger.Info().Err(err)
 	}
 
 	// Close the cursor once finished
@@ -113,11 +110,8 @@ func WriteDataToCollection(collectionName string, data interface{}) error {
 
 	_, err := collection.InsertOne(context.TODO(), data)
 	if err != nil {
-		fmt.Println("Error while Inserting github data to MongoDB!", err)
-	} else {
-		fmt.Println("GitHub data saved successfully! ")
+		logger.Info().Err(errors.New(err.Error())).Msg("Error while inserting data to MongoDB")
 	}
-
 	done <- true
 	return err
 }

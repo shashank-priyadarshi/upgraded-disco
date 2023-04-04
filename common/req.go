@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 // func PaginatedAPICall(reqURL, authToken string, unmarshalTo []interface{}, queryParams ...string) ([]interface{}, error) {
@@ -21,7 +22,7 @@ import (
 // 		rawData, statusCode := BearerAuthAPICall(reqURL, authToken, queryParams...)
 // 		err := json.Unmarshal(rawData, &tempRepoList)
 // 		if err != nil {
-// 			log.Println("Unable to unmarshal raw repo response: ", err)
+// 			logger.Info().Msg("Unable to unmarshal raw repo response: ", err)
 // 			return unmarshalTo, err
 // 		}
 // 		if statusCode != http.StatusOK {
@@ -39,7 +40,7 @@ func BearerAuthAPICall(reqURL, authToken string, queryParams ...string) ([]byte,
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", authToken))
 	if err != nil {
-		log.Println("err in creating new request: ", err)
+		logger.Info().Err(err).Msg(fmt.Sprintf("err in making request to %v: %v", reqURL, err))
 		return []byte{}, 503
 	}
 
@@ -50,18 +51,18 @@ func BearerAuthAPICall(reqURL, authToken string, queryParams ...string) ([]byte,
 	resp, err := client.Do(request)
 
 	if resp.StatusCode != http.StatusOK {
-		log.Println(fmt.Errorf("error '%v' while making request to %v: %v", err, reqURL, resp.StatusCode))
+		logger.Info().Err(fmt.Errorf("error '%v' while making request to %v: %v", err, reqURL, resp.StatusCode))
 		return []byte{}, resp.StatusCode
 	}
 
 	if err != nil {
-		log.Println("err in making bearerAuth req: ", err)
+		logger.Info().Err(err).Msg("err in reading req response: ")
 		return []byte{}, resp.StatusCode
 	}
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("err in reading req response: ", err)
+		logger.Info().Err(err).Msg("err in reading req response: ")
 		return []byte{}, 503
 	}
 
@@ -81,7 +82,7 @@ func NoAuthAPICall(reqURL, origin string, reqBody []byte, queryParams ...string)
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Origin", origin)
 	if err != nil {
-		log.Println("err in creating new request: ", err)
+		logger.Info().Err(err).Msg("err in creating new request: ")
 		return []byte{}, 503
 	}
 
@@ -92,18 +93,18 @@ func NoAuthAPICall(reqURL, origin string, reqBody []byte, queryParams ...string)
 	resp, err := client.Do(request)
 
 	if resp.StatusCode != http.StatusOK {
-		log.Println(fmt.Errorf("error '%v' while making request to %v: %v", err, reqURL, resp.StatusCode))
+		logger.Info().Err(fmt.Errorf("error '%v' while making request to %v: %v", err, reqURL, resp.StatusCode))
 		return []byte{}, resp.StatusCode
 	}
 
 	if err != nil {
-		log.Println("err in making noAuth req: ", err)
+		logger.Info().Err(err).Msg("err in reading req response: ")
 		return []byte{}, resp.StatusCode
 	}
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("err in reading req response: ", err)
+		logger.Info().Err(err).Msg("err in reading req response: ")
 		return []byte{}, 503
 	}
 

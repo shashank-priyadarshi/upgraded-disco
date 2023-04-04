@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        
+    }
 
     environment {
         // Replace with your Docker registry URL and credentials ID

@@ -37,11 +37,11 @@ func createConnection(dsn string) (*sql.DB, error) {
 	// 	select {
 	// 	case <-close:
 	// 		db.Close()
-	// 		log.Println("Closed connection after writing data successfully")
+	// 		logger.Info().Msg("Closed connection after writing data successfully")
 	// 	default:
 	// 		time.Sleep(time.Second * 15)
 	// 		db.Close()
-	// 		log.Println("Connection timed out, failed to write data")
+	// 		logger.Info().Msg("Connection timed out, failed to write data")
 	// 	}
 	// }()
 

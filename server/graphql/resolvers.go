@@ -11,7 +11,7 @@ package graphql
 // 	if err != nil {
 // 		panic(fmt.Sprintf("error while sending http request to endpoint: %v", err))
 // 	}
-// 	fmt.Println(resp.Status)
+// 	logger.Info().Msg(resp.Status)
 // 	respBody, err := io.ReadAll(resp.Body)
 // 	if err != nil {
 // 		panic(fmt.Sprintf("error while reading response body: %v", err))

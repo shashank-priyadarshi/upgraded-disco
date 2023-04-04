@@ -3,7 +3,6 @@ package todos
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"server/common"
 	"server/config"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	logger "github.com/rs/zerolog/log"
 )
 
 func handleRequests() {
@@ -22,8 +22,8 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
-	fmt.Println("Starting server on port: ", config.FetchConfig().TODOAPIPORT)
-	log.Println(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().TODOAPIPORT))
+	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().TODOAPIPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
