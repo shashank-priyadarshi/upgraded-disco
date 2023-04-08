@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"server/auth"
@@ -68,8 +67,8 @@ func (*RouteHandler) AuthMiddleware(next http.Handler) http.Handler {
 
 		switch authHeaderParts[0] {
 		case "Basic":
-			user.Action = 1
-			credentials, err = base64.StdEncoding.DecodeString(authHeaderParts[1])
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Invalid authorization header"))
 		case "Bearer":
 			user.Action = 2
 			credentials = []byte(authHeaderParts[1])

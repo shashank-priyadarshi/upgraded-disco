@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -29,8 +30,16 @@ func credentials(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	response, err := json.Marshal(struct {
+		Token string `json:"token"`
+	}{token})
+	if err != nil {
+		logger.Info().Err(err).Msg("failed to marshal token")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(token))
+	w.Write(response)
 }
 
 func graphqlHandler(w http.ResponseWriter, r *http.Request) {
