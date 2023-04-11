@@ -66,13 +66,20 @@ func returnGraphData(w http.ResponseWriter, r *http.Request) {
 
 func writeNewSchedule(w http.ResponseWriter, r *http.Request) {
 	logger.Info().Msg(fmt.Sprintf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method))
-	// response := mongoconnection.WriteDataToCollection(config.FetchConfig().Collections.SCHEDULE, r)
-	// json.NewEncoder(w).Encode(response)
+	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/trigger", config.FetchConfig().Ports.GitHub), fmt.Sprintf("%v/trigger", config.FetchConfig().SERVERORIGIN), []byte(""))
+	if statusCode != http.StatusOK {
+		http.Error(w, fmt.Sprintf("Error while triggering plugin: %v", string(response)), statusCode)
+	} else {
+		_, err := w.Write([]byte("Plugin triggered successfully!"))
+		if err != nil {
+			logger.Info().Msg(fmt.Sprintf("error while writing response for endpoint %v: %v\n", r.URL.Path, err))
+		}
+	}
 }
 
 func triggerPlugin(w http.ResponseWriter, r *http.Request) {
 	logger.Info().Msg(fmt.Sprintf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method))
-	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/trigger", config.FetchConfig().GHINTEGRATIONPORT), fmt.Sprintf("%v/trigger", config.FetchConfig().SERVERORIGIN), []byte(""))
+	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/trigger", config.FetchConfig().Ports.GitHub), fmt.Sprintf("%v/trigger", config.FetchConfig().SERVERORIGIN), []byte(""))
 	if statusCode != http.StatusOK {
 		http.Error(w, fmt.Sprintf("Error while triggering plugin: %v", string(response)), statusCode)
 	} else {
@@ -90,7 +97,7 @@ func todos(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Info().Msg(fmt.Sprintf("error while reading request body from endpoint %v: %v\n", r.URL.Path, err))
 	}
-	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/list", config.FetchConfig().TODOAPIPORT), fmt.Sprintf("%v/todos", config.FetchConfig().SERVERORIGIN), body)
+	response, statusCode := common.NoAuthAPICall(fmt.Sprintf("http://localhost:%v/list", config.FetchConfig().Ports.Todos), fmt.Sprintf("%v/todos", config.FetchConfig().SERVERORIGIN), body)
 	if statusCode != http.StatusOK {
 		http.Error(w, fmt.Sprintf("Error while fetching todos list: %v", string(response)), statusCode)
 	} else {

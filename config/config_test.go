@@ -28,17 +28,14 @@ func TestFetchConfig(t *testing.T) {
 	os.Setenv("SCHEDULE", "test")
 
 	expectedValue := Configuration{
-		DBNAME:            "test",
-		SQLURI:            "test",
-		MongoURI:          "test",
-		SERVERPORT:        "test",
-		TODOAPIPORT:       "test",
-		SERVERORIGIN:      "test",
-		GHINTEGRATIONPORT: "test",
-		GITHUBTOKEN:       "test",
-		GITHUBUSERNAME:    "test",
-		ALLOWEDORIGIN:     "test",
-		SECRETKEY:         []byte("1234567890"),
+		DBNAME:         "test",
+		SQLURI:         "test",
+		MongoURI:       "test",
+		SERVERORIGIN:   "test",
+		GITHUBTOKEN:    "test",
+		GITHUBUSERNAME: "test",
+		ALLOWEDORIGIN:  "test",
+		SECRETKEY:      []byte("1234567890"),
 		Collections: Collections{
 			BIODATA:    "test",
 			GITHUBDATA: "test",

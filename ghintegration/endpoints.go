@@ -24,8 +24,8 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
-	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().GHINTEGRATIONPORT))
-	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().GHINTEGRATIONPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().Ports.GitHub))
+	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().Ports.GitHub), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {

@@ -23,11 +23,11 @@ func routes(app *newrelic.Application) *mux.Router {
 
 	r.HandleFunc(newrelic.WrapHandleFunc(app, "/graphql", graphqlHandler)).Methods("POST")
 	r.HandleFunc(newrelic.WrapHandleFunc(app, "/credentials", credentials)).Methods("POST")
+	r.HandleFunc(newrelic.WrapHandleFunc(app, "/schedule", writeNewSchedule)).Methods("POST")
 
 	r.HandleFunc(newrelic.WrapHandleFunc(app, "/githubdata", returnGitHubData)).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(returnGitHubData)))
 	r.HandleFunc(newrelic.WrapHandleFunc(app, "/todos", todos)).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(todos)))
 	r.HandleFunc(newrelic.WrapHandleFunc(app, "/trigger", triggerPlugin)).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(triggerPlugin)))
-	r.HandleFunc(newrelic.WrapHandleFunc(app, "/schedule", writeNewSchedule)).Methods("POST").Handler(routeHandler.AuthMiddleware(http.HandlerFunc(writeNewSchedule)))
 
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
@@ -42,8 +42,8 @@ func handleRequests(app *newrelic.Application) {
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	// ttl := handlers.MaxAge(3600)
 
-	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().SERVERPORT))
-	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().SERVERPORT), handlers.CORS(credentials, headers, methods, origins)(router)))
+	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().Ports.Server))
+	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().Ports.Server), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func StartServer() {

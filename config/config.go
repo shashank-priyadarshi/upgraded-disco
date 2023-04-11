@@ -9,19 +9,23 @@ import (
 )
 
 type Configuration struct {
-	SQLURI            string
-	MongoURI          string
-	DBNAME            string
-	SERVERPORT        string
-	TODOAPIPORT       string
-	SERVERORIGIN      string
-	GHINTEGRATIONPORT string
-	GITHUBTOKEN       string
-	GITHUBUSERNAME    string
-	ALLOWEDORIGIN     string
-	SECRETKEY         []byte
+	SQLURI         string
+	MongoURI       string
+	DBNAME         string
+	SERVERORIGIN   string
+	GITHUBTOKEN    string
+	GITHUBUSERNAME string
+	ALLOWEDORIGIN  string
+	SECRETKEY      []byte
+	Ports
 	NewRelic
 	Collections
+}
+type Ports struct {
+	Server   string
+	Todos    string
+	GitHub   string
+	Schedule string
 }
 type NewRelic struct {
 	Application string
@@ -38,17 +42,20 @@ type Collections struct {
 
 func FetchConfig() Configuration {
 	return Configuration{
-		DBNAME:            os.Getenv("DB_NAME"),
-		SQLURI:            os.Getenv("SQL_URI"),
-		MongoURI:          os.Getenv("MONGO_URI"),
-		SERVERPORT:        os.Getenv("SERVER_PORT"),
-		GITHUBTOKEN:       os.Getenv("GITHUB_TOKEN"),
-		TODOAPIPORT:       os.Getenv("TODO_API_PORT"),
-		ALLOWEDORIGIN:     os.Getenv("ALLOWED_ORIGIN"),
-		GITHUBUSERNAME:    os.Getenv("GITHUB_USERNAME"),
-		GHINTEGRATIONPORT: os.Getenv("GH_INTEGRATION_ORIGIN"),
-		SERVERORIGIN:      fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
-		SECRETKEY:         fetchSecretKey(),
+		DBNAME:         os.Getenv("DB_NAME"),
+		SQLURI:         os.Getenv("SQL_URI"),
+		MongoURI:       os.Getenv("MONGO_URI"),
+		GITHUBTOKEN:    os.Getenv("GITHUB_TOKEN"),
+		ALLOWEDORIGIN:  os.Getenv("ALLOWED_ORIGIN"),
+		GITHUBUSERNAME: os.Getenv("GITHUB_USERNAME"),
+		SERVERORIGIN:   fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
+		SECRETKEY:      fetchSecretKey(),
+		Ports: Ports{
+			Server:   os.Getenv("SERVER_PORT"),
+			Todos:    os.Getenv("TODOS"),
+			GitHub:   os.Getenv("GITHUB"),
+			Schedule: os.Getenv("SCHEDULE"),
+		},
 		Collections: Collections{
 			BIODATA:    os.Getenv("BIO"),
 			GITHUBDATA: os.Getenv("GITHUB"),

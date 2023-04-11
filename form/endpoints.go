@@ -1,4 +1,4 @@
-package todos
+package form
 
 import (
 	"encoding/json"
@@ -22,38 +22,47 @@ func handleRequests() {
 	methods := handlers.AllowedMethods([]string{"POST"})
 	// ttl := handlers.MaxAge(3600)
 
-	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().Ports.Todos))
-	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().Ports.Todos), handlers.CORS(credentials, headers, methods, origins)(router)))
+	logger.Info().Msg(fmt.Sprintf("Starting server on port: %v", config.FetchConfig().Ports.Schedule))
+	logger.Info().Err(http.ListenAndServe(fmt.Sprintf(":%v", config.FetchConfig().Ports.Schedule), handlers.CORS(credentials, headers, methods, origins)(router)))
 }
 
 func routes() *mux.Router {
 	routeHandler := middleware.RouteHandler{}
 	r := mux.NewRouter()
 	r.Use(routeHandler.InternalOriginMiddleware)
-	r.HandleFunc("/list", returnTodos).Methods("POST")
-	r.HandleFunc("/new", reqHandler).Methods("POST")  // add todo to mongo, add new issue to respective repo
-	r.HandleFunc("/done", reqHandler).Methods("POST") // delete todo from mongo, change status on github
+	r.HandleFunc("/new", reqHandler).Methods("POST") // add message to mongo, forward email to email address
 	r.NotFoundHandler = http.HandlerFunc(common.InvalidEndpoint)
 	return r
 }
 
 func reqHandler(w http.ResponseWriter, r *http.Request) {
 	logger.Info().Msg(fmt.Sprintf("Endpoint Hit: %v with %v method\n", r.URL.Path, r.Method))
-	var body RequestBody
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	var body *Message
+	if err := json.NewDecoder(r.Body).Decode(body); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	switch body.Action {
-	case "list":
-		returnTodos(w, r)
-	case "add":
-		// AddTodo(w, r)
-	case "done":
-		// MarkDone(w, r)
-	default:
-		http.Error(w, "Invalid action", http.StatusBadRequest)
+	err := body.forwardMessage()
+	if err != nil {
+		logger.Info().Err(err).Msg("error while forwarding message: ")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	if body.Newsletter {
+		err = body.addToNewsletter()
+		if err != nil {
+			logger.Info().Err(err).Msg("error while adding to newsletter: ")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+	}
+
+	if body.Meeting {
+		err = body.scheduleMeet()
+		if err != nil {
+			logger.Info().Err(err).Msg("error while scheduling meeting: ")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
 	}
 }
 
