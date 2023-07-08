@@ -8,7 +8,7 @@ import (
 
 type Configuration struct {
 	SQLURI            string
-	MongoURI          string
+	MONGOURI          string
 	DBNAME            string
 	SERVERPORT        string
 	TODOAPIPORT       string
@@ -33,7 +33,7 @@ func FetchConfig() Configuration {
 	return Configuration{
 		DBNAME:            os.Getenv("DB_NAME"),
 		SQLURI:            os.Getenv("SQL_URI"),
-		MongoURI:          os.Getenv("MONGO_URI"),
+		MONGOURI:          os.Getenv("MONGO_URI"),
 		SERVERPORT:        os.Getenv("SERVER_PORT"),
 		GITHUBTOKEN:       os.Getenv("GITHUB_TOKEN"),
 		TODOAPIPORT:       os.Getenv("TODO_API_PORT"),

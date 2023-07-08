@@ -21,7 +21,7 @@ var (
 
 func setMongoConnection() {
 	// Set client options
-	clientOptions := options.Client().ApplyURI(config.FetchConfig().MongoURI)
+	clientOptions := options.Client().ApplyURI(config.FetchConfig().MONGOURI)
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)

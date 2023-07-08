@@ -30,7 +30,7 @@ func TestFetchConfig(t *testing.T) {
 	expectedValue := Configuration{
 		DBNAME:            "test",
 		SQLURI:            "test",
-		MongoURI:          "test",
+		MONGOURI:          "test",
 		SERVERPORT:        "test",
 		TODOAPIPORT:       "test",
 		SERVERORIGIN:      "test",
