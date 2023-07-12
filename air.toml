@@ -29,7 +29,7 @@ include_dir = []
 exclude_file = []
 
 # This log file places in your tmp_dir
-log = "air.log"
+# log = "air.log"
 
 # It's not necessary to trigger root when the delay is less than 1000(ms)
 delay = 1000
