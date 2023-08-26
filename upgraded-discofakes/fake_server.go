@@ -9,16 +9,14 @@ import (
 type FakeServer struct {
 	StartServerStub        func()
 	startServerMutex       sync.RWMutex
-	startServerArgsForCall []struct {
-	}
-	invocations      map[string][][]interface{}
-	invocationsMutex sync.RWMutex
+	startServerArgsForCall []struct{}
+	invocations            map[string][][]interface{}
+	invocationsMutex       sync.RWMutex
 }
 
 func (fake *FakeServer) StartServer() {
 	fake.startServerMutex.Lock()
-	fake.startServerArgsForCall = append(fake.startServerArgsForCall, struct {
-	}{})
+	fake.startServerArgsForCall = append(fake.startServerArgsForCall, struct{}{})
 	stub := fake.StartServerStub
 	fake.recordInvocation("StartServer", []interface{}{})
 	fake.startServerMutex.Unlock()
