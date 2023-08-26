@@ -39,7 +39,6 @@ func TestFetchConfig(t *testing.T) {
 		Collections: Collections{
 			GITHUBDATA: "test",
 			GRAPHDATA:  "test",
-			SCHEDULE:   "test",
 		},
 	}
 
