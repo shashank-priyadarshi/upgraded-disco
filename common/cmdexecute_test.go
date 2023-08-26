@@ -40,7 +40,7 @@ func TestRunCommand(t *testing.T) {
 	// 	t.Errorf("git not found: %v", err)
 	// }
 
-	// fmt.Println(exec.Command(strings.TrimSpace(string(path)), "clone", "https://github.com/shashank-priyadarshi/upgraded-disco.git").CombinedOutput())
+	// logger.Info().Msg(exec.Command(strings.TrimSpace(string(path)), "clone", "https://github.com/shashank-priyadarshi/upgraded-disco.git").CombinedOutput())
 
 	// Call git clone command
 	// err = RunCommand("git clone https://github.com/shashank-priyadarshi/upgraded-disco.git", cmdFile)

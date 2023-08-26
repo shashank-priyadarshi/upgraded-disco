@@ -3,6 +3,8 @@ package common
 import (
 	"fmt"
 	"os/exec"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func RunCommand(command, path string) (err error) {
@@ -11,7 +13,7 @@ func RunCommand(command, path string) (err error) {
 	// err = cmd.Run()
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + string(output))
+		logger.Info().Msg(fmt.Sprint(err) + ": " + string(output))
 		return
 	}
 	return

@@ -3,9 +3,10 @@ package ghintegration
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"server/common"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 // fetching starred repo list
@@ -22,7 +23,7 @@ func fetchStarredRepos() (repoData Repo) {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/users/shashank-priyadarshi/starred", authToken, params...)
 		err := json.Unmarshal(rawData, &tempIssueList)
 		if err != nil {
-			log.Println("Unable to unmarshal raw repo response: ", err)
+			logger.Info().Err(err).Msg("Error unmarshalling data starred repo data for user from github api: ")
 		} else {
 			repoList = append(repoList, tempIssueList...)
 		}

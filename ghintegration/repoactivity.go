@@ -8,6 +8,8 @@ import (
 	"server/common"
 	"strings"
 	"time"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func fetchRepoWiseData() (scmActivity []SCMActivity) {
@@ -28,7 +30,7 @@ func fetchRepoWiseData() (scmActivity []SCMActivity) {
 		rawData, statusCode = common.BearerAuthAPICall("https://api.github.com/user/repos", authToken, repoQueryParams...)
 		err := json.Unmarshal(rawData, &tempRepoList)
 		if err != nil {
-			log.Println("Unable to unmarshal raw repo response: ", err)
+			logger.Info().Err(err).Msg("Error unmarshalling data repo data from github api: ")
 		} else {
 			repoListData = append(repoListData, tempRepoList...)
 		}
@@ -36,7 +38,7 @@ func fetchRepoWiseData() (scmActivity []SCMActivity) {
 
 	err := createCleanDir()
 	if err != nil {
-		log.Println("Unable to create clean dir: ", err)
+		logger.Info().Err(err).Msg("Unable to create clean directory: ")
 	}
 
 	for _, repo := range repoListData {
@@ -55,7 +57,7 @@ func fetchRepoWiseData() (scmActivity []SCMActivity) {
 		// cloning repo
 		err = cloneRepo(repo.URL, fmt.Sprintf("./../%v/%v", "cloned-repos", repo.Name))
 		if err != nil {
-			log.Println("Unable to clone repo: ", err)
+			logger.Info().Err(err).Msg("Unable to clone repo: ")
 		}
 		commitList, pullRequestList := fetchPaginatedRepoWiseData(repo.CommitsURL, repo.PRURL, commonqueryParams)
 		scmActivity = appendRepoWiseData(scmActivity, commitList, pullRequestList)
@@ -76,7 +78,7 @@ func fetchPaginatedRepoWiseData(commitsURL, prURL string, commonQueryParams []st
 			commitFlag = true
 		} else {
 			if err := json.Unmarshal(rawData, &tempCommitList); err != nil {
-				log.Println("Unable to unmarshal raw pr response: ", err)
+				logger.Info().Err(err).Msg("Unable to unmarshal raw commit response: ")
 			} else {
 				commitList = append(commitList, tempCommitList...)
 			}
@@ -87,7 +89,7 @@ func fetchPaginatedRepoWiseData(commitsURL, prURL string, commonQueryParams []st
 			prFlag = true
 		} else {
 			if err := json.Unmarshal(rawData, &tempPRList); err != nil {
-				log.Println("Unable to unmarshal raw pr response: ", err)
+				logger.Info().Err(err).Msg("Unable to unmarshal raw pr response: ")
 			} else {
 				prList = append(prList, tempPRList...)
 			}

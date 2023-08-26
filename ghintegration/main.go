@@ -2,60 +2,50 @@ package ghintegration
 
 import (
 	"encoding/json"
-	"fmt"
 	"server/config"
 	"time"
 
 	mongoconnection "server/db/mongo"
+
+	logger "github.com/rs/zerolog/log"
 )
 
 func main() {
-	fmt.Println("Plugin execution started!")
 	pluginTriggeredRecently <- true
 	rawGitHubData, rawGraphData, err := triggerIntegration() // github integration core logic to fetch data
 	if err != nil {
-		fmt.Println(err)
+		logger.Info().Err(err).Msg("error while fetching integration data: ")
 	}
 
 	githubData, graphData := GitHubData{}, GraphData{}
 	err = json.Unmarshal(rawGitHubData, &githubData)
 	if err != nil {
-		fmt.Println(err)
+		logger.Info().Err(err).Msg("error while unmarshalling github data: ")
 	}
 
 	err = json.Unmarshal(rawGraphData, &graphData)
 	if err != nil {
-		fmt.Println(err)
+		logger.Info().Err(err).Msg("error while unmarshalling graph data: ")
 	}
 
 	// getting collection names from environment
-	gitHubDataCollection, issueCollection, graphCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().Collections.TODOS, config.FetchConfig().GRAPHDATA
+	gitHubDataCollection, graphCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().GRAPHDATA
 
 	// writing githubdata data to mongodb
 	err = mongoconnection.WriteDataToCollection(gitHubDataCollection, githubData)
 	if err != nil {
-		fmt.Println(err)
+		logger.Info().Err(err).Msg("error while writing github data to mongodb: ")
 	}
 
 	// writing graph data to mongodb
 	err = mongoconnection.WriteDataToCollection(graphCollection, graphData)
 	if err != nil {
-		fmt.Println(err)
+		logger.Info().Err(err).Msg("error while writing graph data to mongodb: ")
 	}
-
-	// writing issue data to mongodb
-	err = mongoconnection.WriteDataToCollection(issueCollection, struct {
-		Issues []string `json:"issues"`
-	}{Issues: getIssueData()})
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("Data written to MongoDB successfully!")
 }
 
 // Fetching & saving raw data for past 30 days
 func triggerIntegration() (gitHubData, graphData []byte, err error) {
-	fmt.Println("Triggered Integration...")
 	// fetching week wise pr, commit, loc data
 	// saving date for past 30 days in array
 	graphData, _ = json.Marshal(GraphData{
@@ -67,7 +57,6 @@ func triggerIntegration() (gitHubData, graphData []byte, err error) {
 		StarredRepos: fetchStarredRepos(),                                          // fetching list of starred repos
 		Time:         time.Now().In(time.FixedZone("Asia/Kolkata", 5*60*60+30*60)), // saving time for latest trigger
 	})
-	fmt.Println("Plugin execution completed!")
 	return
 }
 

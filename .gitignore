@@ -1,5 +1,8 @@
+tmp
 *.json
 .vscode/
 coverage.out
 *.exe
+*tmp*
 cloned-repos/
+vendor/
