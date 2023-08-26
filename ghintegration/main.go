@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// getting collection names from environment
-	gitHubDataCollection, issueCollection, graphCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().Collections.TODOS, config.FetchConfig().GRAPHDATA
+	gitHubDataCollection, graphCollection := config.FetchConfig().Collections.GITHUBDATA, config.FetchConfig().GRAPHDATA
 
 	// writing githubdata data to mongodb
 	err = mongoconnection.WriteDataToCollection(gitHubDataCollection, githubData)
@@ -41,14 +41,6 @@ func main() {
 	err = mongoconnection.WriteDataToCollection(graphCollection, graphData)
 	if err != nil {
 		logger.Info().Err(err).Msg("error while writing graph data to mongodb: ")
-	}
-
-	// writing issue data to mongodb
-	err = mongoconnection.WriteDataToCollection(issueCollection, struct {
-		Issues []string `json:"issues"`
-	}{Issues: getIssueData()})
-	if err != nil {
-		logger.Info().Err(err).Msg("error while writing issue data to mongodb: ")
 	}
 }
 

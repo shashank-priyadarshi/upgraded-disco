@@ -6,18 +6,22 @@ import (
 	"os"
 	"server/ghintegration"
 	"server/server"
-	"server/todos"
+	"strings"
 	"sync"
 
 	logger "github.com/rs/zerolog/log"
 )
 
 func main() {
+	if strings.EqualFold("0", os.Getenv("SETUP")) {
+		logger.Info().Msg("Running portfolio setup in dev environment")
+	} else {
+		logger.Info().Msg("Running portfolio setup in prod environment")
+	}
 	generateSigningKey()
 
 	servers := []Server{
 		&PrimaryServer{},
-		&TodosServer{},
 		&GHIntegrationServer{},
 	}
 	as := &AbstractServer{}
@@ -56,10 +60,6 @@ func (as *AbstractServer) StartServers(servers []Server) {
 func (ps *PrimaryServer) StartServer() {
 	// implementation for starting server1
 	server.StartServer()
-}
-
-func (ts *TodosServer) StartServer() {
-	todos.StartServer()
 }
 
 func (ghis *GHIntegrationServer) StartServer() {

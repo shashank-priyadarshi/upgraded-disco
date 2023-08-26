@@ -37,9 +37,7 @@ func TestFetchConfig(t *testing.T) {
 		ALLOWEDORIGIN:  "test",
 		SECRETKEY:      []byte("1234567890"),
 		Collections: Collections{
-			BIODATA:    "test",
 			GITHUBDATA: "test",
-			TODOS:      "test",
 			GRAPHDATA:  "test",
 			SCHEDULE:   "test",
 		},
