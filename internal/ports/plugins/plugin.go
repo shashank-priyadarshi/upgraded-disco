@@ -1,8 +1,12 @@
 package plugin
 
-type PluginWrapper interface{}
 
 type Plugin interface{
-	Trigger()
-	
+	Install(plugin string) error
+	Uninstall(plugin string) error
+	Upgrade(plugin string) error
+	Trigger(plugin string, payload interface{}) error
+	GetLastTrigger() interface{}
 }
+
+type PluginWrapper interface{}
