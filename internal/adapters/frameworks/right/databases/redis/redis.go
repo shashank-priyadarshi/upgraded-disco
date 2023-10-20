@@ -2,6 +2,8 @@ package redis
 
 type RedisDatabase struct{}
 
+func NewRedisInstance(log, config interface{})(*RedisDatabase,error){return &RedisDatabase{}, nil}
+
 func (rd *RedisDatabase) Create(config, data interface{}) error{return nil}
 func(rd *RedisDatabase) Get(config, data interface{}) (interface{}, error){return nil,nil}
 func(rd *RedisDatabase) Update(config, data interface{}) error{return nil}
