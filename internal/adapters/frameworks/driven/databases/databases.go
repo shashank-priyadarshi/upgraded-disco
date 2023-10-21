@@ -5,9 +5,9 @@ import (
 	"strings"
 
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/constants"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/right/databases/mariadb"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/right/databases/mongodb"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/right/databases/redis"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/driven/databases/mariadb"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/driven/databases/mongodb"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/driven/databases/redis"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/right/database"
 )
 

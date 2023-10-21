@@ -39,7 +39,9 @@ func NewMariaDBInstance(log, config interface{}) (*MariaDatabase, error) {
 	}, nil
 }
 
-func (rd *MariaDatabase) Create(config, data interface{}) error             { return nil }
-func (rd *MariaDatabase) Get(config, data interface{}) (interface{}, error) { return nil, nil }
-func (rd *MariaDatabase) Update(config, data interface{}) error             { return nil }
-func (rd *MariaDatabase) Delete(config, data interface{}) error             { return nil }
+func (rd *MariaDatabase) Create(data interface{}) error {
+	return nil
+}
+func (rd *MariaDatabase) Get(data interface{}) (interface{}, error) { return nil, nil }
+func (rd *MariaDatabase) Update(data interface{}) error             { return nil }
+func (rd *MariaDatabase) Delete(data interface{}) error             { return nil }

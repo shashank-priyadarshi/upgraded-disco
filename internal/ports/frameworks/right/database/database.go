@@ -1,8 +1,8 @@
 package database
 
 type Database interface {
-	Create(config, data interface{}) error
-	Get(config, data interface{}) (interface{}, error)
-	Update(config, data interface{}) error
-	Delete(config, data interface{}) error
+	Create(data interface{}) error
+	Get(data interface{}) (interface{}, error)
+	Update(data interface{}) error
+	Delete(data interface{}) error
 }

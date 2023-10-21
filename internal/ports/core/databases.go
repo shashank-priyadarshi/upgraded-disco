@@ -10,6 +10,11 @@ type RedisConfig struct {
 	DBConfig
 }
 
+type RedisPayload struct {
+	Key   string
+	Value interface{}
+}
+
 type MongoDBConfig struct {
 	DBConfig
 }
