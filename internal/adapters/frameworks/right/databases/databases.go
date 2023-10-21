@@ -11,8 +11,8 @@ import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/right/database"
 )
 
-func NewDatabase(database string, log, config interface{})(database.Database,error){
-	switch{
+func NewDatabase(database string, log, config interface{}) (database.Database, error) {
+	switch {
 	case strings.EqualFold(database, constants.DB_MARIADB):
 		return mongodb.NewMongoDBInstance(log, config)
 	case strings.EqualFold(database, constants.DB_MONGODB):
@@ -21,5 +21,5 @@ func NewDatabase(database string, log, config interface{})(database.Database,err
 		return redis.NewRedisInstance(log, config)
 	default:
 		return nil, errors.New("database option not supported")
-	} 
+	}
 }
