@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/redis/go-redis/v9"
-	databases "github.com/shashank-priyadarshi/upgraded-disco/internal/ports/core"
+	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +17,7 @@ func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
 	if config == nil {
 		return &RedisDatabase{}, fmt.Errorf("redis config cannot be nil")
 	}
-	cnf := config.(databases.RedisConfig)
+	cnf := config.(models.RedisConfig)
 	rDBClient := redis.NewClient(&redis.Options{
 		Addr:           cnf.Host,
 		Username:       cnf.Username,
@@ -36,16 +36,16 @@ func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
 	}, nil
 }
 
-func (rd *RedisDatabase) Create(data interface{}) error {
-	payload := data.(databases.RedisPayload)
+func (rd *RedisDatabase) Create(data interface{}) (interface{}, error) {
+	payload := data.(models.RedisPayload)
 	if err := rd.client.Set(context.Background(), payload.Key, payload.Value, 0); err != nil {
-		return fmt.Errorf("error putting value for Key %s to redis cache: %s", payload.Key, err)
+		return nil, fmt.Errorf("error putting value for Key %s to redis cache: %s", payload.Key, err)
 	}
-	return nil
+	return nil, nil
 }
 
 func (rd *RedisDatabase) Get(data interface{}) (interface{}, error) {
-	payload := data.(databases.RedisPayload)
+	payload := data.(models.RedisPayload)
 	value := rd.client.Get(context.Background(), payload.Key)
 	if value.Val() == redis.Nil.Error() {
 		return nil, fmt.Errorf("key %s does not exist in redis cache", payload.Key)
@@ -53,18 +53,18 @@ func (rd *RedisDatabase) Get(data interface{}) (interface{}, error) {
 	return value.Val(), nil
 }
 
-func (rd *RedisDatabase) Update(data interface{}) error {
-	payload := data.(databases.RedisPayload)
+func (rd *RedisDatabase) Update(fields, data interface{}) (interface{}, error) {
+	payload := data.(models.RedisPayload)
 	if err := rd.client.Set(context.Background(), payload.Key, payload.Value, 0); err != nil {
-		return fmt.Errorf("error updating value for key %s in redis cache: %s", payload.Key, err)
+		return nil, fmt.Errorf("error updating value for key %s in redis cache: %s", payload.Key, err)
 	}
-	return nil
+	return nil, nil
 }
 
-func (rd *RedisDatabase) Delete(data interface{}) error {
-	payload := data.(databases.RedisPayload)
+func (rd *RedisDatabase) Delete(data interface{}) (interface{}, error) {
+	payload := data.(models.RedisPayload)
 	if err := rd.client.Del(context.Background(), payload.Key); err != nil {
-		return fmt.Errorf("error removing key %s from redis cache: %s", payload.Key, err)
+		return nil, fmt.Errorf("error removing key %s from redis cache: %s", payload.Key, err)
 	}
-	return nil
+	return nil, nil
 }
