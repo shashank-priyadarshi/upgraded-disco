@@ -53,7 +53,7 @@ func (rd *RedisDatabase) Get(data interface{}) (interface{}, error) {
 	return value.Val(), nil
 }
 
-func (rd *RedisDatabase) Update(fields, data interface{}) (interface{}, error) {
+func (rd *RedisDatabase) Update(data interface{}) (interface{}, error) {
 	payload := data.(models.RedisPayload)
 	if err := rd.client.Set(context.Background(), payload.Key, payload.Value, 0); err != nil {
 		return nil, fmt.Errorf("error updating value for key %s in redis cache: %s", payload.Key, err)

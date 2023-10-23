@@ -9,13 +9,13 @@ type DBConfig struct {
 }
 
 // QueryField RedisPayload MongoDBPayload MariaDBPayload TODO: Use value to QueryField.Key to get the value of respective struct property from DB payloads
-type QueryField struct {
-	Fields
-}
+//type QueryField struct {
+//	Fields
+//}
 
-type UpdateField struct {
-	Fields
-}
+//type UpdateField struct {
+//	Fields
+//}
 
 type RedisConfig struct {
 	DBConfig

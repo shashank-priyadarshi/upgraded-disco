@@ -35,9 +35,15 @@ func NewMongoDBInstance(log, config interface{}) (*MongoDatabase, error) {
 }
 
 func (rd *MongoDatabase) Create(data interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, fmt.Errorf("input data cannot be nil")
+	}
 	var insertResult *mongo.InsertOneResult
 	var err error
 	payload := data.(models.MongoDBPayload)
+	if payload.Data == nil {
+		return nil, fmt.Errorf("database create query cannot be nil")
+	}
 	if insertResult, err = rd.client.Database(payload.Database).Collection(payload.Collection).InsertOne(context.Background(), payload.Data); err != nil {
 		return nil, fmt.Errorf("error creating new document %+v in database %s and collection %s: %s", payload.Data, payload.Database, payload.Collection, err)
 	}
@@ -45,21 +51,37 @@ func (rd *MongoDatabase) Create(data interface{}) (interface{}, error) {
 }
 
 func (rd *MongoDatabase) Get(data interface{}) (interface{}, error) {
+	if data == nil {
+		return nil, fmt.Errorf("input data cannot be nil")
+	}
+	var results interface{}
 	var cursor *mongo.Cursor
 	var err error
 	payload := data.(models.MongoDBPayload)
-	if cursor, err = rd.client.Database(payload.Database).Collection(payload.Collection).Find(context.Background(), ""); err != nil {
+	if payload.Data == nil {
+		return nil, fmt.Errorf("database get query cannot be nil")
+	}
+	filter := payload.Data.(models.Fields)
+	if cursor, err = rd.client.Database(payload.Database).Collection(payload.Collection).Find(context.Background(), filter); err != nil {
 		return nil, fmt.Errorf("error finding document %+v in database %s and collection %s: %s", payload.Data, payload.Database, payload.Collection, err)
 	}
-	cursor.Next(context.Background()) // TODO: Implement cursor traversal for all fetched documents
-	return nil, nil
+	defer cursor.Close(context.Background())
+	return cursor.All(context.Background(), &results), nil
 }
 
-func (rd *MongoDatabase) Update(fields, data interface{}) (interface{}, error) {
+func (rd *MongoDatabase) Update(data interface{}) (interface{}, error) {
 	var updateResult *mongo.UpdateResult
 	var err error
+	if data == nil {
+		return nil, fmt.Errorf("input data cannot be nil")
+	}
 	payload := data.(models.MongoDBPayload)
-	if updateResult, err = rd.client.Database(payload.Database).Collection(payload.Collection).UpdateOne(context.Background(), "", ""); err != nil {
+	if payload.Data == nil {
+		return nil, fmt.Errorf("database update queries cannot be nil")
+	}
+	queries := payload.Data.([]models.Fields)
+	filter, update := queries[0], queries[1]
+	if updateResult, err = rd.client.Database(payload.Database).Collection(payload.Collection).UpdateOne(context.Background(), filter, update); err != nil {
 		return nil, fmt.Errorf("error updating document %+v in the database %s and collection %s: %s", payload.Data, payload.Database, payload.Collection, err)
 	}
 	return struct {
@@ -76,8 +98,15 @@ func (rd *MongoDatabase) Update(fields, data interface{}) (interface{}, error) {
 func (rd *MongoDatabase) Delete(data interface{}) (interface{}, error) {
 	var deleteResult *mongo.DeleteResult
 	var err error
+	if data == nil {
+		return nil, fmt.Errorf("input data cannot be nil")
+	}
 	payload := data.(models.MongoDBPayload)
-	if deleteResult, err = rd.client.Database(payload.Database).Collection(payload.Collection).DeleteOne(context.Background(), ""); err != nil {
+	if payload.Data == nil {
+		return nil, fmt.Errorf("database delete query cannot be nil")
+	}
+	filter := payload.Data.(models.Fields)
+	if deleteResult, err = rd.client.Database(payload.Database).Collection(payload.Collection).DeleteOne(context.Background(), filter); err != nil {
 		return nil, fmt.Errorf("error deleting document %+v in database %s and collection %s: %s", payload.Data, payload.Database, payload.Collection, err)
 	}
 	return deleteResult.DeletedCount, nil

@@ -60,27 +60,27 @@ func (rd *MariaDatabase) Get(data interface{}) (interface{}, error) {
 		return nil, fmt.Errorf("payload cannot be nil")
 	}
 	var user models.MariaDBPayload
-	payload := data.(models.QueryField)
+	payload := data.(models.Fields)
 	query := rd.client.Model(&models.MariaDBPayload{})
-	for key, value := range payload.Fields {
+	for key, value := range payload {
 		query = query.Where(fmt.Sprintf("%s = ?", key), value)
 	}
 	query.First(&user)
 	return user, nil
 }
 
-func (rd *MariaDatabase) Update(fields, data interface{}) (interface{}, error) {
+func (rd *MariaDatabase) Update(data interface{}) (interface{}, error) {
 	if data == nil {
 		return nil, fmt.Errorf("payload cannot be nil")
 	}
 	var user models.MariaDBPayload
-	queryField := fields.(models.QueryField)
-	update := data.(models.UpdateField)
+	queries := data.([]models.Fields)
+	queryField, updateField := queries[0], queries[1]
 	query := rd.client.Model(&models.MariaDBPayload{})
-	for key, value := range queryField.Fields {
+	for key, value := range queryField {
 		query = query.Where(fmt.Sprintf("%s = ?", key), value)
 	}
-	query.Updates(update.Fields)
+	query.Updates(updateField)
 	query.First(&user)
 	return user, nil
 }
@@ -89,9 +89,9 @@ func (rd *MariaDatabase) Delete(data interface{}) (interface{}, error) {
 	if data == nil {
 		return nil, fmt.Errorf("payload cannot be nil")
 	}
-	payload := data.(models.QueryField)
+	payload := data.(models.Fields)
 	query := rd.client.Model(&models.MariaDBPayload{})
-	for key, value := range payload.Fields {
+	for key, value := range payload {
 		query = query.Where(fmt.Sprintf("%s = ?", key), value)
 	}
 	if err := query.Delete(gorm.DB{}); err != nil {

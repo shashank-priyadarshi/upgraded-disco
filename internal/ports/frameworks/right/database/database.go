@@ -8,7 +8,7 @@ type BatchOpsResult struct {
 type Database interface {
 	Create(data interface{}) (interface{}, error)
 	Get(data interface{}) (interface{}, error)
-	Update(fields, data interface{}) (interface{}, error)
+	Update(data interface{}) (interface{}, error)
 	Delete(data interface{}) (interface{}, error)
 }
 
