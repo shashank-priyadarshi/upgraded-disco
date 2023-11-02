@@ -30,10 +30,10 @@ func (b BatchOps) BatchGet(data []interface{}) []database.BatchOpsResult {
 	return batchOpsResult
 }
 
-func (b BatchOps) BatchUpdate(fields, data []interface{}) []database.BatchOpsResult {
+func (b BatchOps) BatchUpdate(data []interface{}) []database.BatchOpsResult {
 	var batchOpsResult []database.BatchOpsResult
 	for _, value := range data {
-		res, err := b.Update(fields, value)
+		res, err := b.Update(value)
 		batchOpsResult = append(batchOpsResult, database.BatchOpsResult{
 			Output: res,
 			Error:  err,

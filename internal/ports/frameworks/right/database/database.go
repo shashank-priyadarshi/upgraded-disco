@@ -15,6 +15,6 @@ type Database interface {
 type BatchOps interface {
 	BatchCreate(data []interface{}) []BatchOpsResult
 	BatchGet(data []interface{}) []BatchOpsResult
-	BatchUpdate(fields, data []interface{}) []BatchOpsResult
+	BatchUpdate(data []interface{}) []BatchOpsResult
 	BatchDelete(data []interface{}) []BatchOpsResult
 }
