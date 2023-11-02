@@ -3,14 +3,15 @@ package redis
 import (
 	"context"
 	"fmt"
+
 	"github.com/redis/go-redis/v9"
 	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
-	"go.uber.org/zap"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 )
 
 type RedisDatabase struct {
 	client *redis.Client
-	logger zap.Logger
+	logger logger.Logger
 }
 
 func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
@@ -32,7 +33,7 @@ func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
 	}
 	return &RedisDatabase{
 		client: rDBClient,
-		logger: log.(zap.Logger),
+		logger: log.(logger.Logger),
 	}, nil
 }
 

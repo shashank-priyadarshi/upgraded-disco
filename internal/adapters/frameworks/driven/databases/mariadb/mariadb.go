@@ -3,15 +3,16 @@ package mariadb
 import (
 	"database/sql"
 	"fmt"
+
 	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
-	"go.uber.org/zap"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 type MariaDatabase struct {
 	client *gorm.DB
-	logger zap.Logger
+	logger logger.Logger
 }
 
 func NewMariaDBInstance(log, config interface{}) (*MariaDatabase, error) {
@@ -35,7 +36,7 @@ func NewMariaDBInstance(log, config interface{}) (*MariaDatabase, error) {
 	sqlDB.SetMaxOpenConns(cnf.MaxOpenConnections)
 	return &MariaDatabase{
 		client: mDBGormClient,
-		logger: log.(zap.Logger),
+		logger: log.(logger.Logger),
 	}, nil
 }
 

@@ -3,16 +3,17 @@ package mongodb
 import (
 	"context"
 	"fmt"
+
 	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"go.uber.org/zap"
 )
 
 type MongoDatabase struct {
 	client *mongo.Client
-	logger zap.Logger
+	logger logger.Logger
 }
 
 func NewMongoDBInstance(log, config interface{}) (*MongoDatabase, error) {
@@ -30,7 +31,7 @@ func NewMongoDBInstance(log, config interface{}) (*MongoDatabase, error) {
 	}
 	return &MongoDatabase{
 		client: client,
-		logger: log.(zap.Logger),
+		logger: log.(logger.Logger),
 	}, nil
 }
 
