@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

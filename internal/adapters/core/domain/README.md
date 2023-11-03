@@ -1,1 +1,0 @@
-# internal/adapters/core/domain

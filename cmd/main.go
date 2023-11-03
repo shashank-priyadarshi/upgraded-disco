@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/app/config"
-	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/config"
+	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/driven/databases"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/plugins"
 	"go.uber.org/zap"

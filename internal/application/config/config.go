@@ -1,6 +1,6 @@
 package config
 
-import models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+import models "github.com/shashank-priyadarshi/upgraded-disco/models"
 
 type Source struct {
 	Source, SourcePath string

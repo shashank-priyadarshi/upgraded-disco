@@ -18,3 +18,31 @@ type BatchOps interface {
 	BatchUpdate(data []interface{}) []BatchOpsResult
 	BatchDelete(data []interface{}) []BatchOpsResult
 }
+
+type ServiceRepository interface {
+	GetDataServiceRepository() DataRepo
+	GetAccountManagementRepository() AccountRepo
+	GetPluginServiceRepository() PluginRepo
+	GetScheduleServiceRepository() ScheduleRepo
+	GetGraphQLServiceRepository() GraphQLRepo
+}
+
+type DataRepo interface {
+	Database
+}
+
+type AccountRepo interface {
+	Database
+}
+
+type PluginRepo interface {
+	Database
+}
+
+type ScheduleRepo interface {
+	Database
+}
+
+type GraphQLRepo interface {
+	Database
+}

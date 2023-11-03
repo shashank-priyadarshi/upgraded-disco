@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

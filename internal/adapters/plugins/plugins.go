@@ -1,7 +1,7 @@
 package plugins
 
 import (
-	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"go.uber.org/zap"
 )
 
