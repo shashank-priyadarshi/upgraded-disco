@@ -1,6 +1,6 @@
 package models
 
-import "github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/right/database"
+import "github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/driven/database"
 
 type Config struct {
 	ServerConfig
