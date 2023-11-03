@@ -1,11 +1,14 @@
 package plugins
 
-func init() {
-	// Get OS: set work directory, initialise directory for built binaries
-	// Read supported languages, read commands, check if dependencies available
-}
+import (
+	models "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/core/domain"
+	"go.uber.org/zap"
+)
 
-type Plugin struct{}
+type Plugin struct {
+	Databases models.Databases
+	Log       zap.Logger
+}
 
 func (p *Plugin) Trigger(plugin string, payload interface{}) error {
 	// Get OS: search for plugin
