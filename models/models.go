@@ -1,6 +1,8 @@
 package models
 
-import "github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/driven/database"
+import (
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
+)
 
 type Config struct {
 	ServerConfig
@@ -9,5 +11,5 @@ type Config struct {
 }
 
 type Databases struct {
-	Maria, Redis, Mongo database.Database
+	Maria, Redis, Mongo ports.Database
 }

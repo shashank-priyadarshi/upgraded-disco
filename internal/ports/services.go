@@ -1,6 +1,6 @@
-package services
+package ports
 
-type Services interface{
+type Services interface {
 	DataService() DataOps
 	AccountManagementService() AccountOps
 	PluginService() PluginOps
@@ -8,31 +8,31 @@ type Services interface{
 	GraphQLService() GraphQLOps
 }
 
-type DataOps interface{
+type DataOps interface {
 	GetGraphData()
 	GetGitHubData()
 }
 
-type AccountOps interface{
+type AccountOps interface {
 	RegisterUser()
 	Login()
 	ResetPassword()
 	DeleteUser()
 }
 
-type PluginOps interface{
+type PluginOps interface {
 	List()
 	Update()
 	Install()
 	Trigger()
 }
 
-type ScheduleOps interface{
+type ScheduleOps interface {
 	List()
 	Create()
 	Delete()
 }
 
-type GraphQLOps interface{
+type GraphQLOps interface {
 	GraphQL()
 }

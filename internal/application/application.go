@@ -6,20 +6,19 @@ import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/graphql"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/schedule"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports/application/services"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports/frameworks/driven/database"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
 )
 
 type Application struct {
-	db          database.ServiceRepository
-	dataSvc     services.DataOps
-	accountSvc  services.AccountOps
-	pluginSvc   services.PluginOps
-	scheduleSvc services.ScheduleOps
-	graphQLSvc  services.GraphQLOps
+	db          ports.ServiceRepository
+	dataSvc     ports.DataOps
+	accountSvc  ports.AccountOps
+	pluginSvc   ports.PluginOps
+	scheduleSvc ports.ScheduleOps
+	graphQLSvc  ports.GraphQLOps
 }
 
-func NewApplication(database database.ServiceRepository) *Application {
+func NewApplication(database ports.ServiceRepository) *Application {
 	return &Application{
 		db:          database,
 		dataSvc:     data.NewApplication(database),

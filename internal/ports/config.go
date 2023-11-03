@@ -1,4 +1,4 @@
-package config
+package ports
 
 import models "github.com/shashank-priyadarshi/upgraded-disco/models"
 

@@ -1,4 +1,4 @@
-package plugin
+package ports
 
 type Plugin interface {
 	Trigger(plugin string, payload interface{}) error              // Trigger the plugin

@@ -1,4 +1,4 @@
-package database
+package ports
 
 type BatchOpsResult struct {
 	Output interface{}
