@@ -13,6 +13,7 @@ type Logger interface {
 	Debugf(format string, v ...interface{})
 	Errorf(format string, v ...interface{})
 	Infof(format string, v ...interface{})
+	With(key, value string) Logger
 }
 
 type LoggingService struct {
@@ -62,4 +63,13 @@ func (l *LoggingService) Errorf(format string, v ...interface{}) {
 	l.mux.Lock()
 	defer l.mux.Unlock()
 	zap.L().Error(fmt.Sprintf(format, v...))
+}
+
+func (l *LoggingService) With(key, value string) Logger {
+	keys := map[string]bool{}
+	if _, ok := keys[key]; !ok {
+		panic("wrong key passed in logger.With()")
+	}
+	// TODO: enable submodule logging
+	return l
 }

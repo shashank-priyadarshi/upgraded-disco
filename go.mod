@@ -3,6 +3,7 @@ module github.com/shashank-priyadarshi/upgraded-disco
 go 1.20
 
 require (
+	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
@@ -17,10 +18,11 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/graphql-go/graphql v0.8.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/klauspost/compress v1.17.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/knadh/koanf/providers/env v0.1.0 // indirect
@@ -37,6 +39,8 @@ require (
 	github.com/redis/go-redis/v9 v9.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.50.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
