@@ -15,7 +15,7 @@ type MariaDatabase struct {
 	logger logger.Logger
 }
 
-func NewMariaDBInstance(log, config interface{}) (*MariaDatabase, error) {
+func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, error) {
 	if config == nil {
 		return &MariaDatabase{}, fmt.Errorf("MariaDB config cannot be nil")
 	}
@@ -36,7 +36,7 @@ func NewMariaDBInstance(log, config interface{}) (*MariaDatabase, error) {
 	sqlDB.SetMaxOpenConns(cnf.MaxOpenConnections)
 	return &MariaDatabase{
 		client: mDBGormClient,
-		logger: log.(logger.Logger),
+		logger: log,
 	}, nil
 }
 

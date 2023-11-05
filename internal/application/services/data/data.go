@@ -1,11 +1,9 @@
 package data
 
-import (
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
-)
+import "github.com/shashank-priyadarshi/upgraded-disco/models"
 
 type Service struct {
-	db ports.ServiceRepository
+	db models.Repository
 }
 
 func (s Service) GetGraphData() {
@@ -18,8 +16,8 @@ func (s Service) GetGitHubData() {
 	panic("implement me")
 }
 
-func NewApplication(database ports.ServiceRepository) *Service {
+func NewApplication(database interface{}) *Service {
 	return &Service{
-		db: database,
+		db: database.(models.Repository),
 	}
 }

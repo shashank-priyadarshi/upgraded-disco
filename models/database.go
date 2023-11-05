@@ -12,22 +12,22 @@ type RedisConfig struct {
 	DBConfig
 }
 
+type MongoDBConfig struct {
+	DBConfig
+}
+
+type MariaDBConfig struct {
+	DBConfig
+}
+
 type RedisPayload struct {
 	Key   string
 	Value interface{}
 }
 
-type MongoDBConfig struct {
-	DBConfig
-}
-
 type MongoDBPayload struct {
 	Database, Collection string
 	Data                 interface{}
-}
-
-type MariaDBConfig struct {
-	DBConfig
 }
 
 type MariaDBPayload struct {

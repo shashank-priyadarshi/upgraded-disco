@@ -1,11 +1,7 @@
 package schedule
 
-import (
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
-)
-
 type Service struct {
-	db ports.ServiceRepository
+	db interface{}
 }
 
 func (s Service) List() {
@@ -23,7 +19,7 @@ func (s Service) Delete() {
 	panic("implement me")
 }
 
-func NewApplication(database ports.ServiceRepository) *Service {
+func NewApplication(database interface{}) *Service {
 	return &Service{
 		db: database,
 	}

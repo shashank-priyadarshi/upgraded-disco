@@ -14,7 +14,7 @@ type RedisDatabase struct {
 	logger logger.Logger
 }
 
-func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
+func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, error) {
 	if config == nil {
 		return &RedisDatabase{}, fmt.Errorf("redis config cannot be nil")
 	}
@@ -33,7 +33,7 @@ func NewRedisInstance(log, config interface{}) (*RedisDatabase, error) {
 	}
 	return &RedisDatabase{
 		client: rDBClient,
-		logger: log.(logger.Logger),
+		logger: log,
 	}, nil
 }
 

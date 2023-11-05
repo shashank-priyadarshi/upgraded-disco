@@ -16,7 +16,7 @@ type MongoDatabase struct {
 	logger logger.Logger
 }
 
-func NewMongoDBInstance(log, config interface{}) (*MongoDatabase, error) {
+func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, error) {
 	if config == nil {
 		return &MongoDatabase{}, fmt.Errorf("MongoDB config cannot be nil")
 	}
@@ -31,7 +31,7 @@ func NewMongoDBInstance(log, config interface{}) (*MongoDatabase, error) {
 	}
 	return &MongoDatabase{
 		client: client,
-		logger: log.(logger.Logger),
+		logger: log,
 	}, nil
 }
 
