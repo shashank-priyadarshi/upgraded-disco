@@ -3,6 +3,7 @@ package ports
 type BatchOpsResult struct {
 	Output interface{}
 	Error  error
+	Exists bool
 }
 
 type Database interface {
@@ -10,6 +11,7 @@ type Database interface {
 	Get(data interface{}) (interface{}, error)
 	Update(data interface{}) (interface{}, error)
 	Delete(data interface{}) (interface{}, error)
+	Exists(data interface{}) bool
 }
 
 type BatchOps interface {
@@ -17,6 +19,7 @@ type BatchOps interface {
 	BatchGet(data []interface{}) []BatchOpsResult
 	BatchUpdate(data []interface{}) []BatchOpsResult
 	BatchDelete(data []interface{}) []BatchOpsResult
+	BatchExists(data []interface{}) []BatchOpsResult
 }
 
 type DataRepo interface {

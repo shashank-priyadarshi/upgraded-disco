@@ -37,6 +37,14 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 	}, nil
 }
 
+func (rd *RedisDatabase) Exists(data interface{}) bool {
+	if data == nil {
+		return false
+	}
+	// TODO
+	return true
+}
+
 func (rd *RedisDatabase) Create(data interface{}) (interface{}, error) {
 	payload := data.(models.RedisPayload)
 	if err := rd.client.Set(context.Background(), payload.Key, payload.Value, 0); err != nil {

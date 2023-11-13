@@ -40,11 +40,20 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 	}, nil
 }
 
+func (rd *MariaDatabase) Exists(data interface{}) bool {
+	if data == nil {
+		return false
+	}
+	// TODO
+	return true
+}
+
 func (rd *MariaDatabase) Create(data interface{}) (interface{}, error) {
 	if data == nil {
 		return nil, fmt.Errorf("payload cannot be nil")
 	}
 	payload := data.(models.MariaDBPayload)
+	// TODO
 	if err := rd.client.AutoMigrate(&models.MariaDBPayload{}); err != nil {
 		return nil, fmt.Errorf("error migrating user model to mariaDB: %s", err)
 	}

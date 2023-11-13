@@ -8,13 +8,11 @@ type Service struct {
 
 // TODO
 func (s Service) GetGraphData() (interface{}, error) {
-	//TODO implement me
-	panic("implement me")
+	return s.db.MongoDB.Get(nil) // Provide input to Get as models.MongoDBPayload, with non-nil db query in the data property
 }
 
 func (s Service) GetGitHubData() (interface{}, error) {
-	//TODO implement me
-	panic("implement me")
+	return s.db.MongoDB.Get(nil)
 }
 
 func NewApplication(database interface{}) *Service {

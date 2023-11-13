@@ -35,6 +35,14 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 	}, nil
 }
 
+func (md *MongoDatabase) Exists(data interface{}) bool {
+	if data == nil {
+		return false
+	}
+	// TODO
+	return true
+}
+
 func (rd *MongoDatabase) Create(data interface{}) (interface{}, error) {
 	if data == nil {
 		return nil, fmt.Errorf("input data cannot be nil")
