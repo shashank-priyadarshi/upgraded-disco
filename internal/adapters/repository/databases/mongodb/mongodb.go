@@ -20,7 +20,7 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 	if config == nil {
 		return &MongoDatabase{}, fmt.Errorf("MongoDB config cannot be nil")
 	}
-	cnf := config.(models.MongoDBConfig)
+	cnf := config.(models.DBConfig)
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@%s/", cnf.Username, cnf.Password, cnf.Host)))
 	if err != nil {
 		return &MongoDatabase{}, fmt.Errorf("error initializing mongo db client: %v", err)

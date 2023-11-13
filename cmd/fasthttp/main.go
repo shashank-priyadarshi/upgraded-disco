@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	driver "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/fasthttp"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/application"
 
-	driver "github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/frameworks/driver/fasthttp"
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/config"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"github.com/valyala/fasthttp"

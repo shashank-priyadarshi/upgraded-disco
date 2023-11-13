@@ -19,7 +19,7 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 	if config == nil {
 		return &MariaDatabase{}, fmt.Errorf("MariaDB config cannot be nil")
 	}
-	cnf := config.(models.MariaDBConfig)
+	cnf := config.(models.DBConfig)
 	mysqlClient, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true", cnf.Username, cnf.Password, cnf.Host, cnf.Database))
 	if err != nil {
 		return &MariaDatabase{}, fmt.Errorf("error initialising sql connection: %v", err)

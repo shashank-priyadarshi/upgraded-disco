@@ -18,7 +18,7 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 	if config == nil {
 		return &RedisDatabase{}, fmt.Errorf("redis config cannot be nil")
 	}
-	cnf := config.(models.RedisConfig)
+	cnf := config.(models.DBConfig)
 	rDBClient := redis.NewClient(&redis.Options{
 		Addr:           cnf.Host,
 		Username:       cnf.Username,
