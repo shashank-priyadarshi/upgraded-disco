@@ -4,6 +4,7 @@ type Service struct {
 	db interface{}
 }
 
+// TODO
 func (s Service) RegisterUser() {
 	//TODO implement me
 	panic("implement me")

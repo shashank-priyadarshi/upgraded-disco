@@ -11,6 +11,7 @@ type GraphQL struct {
 	logger.Logger
 }
 
+// TODO
 func (g *GraphQL) GraphQL(ctx *fasthttp.RequestCtx) {
 
 }

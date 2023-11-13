@@ -11,6 +11,7 @@ type Schedule struct {
 	logger.Logger
 }
 
+// TODO
 func (s *Schedule) List(ctx *fasthttp.RequestCtx) {
 
 }

@@ -30,8 +30,8 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 		return &MongoDatabase{}, fmt.Errorf("error connecting to mongo db: %v", err)
 	}
 	return &MongoDatabase{
-		client: client,
 		logger: log,
+		client: client,
 	}, nil
 }
 

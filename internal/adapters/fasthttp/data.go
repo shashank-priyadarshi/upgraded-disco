@@ -11,6 +11,7 @@ type Data struct {
 	logger.Logger
 }
 
+// TODO
 func (d *Data) GetGraphData(ctx *fasthttp.RequestCtx) {
 
 }

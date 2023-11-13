@@ -11,6 +11,7 @@ type Account struct {
 	logger.Logger
 }
 
+// TODO
 func (a *Account) RegisterUser(ctx *fasthttp.RequestCtx) {
 
 }

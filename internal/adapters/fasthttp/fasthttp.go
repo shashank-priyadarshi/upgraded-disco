@@ -21,6 +21,7 @@ func NewRouter(config *models.Config) *Router {
 	}
 }
 
+// TODO
 func (r *Router) SetRouter(services *models.Application, log logger.Logger) *router.Router {
 	r.setRouterConfig()
 	r.setDataRouter(services.DataSvc, log)

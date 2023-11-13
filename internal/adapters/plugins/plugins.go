@@ -6,10 +6,11 @@ import (
 )
 
 type Plugin struct {
-	Databases models.Databases
+	Databases models.Repository
 	Log       zap.Logger
 }
 
+// TODO
 func (p *Plugin) Trigger(plugin string, payload interface{}) error {
 	// Get OS: search for plugin
 	// Trigger plugin
