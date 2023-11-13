@@ -11,19 +11,37 @@ type Account struct {
 	logger.Logger
 }
 
-// TODO
 func (a *Account) RegisterUser(ctx *fasthttp.RequestCtx) {
-
+	if err := a.AccountOps.RegisterUser(ctx.Request.Body()); err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }
 
 func (a *Account) Login(ctx *fasthttp.RequestCtx) {
-
+	var data interface{}
+	var err error
+	if data, err = a.AccountOps.Login(ctx.Request.Body()); err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
 
 func (a *Account) ResetPassword(ctx *fasthttp.RequestCtx) {
-
+	if err := a.AccountOps.ResetPassword(ctx.Request.Body()); err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }
 
 func (a *Account) DeleteUser(ctx *fasthttp.RequestCtx) {
-
+	if err := a.AccountOps.DeleteUser(ctx.Request.Body()); err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }

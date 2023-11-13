@@ -2,6 +2,7 @@ package fasthttp
 
 import (
 	"fmt"
+
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
 
 	"github.com/fasthttp/router"
@@ -21,7 +22,7 @@ func NewRouter(config *models.Config) *Router {
 	}
 }
 
-// TODO
+// TODO: setup auth middleware
 func (r *Router) SetRouter(services *models.Application, log logger.Logger) *router.Router {
 	r.setRouterConfig()
 	r.setDataRouter(services.DataSvc, log)
@@ -85,7 +86,7 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 }
 
 func (r *Router) setScheduleRouter(ops ports.ScheduleOps, log logger.Logger) *router.Router {
-	// /list: auth
+	// list: auth
 	handler := Schedule{ScheduleOps: ops, Logger: log}
 	scheduleGroup := r.setV1Router("/schedule")
 	{
@@ -97,10 +98,10 @@ func (r *Router) setScheduleRouter(ops ports.ScheduleOps, log logger.Logger) *ro
 }
 
 func (r *Router) setGraphQLRouter(ops ports.GraphQLOps, log logger.Logger) *router.Router {
-	// TODO
-	// handler := graphql.GraphQL{GraphQLOps: ops, Logger: log}
-	// {
-	// 	v1.POST("/graphql", handler.GraphQL())
-	// }
+	handler := GraphQL{GraphQLOps: ops, Logger: log}
+	v1 := r.setV1Router("/graphql")
+	{
+		v1.POST("*", handler.GraphQL)
+	}
 	return r.router
 }

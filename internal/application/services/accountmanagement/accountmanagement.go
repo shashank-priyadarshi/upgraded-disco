@@ -5,22 +5,26 @@ type Service struct {
 }
 
 // TODO
-func (s Service) RegisterUser() {
+// Send account confirmation email
+func (s Service) RegisterUser(interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Login() {
+// Can be email or username, if empty, needs to be API or JWT token
+func (s Service) Login(interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) ResetPassword() {
+// Send password reset email
+func (s Service) ResetPassword(interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) DeleteUser() {
+// Send account deletion confirmation email
+func (s Service) DeleteUser(interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }

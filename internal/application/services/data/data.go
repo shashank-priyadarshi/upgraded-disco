@@ -7,12 +7,12 @@ type Service struct {
 }
 
 // TODO
-func (s Service) GetGraphData() {
+func (s Service) GetGraphData() (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) GetGitHubData() {
+func (s Service) GetGitHubData() (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }

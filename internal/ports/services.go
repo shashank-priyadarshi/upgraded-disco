@@ -9,30 +9,30 @@ type Services interface {
 }
 
 type DataOps interface {
-	GetGraphData()
-	GetGitHubData()
+	GetGraphData() (interface{}, error)
+	GetGitHubData() (interface{}, error)
 }
 
 type AccountOps interface {
-	RegisterUser()
-	Login()
-	ResetPassword()
-	DeleteUser()
+	RegisterUser(interface{}) error
+	Login(interface{}) (interface{}, error)
+	ResetPassword(interface{}) error
+	DeleteUser(interface{}) error
 }
 
 type PluginOps interface {
-	List()
-	Update()
-	Install()
-	Trigger()
+	List() (interface{}, error)
+	Update(interface{}) error
+	Install(interface{}) error
+	Trigger(interface{}) error
 }
 
 type ScheduleOps interface {
-	List()
-	Create()
-	Delete()
+	List(interface{}) (interface{}, error)
+	Create(interface{}) (interface{}, error)
+	Delete(interface{}) error
 }
 
 type GraphQLOps interface {
-	GraphQL()
+	GraphQL(interface{}) (interface{}, error)
 }

@@ -11,19 +11,39 @@ type Plugins struct {
 	logger.Logger
 }
 
-// TODO
 func (p *Plugins) List(ctx *fasthttp.RequestCtx) {
-
+	data, err := p.PluginOps.List()
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
 
 func (p *Plugins) Update(ctx *fasthttp.RequestCtx) {
-
+	err := p.PluginOps.Update(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }
 
 func (p *Plugins) Install(ctx *fasthttp.RequestCtx) {
-
+	err := p.PluginOps.Install(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }
 
 func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
-
+	err := p.PluginOps.Trigger(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }

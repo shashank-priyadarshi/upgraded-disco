@@ -10,3 +10,7 @@ type ChessCom struct {
 
 type GitHub struct {
 }
+
+type Metadata struct{}
+
+type TriggerPlugin struct{}
