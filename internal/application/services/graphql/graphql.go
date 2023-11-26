@@ -5,7 +5,7 @@ type Service struct {
 }
 
 // TODO
-func (s Service) GraphQL() {
+func (s Service) GraphQL(query interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }

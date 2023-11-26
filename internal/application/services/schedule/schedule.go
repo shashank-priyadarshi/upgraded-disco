@@ -5,17 +5,17 @@ type Service struct {
 }
 
 // TODO
-func (s Service) List() {
+func (s Service) List(schedule interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Create() {
+func (s Service) Create(schedule interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Delete() {
+func (s Service) Delete(schedule interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }

@@ -11,11 +11,22 @@ type Data struct {
 	logger.Logger
 }
 
-// TODO
 func (d *Data) GetGraphData(ctx *fasthttp.RequestCtx) {
-
+	data, err := d.DataOps.GetGraphData()
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
 
 func (d *Data) GetGitHubData(ctx *fasthttp.RequestCtx) {
-
+	data, err := d.DataOps.GetGitHubData()
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }

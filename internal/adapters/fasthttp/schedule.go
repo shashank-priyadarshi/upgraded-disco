@@ -11,15 +11,31 @@ type Schedule struct {
 	logger.Logger
 }
 
-// TODO
 func (s *Schedule) List(ctx *fasthttp.RequestCtx) {
-
+	data, err := s.ScheduleOps.List(ctx.Request.Body())
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
 
 func (s *Schedule) Create(ctx *fasthttp.RequestCtx) {
-
+	data, err := s.ScheduleOps.Create(ctx.Request.Body())
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
 
 func (s *Schedule) Delete(ctx *fasthttp.RequestCtx) {
-
+	err := s.ScheduleOps.Delete(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
 }

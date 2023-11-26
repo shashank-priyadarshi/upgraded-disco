@@ -11,7 +11,12 @@ type GraphQL struct {
 	logger.Logger
 }
 
-// TODO
 func (g *GraphQL) GraphQL(ctx *fasthttp.RequestCtx) {
-
+	data, err := g.GraphQLOps.GraphQL(ctx.Request.Body())
+	if err != nil || data == nil {
+		ctx.Err()
+		return
+	}
+	ctx.SetBody(data.([]byte))
+	ctx.Done()
 }
