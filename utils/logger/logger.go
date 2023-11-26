@@ -9,7 +9,7 @@ import (
 )
 
 type Logger interface {
-	Init()
+	init()
 	Debugf(format string, v ...interface{})
 	Errorf(format string, v ...interface{})
 	Infof(format string, v ...interface{})
@@ -29,11 +29,11 @@ func NewLogger(level, filename string) Logger {
 		Filename: filename,
 		mux:      &sync.RWMutex{},
 	}
-	l.Init()
+	l.init()
 	return l
 }
 
-func (l *LoggingService) Init() {
+func (l *LoggingService) init() {
 	switch l.Level {
 	case "debug":
 		zap.LevelFlag(l.Filename, zap.DebugLevel, "")

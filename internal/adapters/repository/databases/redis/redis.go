@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/redis/go-redis/v9"
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
@@ -19,11 +20,15 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 		return &RedisDatabase{}, fmt.Errorf("redis config cannot be nil")
 	}
 	cnf := config.(models.DBConfig)
+	database, err := strconv.Atoi(cnf.Database.(string))
+	if err != nil {
+		return &RedisDatabase{}, fmt.Errorf("error parsing redis database name %v: %v", cnf.Database, err)
+	}
 	rDBClient := redis.NewClient(&redis.Options{
 		Addr:           cnf.Host,
 		Username:       cnf.Username,
 		Password:       cnf.Password,
-		DB:             cnf.Database.(int),
+		DB:             database,
 		MaxIdleConns:   cnf.MaxIdleConnections,
 		MaxActiveConns: cnf.MaxOpenConnections,
 		TLSConfig:      nil,
