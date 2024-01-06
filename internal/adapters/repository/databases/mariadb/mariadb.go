@@ -20,7 +20,8 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 		return &MariaDatabase{}, fmt.Errorf("MariaDB config cannot be nil")
 	}
 	cnf := config.(models.DBConfig)
-	mysqlClient, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true", cnf.Username, cnf.Password, cnf.Host, cnf.Database))
+
+	mysqlClient, err := sql.Open("mysql", createConnectionString(cnf.Username, cnf.Password, cnf.Host, cnf.Database))
 	if err != nil {
 		return &MariaDatabase{}, fmt.Errorf("error initialising sql connection: %v", err)
 	}
@@ -38,6 +39,18 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 		client: mDBGormClient,
 		logger: log,
 	}, nil
+}
+
+func createConnectionString(user, password, host string, database interface{}) (connStr string) {
+
+	if len(password) == 0 {
+		connStr = fmt.Sprintf("%s@tcp(%s)/%s", user, host, database)
+	} else {
+		connStr = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true", user, password, host, database)
+	}
+	fmt.Println(connStr)
+
+	return
 }
 
 func (rd *MariaDatabase) Exists(data interface{}) bool {

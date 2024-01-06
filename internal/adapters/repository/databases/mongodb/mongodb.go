@@ -21,7 +21,7 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 		return &MongoDatabase{}, fmt.Errorf("MongoDB config cannot be nil")
 	}
 	cnf := config.(models.DBConfig)
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@%s/", cnf.Username, cnf.Password, cnf.Host)))
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(createConnectionString(cnf.Username, cnf.Password, cnf.Host)))
 	if err != nil {
 		return &MongoDatabase{}, fmt.Errorf("error initializing mongo db client: %v", err)
 	}
@@ -33,6 +33,17 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 		logger: log,
 		client: client,
 	}, nil
+}
+
+func createConnectionString(user, password, host string) (connStr string) {
+
+	if len(user) == 0 || len(password) == 0 {
+		connStr = fmt.Sprintf("mongodb://%s/", host)
+	} else {
+		fmt.Sprintf("mongodb+srv://%s:%s@%s/", user, password, host)
+	}
+
+	return
 }
 
 func (md *MongoDatabase) Exists(data interface{}) bool {

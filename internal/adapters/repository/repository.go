@@ -10,23 +10,42 @@ import (
 type Repository models.Repository
 
 func NewRepository(log logger.Logger) *Repository {
+
 	return &Repository{
 		Log: log,
 	}
 }
 
 func (r *Repository) WithRedisCache(config models.DBConfig) *Repository {
-	r.Cache, _ = databases.NewDatabase(constants.DB_REDIS, r.Log, config)
+
+	if cache, err := databases.NewDatabase(constants.DB_REDIS, r.Log, config); err != nil {
+		r.Log.Errorf("Error initialising Redis cache: ", err)
+		return nil
+	} else {
+		r.Cache = cache
+	}
 	return r
 }
 
 func (r *Repository) WithMariaDB(config models.DBConfig) *Repository {
-	r.MariaDB, _ = databases.NewDatabase(constants.DB_MARIADB, r.Log, config)
+
+	if mariaDB, err := databases.NewDatabase(constants.DB_MARIADB, r.Log, config); err != nil {
+		r.Log.Errorf("Error initialising MariaDB: ", err)
+		return nil
+	} else {
+		r.MariaDB = mariaDB
+	}
 	return r
 }
 
 func (r *Repository) WithMongoDB(config models.DBConfig) *Repository {
-	r.MongoDB, _ = databases.NewDatabase(constants.DB_MONGODB, r.Log, config)
+
+	if mongoDB, err := databases.NewDatabase(constants.DB_MONGODB, r.Log, config); err != nil {
+		r.Log.Errorf("Error initialising MongoDB: ", err)
+		return nil
+	} else {
+		r.MongoDB = mongoDB
+	}
 	return r
 }
 

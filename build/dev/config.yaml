@@ -1,4 +1,5 @@
 server:
+  host: "localhost"
   port: "10000"
 database:
   redis:
@@ -9,7 +10,7 @@ database:
     idle: 5
     open: 5
   mariadb:
-    username: "user"
+    username: "root"
     password: ""
     host: "localhost:3306"
     database: "mydatabase"

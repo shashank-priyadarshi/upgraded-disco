@@ -10,10 +10,10 @@ config_path := path of $config_source
 To run this application, use the following command:
 
 ```shell
- docker-compose -f ./build/dev/docker-compose.yml up -d
- export CONFIG_SOURCE=config.yaml
- export CONFIG_PATH=./build/dev
- air -c .air.toml
+docker-compose -f ./build/dev/docker-compose.yml up -d
+export CONFIG_SOURCE=config.yaml
+export CONFIG_PATH=./build/dev
+air -c .air.toml
 ```
 
 To remove dependencies after stopping the application, use the following command:
@@ -31,9 +31,9 @@ To run this application in containerized environment, use the following command:
 e.g.
 
 ```shell
- export CONFIG_SOURCE=config.yaml
- export CONFIG_PATH=./build/dev
- ./run.sh dev . upgraded-disco v0.0.1 config.yaml ./build/dev
+export CONFIG_SOURCE=config.yaml
+export CONFIG_PATH=./build/dev
+./run.sh dev . upgraded-disco v0.0.1 config.yaml ./build/dev
 ```
 
 To stop containerized setup, use the following command:

@@ -13,11 +13,13 @@ import (
 )
 
 func NewApplication(log logger.Logger, configs map[string]models.DBConfig) *models.Application {
+	log.Infof("Setting up application services")
+
 	return &models.Application{
-		DataSvc:     data.NewApplication(repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		AccountSvc:  accountmanagement.NewApplication(repository.NewRepository(log).WithMariaDB(configs[constants.DB_MARIADB]).Build()),
-		PluginSvc:   plugin.NewApplication(repository.NewRepository(log).WithRedisCache(configs[constants.DB_REDIS]).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		ScheduleSvc: schedule.NewApplication(repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		GraphQLSvc:  graphql.NewApplication(repository.NewRepository(log).Build()),
+		DataSvc:     data.NewApplication(log, repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		AccountSvc:  accountmanagement.NewApplication(log, repository.NewRepository(log).WithMariaDB(configs[constants.DB_MARIADB]).Build()),
+		PluginSvc:   plugin.NewApplication(log, repository.NewRepository(log).WithRedisCache(configs[constants.DB_REDIS]).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		ScheduleSvc: schedule.NewApplication(log, repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		GraphQLSvc:  graphql.NewApplication(log, repository.NewRepository(log).Build()),
 	}
 }

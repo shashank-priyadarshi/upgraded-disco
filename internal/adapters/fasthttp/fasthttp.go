@@ -98,10 +98,10 @@ func (r *Router) setScheduleRouter(ops ports.ScheduleOps, log logger.Logger) *ro
 }
 
 func (r *Router) setGraphQLRouter(ops ports.GraphQLOps, log logger.Logger) *router.Router {
-	handler := GraphQL{GraphQLOps: ops, Logger: log}
-	v1 := r.setV1Router("/graphql")
-	{
-		v1.POST("*", handler.GraphQL)
-	}
+	//handler := GraphQL{GraphQLOps: ops, Logger: log}
+	//v1 := r.setV1Router("/graphql")
+	//{
+	//v1.POST("*", handler.GraphQL)
+	//}
 	return r.router
 }

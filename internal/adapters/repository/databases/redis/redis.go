@@ -33,9 +33,9 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 		MaxActiveConns: cnf.MaxOpenConnections,
 		TLSConfig:      nil,
 	})
-	if err := rDBClient.Ping(context.Background()); err != nil {
-		return &RedisDatabase{}, fmt.Errorf("error initilizing Redis DB: %v", err)
-	}
+	//if err := rDBClient.Ping(context.Background()); err != nil {
+	//	return &RedisDatabase{}, fmt.Errorf("error initilizing Redis DB: %v", err)
+	//}
 	return &RedisDatabase{
 		client: rDBClient,
 		logger: log,

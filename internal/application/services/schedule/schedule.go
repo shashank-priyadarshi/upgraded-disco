@@ -1,5 +1,7 @@
 package schedule
 
+import "github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+
 type Service struct {
 	db interface{}
 }
@@ -20,7 +22,9 @@ func (s Service) Delete(schedule interface{}) error {
 	panic("implement me")
 }
 
-func NewApplication(database interface{}) *Service {
+func NewApplication(log logger.Logger, database interface{}) *Service {
+
+	log.Infof("Initialising schedule service")
 	return &Service{
 		db: database,
 	}

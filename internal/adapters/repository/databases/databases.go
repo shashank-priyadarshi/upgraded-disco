@@ -14,9 +14,9 @@ import (
 func NewDatabase(database string, log logger.Logger, config interface{}) (ports.Database, error) {
 	switch {
 	case strings.EqualFold(database, constants.DB_MARIADB):
-		return mongodb.NewMongoDBInstance(log, config)
-	case strings.EqualFold(database, constants.DB_MONGODB):
 		return mariadb.NewMariaDBInstance(log, config)
+	case strings.EqualFold(database, constants.DB_MONGODB):
+		return mongodb.NewMongoDBInstance(log, config)
 	case strings.EqualFold(database, constants.DB_REDIS):
 		return redis.NewRedisInstance(log, config)
 	default:

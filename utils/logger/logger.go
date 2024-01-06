@@ -1,7 +1,9 @@
 package logger
 
 import (
+	"context"
 	"fmt"
+	"go.uber.org/zap/zapcore"
 	"os"
 	"sync"
 
@@ -17,52 +19,71 @@ type Logger interface {
 }
 
 type LoggingService struct {
-	Level    string
-	Filename string
-	file     *os.File
-	mux      *sync.RWMutex
+	Level     string
+	context   context.Context
+	Filename  string
+	file      *os.File
+	mux       *sync.RWMutex
+	zapLogger *zap.Logger
 }
 
 func NewLogger(level, filename string) Logger {
+
 	l := &LoggingService{
 		Level:    level,
 		Filename: filename,
 		mux:      &sync.RWMutex{},
 	}
 	l.init()
+
 	return l
 }
 
 func (l *LoggingService) init() {
+
+	config := zap.NewProductionConfig()
+	config.EncoderConfig.EncodeCaller = zapcore.FullCallerEncoder
+
 	switch l.Level {
-	case "debug":
-		zap.LevelFlag(l.Filename, zap.DebugLevel, "")
-	case "error":
-		zap.LevelFlag(l.Filename, zap.ErrorLevel, "")
-	case "info":
-		zap.LevelFlag(l.Filename, zap.InfoLevel, "")
+	case "DEBUG":
+		config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	case "ERROR":
+		config.Level = zap.NewAtomicLevelAt(zap.ErrorLevel)
+	case "INFO":
+		config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
 	default:
-		zap.LevelFlag(l.Filename, zap.ErrorLevel, "")
+		config.Level = zap.NewAtomicLevelAt(zap.ErrorLevel)
 	}
-	l.file = os.Stdout
+
+	//config.OutputPaths = []string{"logs.txt"}
+
+	logger, err := config.Build()
+	if err != nil {
+		panic(err)
+	}
+	logger = logger.WithOptions(zap.AddCaller())
+	logger = logger.WithOptions(zap.AddCallerSkip(1))
+
+	l.zapLogger = logger
+
 }
 
 func (l *LoggingService) Debugf(format string, v ...interface{}) {
 	l.mux.Lock()
 	defer l.mux.Unlock()
-	zap.L().Debug(fmt.Sprintf(format, v...))
+	l.zapLogger.Debug(fmt.Sprintf(format, v...))
 }
 
 func (l *LoggingService) Infof(format string, v ...interface{}) {
 	l.mux.Lock()
 	defer l.mux.Unlock()
-	zap.L().Info(fmt.Sprintf(format, v...))
+	l.zapLogger.Info(fmt.Sprintf(format, v...))
 }
 
 func (l *LoggingService) Errorf(format string, v ...interface{}) {
 	l.mux.Lock()
 	defer l.mux.Unlock()
-	zap.L().Error(fmt.Sprintf(format, v...))
+	l.zapLogger.Error(fmt.Sprintf(format, v...))
 }
 
 func (l *LoggingService) With(key, value string) Logger {

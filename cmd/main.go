@@ -29,7 +29,7 @@ func main() {
 	router := driver.NewRouter(&appConfig).SetRouter(app, appLogger)
 	appLogger.Infof("Setup up application routers")
 	appLogger.Infof("Starting up application server on port %v", appConfig.ServerConfig.Port)
-	serverErr := fasthttp.ListenAndServe(appConfig.ServerConfig.Port, router.Handler)
+	serverErr := fasthttp.ListenAndServe(fmt.Sprintf("%s:%s", appConfig.ServerConfig.Host, appConfig.ServerConfig.Port), router.Handler)
 	appLogger.Infof("error while serving: %v", serverErr)
 }
 
