@@ -21,7 +21,7 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 	}
 	cnf := config.(models.DBConfig)
 
-	mysqlClient, err := sql.Open("mysql", createConnectionString(cnf.Username, cnf.Password, cnf.Host, cnf.Database))
+	mysqlClient, err := sql.Open("mysql", createConnectionString(cnf.Username, cnf.Password, cnf.Host, cnf.Database[0]))
 	if err != nil {
 		return &MariaDatabase{}, fmt.Errorf("error initialising sql connection: %v", err)
 	}
@@ -35,6 +35,11 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 	}
 	sqlDB.SetMaxIdleConns(cnf.MaxIdleConnections)
 	sqlDB.SetMaxOpenConns(cnf.MaxOpenConnections)
+
+	if err := mDBGormClient.AutoMigrate(&models.MariaDBPayload{}); err != nil {
+		log.Errorf("Error creating user table in MariaDB")
+	}
+
 	return &MariaDatabase{
 		client: mDBGormClient,
 		logger: log,
@@ -65,10 +70,7 @@ func (rd *MariaDatabase) Create(data interface{}) (interface{}, error) {
 		return nil, fmt.Errorf("payload cannot be nil")
 	}
 	payload := data.(models.MariaDBPayload)
-	// TODO
-	if err := rd.client.AutoMigrate(&models.MariaDBPayload{}); err != nil {
-		return nil, fmt.Errorf("error migrating user model to mariaDB: %s", err)
-	}
+
 	return rd.client.Create(models.MariaDBPayload{
 		Name:     payload.Name,
 		Email:    payload.Email,

@@ -4,7 +4,7 @@ type Fields = map[string]string
 
 type DBConfig struct {
 	Username, Password, Host               string
-	Database                               interface{}
+	Database, Collection, Table            []interface{}
 	MaxIdleConnections, MaxOpenConnections int
 }
 

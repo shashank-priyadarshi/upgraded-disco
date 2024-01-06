@@ -45,7 +45,7 @@ func setConfig() (config models.Config, err error) {
 		Username:           viper.Get("database.redis.username").(string),
 		Password:           viper.Get("database.redis.password").(string),
 		Host:               viper.Get("database.redis.host").(string),
-		Database:           viper.Get("database.redis.database").(string),
+		Database:           viper.Get("database.redis.database").([]interface{}),
 		MaxIdleConnections: viper.Get("database.redis.idle").(int),
 		MaxOpenConnections: viper.Get("database.redis.idle").(int),
 	}
@@ -53,7 +53,7 @@ func setConfig() (config models.Config, err error) {
 		Username:           viper.Get("database.mariadb.username").(string),
 		Password:           viper.Get("database.mariadb.password").(string),
 		Host:               viper.Get("database.mariadb.host").(string),
-		Database:           viper.Get("database.mariadb.database").(string),
+		Database:           viper.Get("database.mariadb.database").([]interface{}),
 		MaxIdleConnections: viper.Get("database.mariadb.idle").(int),
 		MaxOpenConnections: viper.Get("database.mariadb.open").(int),
 	}

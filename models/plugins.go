@@ -1,16 +1,23 @@
 package models
 
 type PluginsConfig struct {
-	ChessCom
-	GitHub
+	Endpoint, Token string
 }
 
-type ChessCom struct {
+type Metadata struct {
+	Name, ID, Installed, Updated, Language string
+	Tags                                   []string
 }
 
-type GitHub struct {
+type Trigger struct {
+	Latest        string
+	Total, Failed int
+	Failures      []Failed
 }
 
-type Metadata struct{}
-
-type TriggerPlugin struct{}
+type Failed struct {
+	TimeStamp  string
+	Duration   int
+	Parameters []interface{}
+	Error      string
+}

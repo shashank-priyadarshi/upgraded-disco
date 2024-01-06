@@ -20,7 +20,7 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 		return &RedisDatabase{}, fmt.Errorf("redis config cannot be nil")
 	}
 	cnf := config.(models.DBConfig)
-	database, err := strconv.Atoi(cnf.Database.(string))
+	database, err := strconv.Atoi(cnf.Database[0].(string))
 	if err != nil {
 		return &RedisDatabase{}, fmt.Errorf("error parsing redis database name %v: %v", cnf.Database, err)
 	}
