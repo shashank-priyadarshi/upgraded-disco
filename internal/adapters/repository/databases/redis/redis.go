@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"fmt"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/repository/databases/batch_ops"
 	"strconv"
 
 	"github.com/redis/go-redis/v9"
@@ -11,8 +12,9 @@ import (
 )
 
 type RedisDatabase struct {
-	client *redis.Client
-	logger logger.Logger
+	client   *redis.Client
+	logger   logger.Logger
+	BatchOps batch_ops.BatchOps
 }
 
 func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, error) {
@@ -36,10 +38,14 @@ func NewRedisInstance(log logger.Logger, config interface{}) (*RedisDatabase, er
 	//if err := rDBClient.Ping(context.Background()); err != nil {
 	//	return &RedisDatabase{}, fmt.Errorf("error initilizing Redis DB: %v", err)
 	//}
-	return &RedisDatabase{
+
+	rDB := &RedisDatabase{
 		client: rDBClient,
 		logger: log,
-	}, nil
+	}
+	rDB.BatchOps = batch_ops.BatchOps{rDB}
+
+	return rDB, nil
 }
 
 func (rd *RedisDatabase) Exists(data interface{}) bool {

@@ -1,13 +1,13 @@
 package plugins
 
 import (
-	models "github.com/shashank-priyadarshi/upgraded-disco/models"
-	"go.uber.org/zap"
+	"github.com/shashank-priyadarshi/upgraded-disco/models"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 )
 
 type Plugin struct {
 	Databases models.Repository
-	Log       zap.Logger
+	Log       logger.Logger
 }
 
 // TODO

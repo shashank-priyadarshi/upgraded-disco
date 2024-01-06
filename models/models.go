@@ -11,14 +11,6 @@ type Config struct {
 	PluginsConfig
 }
 
-type Application struct {
-	DataSvc     ports.DataOps
-	AccountSvc  ports.AccountOps
-	PluginSvc   ports.PluginOps
-	ScheduleSvc ports.ScheduleOps
-	GraphQLSvc  ports.GraphQLOps
-}
-
 type Repository struct {
 	Log                     logger.Logger
 	Cache, MariaDB, MongoDB ports.Database

@@ -11,6 +11,15 @@ type Plugins struct {
 	logger.Logger
 }
 
+func (p *Plugins) Install(ctx *fasthttp.RequestCtx) {
+	err := p.PluginOps.Install(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
+}
+
 func (p *Plugins) Get(ctx *fasthttp.RequestCtx) {
 	data, err := p.PluginOps.List()
 	if err != nil || data == nil {
@@ -22,16 +31,7 @@ func (p *Plugins) Get(ctx *fasthttp.RequestCtx) {
 }
 
 func (p *Plugins) Update(ctx *fasthttp.RequestCtx) {
-	err := p.PluginOps.Update(ctx.Request.Body())
-	if err != nil {
-		ctx.Err()
-		return
-	}
-	ctx.Done()
-}
-
-func (p *Plugins) Install(ctx *fasthttp.RequestCtx) {
-	err := p.PluginOps.Install(ctx.Request.Body())
+	err := p.PluginOps.Upgrade(ctx.Request.Body())
 	if err != nil {
 		ctx.Err()
 		return

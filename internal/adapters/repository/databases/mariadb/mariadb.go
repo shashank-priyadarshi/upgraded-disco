@@ -3,6 +3,7 @@ package mariadb
 import (
 	"database/sql"
 	"fmt"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/repository/databases/batch_ops"
 
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
@@ -11,8 +12,9 @@ import (
 )
 
 type MariaDatabase struct {
-	client *gorm.DB
-	logger logger.Logger
+	client   *gorm.DB
+	logger   logger.Logger
+	BatchOps batch_ops.BatchOps
 }
 
 func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, error) {
@@ -40,10 +42,13 @@ func NewMariaDBInstance(log logger.Logger, config interface{}) (*MariaDatabase, 
 		log.Errorf("Error creating user table in MariaDB")
 	}
 
-	return &MariaDatabase{
+	mDB := &MariaDatabase{
 		client: mDBGormClient,
 		logger: log,
-	}, nil
+	}
+	mDB.BatchOps = batch_ops.BatchOps{mDB}
+
+	return mDB, nil
 }
 
 func createConnectionString(user, password, host string, database interface{}) (connStr string) {

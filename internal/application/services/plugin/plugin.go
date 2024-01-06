@@ -6,23 +6,32 @@ type Service struct {
 	db interface{}
 }
 
-// TODO
+func (s Service) Install(i interface{}) error {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (s Service) List() (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Update(interface{}) error {
+func (s Service) Info(s3 string, s2 string, i ...interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Install(interface{}) error {
+func (s Service) Upgrade(i interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Trigger(interface{}) error {
+func (s Service) Trigger(i interface{}) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s Service) Uninstall(s2 string) error {
 	//TODO implement me
 	panic("implement me")
 }

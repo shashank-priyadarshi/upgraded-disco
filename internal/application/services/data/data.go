@@ -10,11 +10,11 @@ type Service struct {
 }
 
 // TODO
-func (s Service) GetGraphData() (interface{}, error) {
-	return s.db.MongoDB.Get(nil) // Provide input to Get as models.MongoDBPayload, with non-nil db query in the data property
+func (s Service) Chess() (interface{}, error) {
+	return s.db.MongoDB.Get(nil)
 }
 
-func (s Service) GetGitHubData() (interface{}, error) {
+func (s Service) GitHub() (interface{}, error) {
 	return s.db.MongoDB.Get(nil)
 }
 

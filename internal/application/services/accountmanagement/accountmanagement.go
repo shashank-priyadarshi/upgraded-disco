@@ -11,7 +11,7 @@ type Service struct {
 
 // TODO
 // Send account confirmation email
-func (s Service) RegisterUser(userData interface{}) error {
+func (s Service) Register(userData interface{}) error {
 	user := userData.(models.RegisterUser)
 	if s.db.MariaDB.Exists(user.Username) || s.db.MariaDB.Exists(user.Email) {
 	}
@@ -28,13 +28,13 @@ func (s Service) Login(interface{}) (interface{}, error) {
 }
 
 // Send password reset email
-func (s Service) ResetPassword(interface{}) error {
+func (s Service) Update(interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }
 
 // Send account deletion confirmation email
-func (s Service) DeleteUser(interface{}) error {
+func (s Service) Delete(interface{}) error {
 	//TODO implement me
 	panic("implement me")
 }

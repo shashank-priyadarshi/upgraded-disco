@@ -12,7 +12,7 @@ type Account struct {
 }
 
 func (a *Account) Register(ctx *fasthttp.RequestCtx) {
-	if err := a.AccountOps.RegisterUser(ctx.Request.Body()); err != nil {
+	if err := a.AccountOps.Register(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return
 	}
@@ -31,7 +31,7 @@ func (a *Account) Login(ctx *fasthttp.RequestCtx) {
 }
 
 func (a *Account) Update(ctx *fasthttp.RequestCtx) {
-	if err := a.AccountOps.ResetPassword(ctx.Request.Body()); err != nil {
+	if err := a.AccountOps.Update(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return
 	}
@@ -39,7 +39,7 @@ func (a *Account) Update(ctx *fasthttp.RequestCtx) {
 }
 
 func (a *Account) Delete(ctx *fasthttp.RequestCtx) {
-	if err := a.AccountOps.DeleteUser(ctx.Request.Body()); err != nil {
+	if err := a.AccountOps.Delete(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return
 	}
