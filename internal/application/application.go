@@ -16,10 +16,10 @@ func NewApplication(log logger.Logger, configs map[string]models.DBConfig) *mode
 	log.Infof("Setting up application services")
 
 	return &models.Application{
-		DataSvc:     data.NewApplication(log, repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		AccountSvc:  accountmanagement.NewApplication(log, repository.NewRepository(log).WithMariaDB(configs[constants.DB_MARIADB]).Build()),
-		PluginSvc:   plugin.NewApplication(log, repository.NewRepository(log).WithRedisCache(configs[constants.DB_REDIS]).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		ScheduleSvc: schedule.NewApplication(log, repository.NewRepository(log).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
-		GraphQLSvc:  graphql.NewApplication(log, repository.NewRepository(log).Build()),
+		DataSvc:     data.NewApplication(log.WithSubmodule("data"), repository.NewRepository(log.WithSubmodule("repository")).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		AccountSvc:  accountmanagement.NewApplication(log.WithSubmodule("account"), repository.NewRepository(log.WithSubmodule("repository")).WithMariaDB(configs[constants.DB_MARIADB]).Build()),
+		PluginSvc:   plugin.NewApplication(log.WithSubmodule("plugin"), repository.NewRepository(log.WithSubmodule("repository")).WithRedisCache(configs[constants.DB_REDIS]).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		ScheduleSvc: schedule.NewApplication(log.WithSubmodule("schedule"), repository.NewRepository(log.WithSubmodule("repository")).WithMongoDB(configs[constants.DB_MONGODB]).Build()),
+		GraphQLSvc:  graphql.NewApplication(log.WithSubmodule("graphql"), repository.NewRepository(log.WithSubmodule("repository")).Build()),
 	}
 }

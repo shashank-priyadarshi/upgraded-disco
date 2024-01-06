@@ -1,8 +1,6 @@
 package fasthttp
 
 import (
-	"fmt"
-
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
 
 	"github.com/fasthttp/router"
@@ -42,29 +40,29 @@ func (r *Router) setRouterConfig() *router.Router {
 	return r.router
 }
 
-func (r *Router) setV1Router(group string) *router.Group {
-	return r.router.Group("/v1").Group(fmt.Sprintf("/%s", group))
+func (r *Router) setV1Router() *router.Group {
+	return r.router.Group("/v1")
 }
 
 func (r *Router) setDataRouter(ops ports.DataOps, log logger.Logger) *router.Router {
 	// github: auth
 	handler := Data{DataOps: ops, Logger: log}
-	dataGroup := r.setV1Router("/data")
+	dataGroup := r.setV1Router().Group("/data")
 	{
-		dataGroup.POST("/graph", handler.GetGraphData)
-		dataGroup.POST("/github", handler.GetGitHubData)
+		dataGroup.GET("/graph", handler.Graph)
+		dataGroup.GET("/github", handler.GitHub)
 	}
 	return r.router
 }
 
 func (r *Router) setAccountRouter(ops ports.AccountOps, log logger.Logger) *router.Router {
 	handler := Account{AccountOps: ops, Logger: log}
-	accountGroup := r.setV1Router("/account")
+	accountGroup := r.setV1Router().Group("/account")
 	{
-		accountGroup.POST("/signup", handler.RegisterUser)
+		accountGroup.POST("/signup", handler.Register)
 		accountGroup.POST("/login", handler.Login)
-		accountGroup.POST("/reset-password", handler.ResetPassword)
-		accountGroup.POST("/unregister", handler.DeleteUser)
+		accountGroup.PUT("/:id", handler.Update)
+		accountGroup.DELETE("/:id", handler.Delete)
 	}
 	return r.router
 }
@@ -75,12 +73,14 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 	// install: auth
 	// trigger: auth
 	handler := Plugins{PluginOps: ops, Logger: log}
-	pluginGroup := r.setV1Router("/plugins")
+	pluginGroup := r.setV1Router().Group("/plugins")
 	{
-		pluginGroup.POST("/list", handler.List)
-		pluginGroup.POST("/update", handler.Update)
-		pluginGroup.POST("/install", handler.Install)
-		pluginGroup.POST("/trigger", handler.Trigger)
+		pluginGroup.POST("/", handler.Install)
+		pluginGroup.GET("/", handler.Get)
+		pluginGroup.GET("/:id", handler.Get)
+		pluginGroup.PUT("/:id", handler.Update)
+		pluginGroup.POST("/:id/trigger", handler.Trigger)
+		pluginGroup.DELETE("/:id", handler.Delete)
 	}
 	return r.router
 }
@@ -88,11 +88,13 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 func (r *Router) setScheduleRouter(ops ports.ScheduleOps, log logger.Logger) *router.Router {
 	// list: auth
 	handler := Schedule{ScheduleOps: ops, Logger: log}
-	scheduleGroup := r.setV1Router("/schedule")
+	scheduleGroup := r.setV1Router().Group("/schedule")
 	{
-		scheduleGroup.POST("/list", handler.List)
-		scheduleGroup.POST("/create", handler.Create)
-		scheduleGroup.POST("/cancel", handler.Delete)
+		scheduleGroup.POST("/", handler.Create)
+		scheduleGroup.GET("/", handler.Get)
+		scheduleGroup.GET("/:id", handler.Get)
+		scheduleGroup.PUT("/:id", handler.Update)
+		scheduleGroup.DELETE("/:id", handler.Delete)
 	}
 	return r.router
 }

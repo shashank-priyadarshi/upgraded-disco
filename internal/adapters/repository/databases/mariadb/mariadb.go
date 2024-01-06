@@ -48,7 +48,6 @@ func createConnectionString(user, password, host string, database interface{}) (
 	} else {
 		connStr = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true", user, password, host, database)
 	}
-	fmt.Println(connStr)
 
 	return
 }

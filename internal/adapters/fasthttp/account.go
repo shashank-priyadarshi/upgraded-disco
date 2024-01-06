@@ -11,7 +11,7 @@ type Account struct {
 	logger.Logger
 }
 
-func (a *Account) RegisterUser(ctx *fasthttp.RequestCtx) {
+func (a *Account) Register(ctx *fasthttp.RequestCtx) {
 	if err := a.AccountOps.RegisterUser(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return
@@ -30,7 +30,7 @@ func (a *Account) Login(ctx *fasthttp.RequestCtx) {
 	ctx.Done()
 }
 
-func (a *Account) ResetPassword(ctx *fasthttp.RequestCtx) {
+func (a *Account) Update(ctx *fasthttp.RequestCtx) {
 	if err := a.AccountOps.ResetPassword(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return
@@ -38,7 +38,7 @@ func (a *Account) ResetPassword(ctx *fasthttp.RequestCtx) {
 	ctx.Done()
 }
 
-func (a *Account) DeleteUser(ctx *fasthttp.RequestCtx) {
+func (a *Account) Delete(ctx *fasthttp.RequestCtx) {
 	if err := a.AccountOps.DeleteUser(ctx.Request.Body()); err != nil {
 		ctx.Err()
 		return

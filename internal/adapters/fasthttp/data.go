@@ -11,7 +11,9 @@ type Data struct {
 	logger.Logger
 }
 
-func (d *Data) GetGraphData(ctx *fasthttp.RequestCtx) {
+func (d *Data) Graph(ctx *fasthttp.RequestCtx) {
+
+	d.Logger.Infof("Fetch graph data called: ", ctx)
 	data, err := d.DataOps.GetGraphData()
 	if err != nil || data == nil {
 		ctx.Err()
@@ -21,7 +23,7 @@ func (d *Data) GetGraphData(ctx *fasthttp.RequestCtx) {
 	ctx.Done()
 }
 
-func (d *Data) GetGitHubData(ctx *fasthttp.RequestCtx) {
+func (d *Data) GitHub(ctx *fasthttp.RequestCtx) {
 	data, err := d.DataOps.GetGitHubData()
 	if err != nil || data == nil {
 		ctx.Err()

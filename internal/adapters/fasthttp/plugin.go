@@ -11,7 +11,7 @@ type Plugins struct {
 	logger.Logger
 }
 
-func (p *Plugins) List(ctx *fasthttp.RequestCtx) {
+func (p *Plugins) Get(ctx *fasthttp.RequestCtx) {
 	data, err := p.PluginOps.List()
 	if err != nil || data == nil {
 		ctx.Err()
@@ -40,6 +40,15 @@ func (p *Plugins) Install(ctx *fasthttp.RequestCtx) {
 }
 
 func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
+	err := p.PluginOps.Trigger(ctx.Request.Body())
+	if err != nil {
+		ctx.Err()
+		return
+	}
+	ctx.Done()
+}
+
+func (p *Plugins) Delete(ctx *fasthttp.RequestCtx) {
 	err := p.PluginOps.Trigger(ctx.Request.Body())
 	if err != nil {
 		ctx.Err()

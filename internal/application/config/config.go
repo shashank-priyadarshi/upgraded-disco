@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/shashank-priyadarshi/upgraded-disco/constants"
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"github.com/spf13/viper"
 )
 
@@ -12,7 +13,7 @@ type Source struct {
 }
 
 // Load based on config Source and ConfigPath, use switch case to Load config from env var or from yaml, toml, json using viper
-func (s *Source) Load() (config models.Config, err error) {
+func (s *Source) Load(log logger.Logger) (config models.Config, err error) {
 	if err = s.getConfigFile(); err != nil {
 		return config, fmt.Errorf("error looking up for file %s at location %s: %v", s.ConfigSource, s.ConfigPath, err)
 	}
