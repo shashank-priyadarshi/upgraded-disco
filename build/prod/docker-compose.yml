@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  cloudflared:
+    container_name: cloudflared
+  portainer:
+    container_name: portainer
+  mongodb:
+    container_name: mongo
+  redis:
+    container_name: redis
+  mariadb:
+    container_name: maria
+  upgraded-disco:
+    container_name: upgraded-disco
+

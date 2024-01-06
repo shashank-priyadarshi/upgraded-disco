@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  mongodb:
+    container_name: mongo
+    image: mongo
+    env_file:
+      - .env
+    volumes:
+      - nosql_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+  redis:
+    container_name: redis
+    image: redis
+    env_file:
+      - .env
+    volumes:
+      - cache:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+  mariadb:
+    container_name: maria
+    image: mariadb
+    env_file:
+      - .env
+    volumes:
+      - sql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+#  upgraded-disco:
+#    container_name: upgraded-disco
+#    image: ${image}:${version}
+#    ports:
+#      - "10000:10000"
+#    networks:
+#      - backend
+
+networks:
+  backend:
+
+volumes:
+  cache:
+  sql_data:
+  nosql_data:

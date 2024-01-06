@@ -1,22 +1,26 @@
 package data
 
-import "github.com/shashank-priyadarshi/upgraded-disco/models"
+import (
+	"github.com/shashank-priyadarshi/upgraded-disco/models"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+)
 
 type Service struct {
 	db models.Repository
 }
 
-func (s Service) GetGraphData() {
-	//TODO implement me
-	panic("implement me")
+// TODO
+func (s Service) GetGraphData() (interface{}, error) {
+	return s.db.MongoDB.Get(nil) // Provide input to Get as models.MongoDBPayload, with non-nil db query in the data property
 }
 
-func (s Service) GetGitHubData() {
-	//TODO implement me
-	panic("implement me")
+func (s Service) GetGitHubData() (interface{}, error) {
+	return s.db.MongoDB.Get(nil)
 }
 
-func NewApplication(database interface{}) *Service {
+func NewApplication(log logger.Logger, database interface{}) *Service {
+	log.Infof("Initialising data service")
+
 	return &Service{
 		db: database.(models.Repository),
 	}
