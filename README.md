@@ -1,49 +1,29 @@
-# Upgraded-Disco with hexagonal architecture
+# Upgraded Disco
 
-mode := dev or prod
-base_dir := root directory of application
-image := container image name for the application
-version := version for the $image
-config_source := config file to read config data for the application
-config_path := path of $config_source
+This repository hosts the backend for my [website](https://ssnk.in). It is written in Go, and code has been organized
+based on hexagonal architecture. The application uses MariaDB, MongoDB and Redis.
 
-To run this application, use the following command:
+## Components & Architecture
 
-```shell
-docker-compose -f ./build/dev/docker-compose.yml up -d
-export CONFIG_SOURCE=config.yaml
-export CONFIG_PATH=./build/dev
-air -c .air.toml
-```
+It is a fairly simple, but evolving application, but the high level flow looks like this:
+![High Level Diagram](./assets/images/hld.png)
 
-To remove dependencies after stopping the application, use the following command:
+The services like Data, Schedule, Account et ce-tera are not microservices as of now, but Go packages that implement the
+generalised Service interface in the [ports package](./internal/ports).
 
-```shell
-docker-compose -f ./build/dev/docker-compose.yml down
-```
+Here's a brief description of the services:
 
-To run this application in containerized environment, use the following command:
+- Account Service: Facilitate account management services like register, login, update and delete account, session
+  management et ce-tera.
+- Data Service: Facilitate data fetching(might extend to perform other tasks).
+- Schedule Service: Facilitate calendar blocking based on availability(might involve in-house SMTP server).
+- Plugin Service: Facilitate running scripts/integrations as plugin(will be language and task agnostic).
+- GraphQL Service: Currently not under development.
 
-```shell
-./run.sh $mode $base_dir $image $version $config_source $config_path
-```
+## Project Setup and Deployment
 
-e.g.
+This project uses docker-compose for deployment. You can follow the [DEPLOY.md](./DEPLOY.md) file for instructions.
 
-```shell
-export CONFIG_SOURCE=config.yaml
-export CONFIG_PATH=./build/dev
-./run.sh dev . upgraded-disco v0.0.1 config.yaml ./build/dev
-```
+## License
 
-To stop containerized setup, use the following command:
-
-```shell
-./stop.sh $mode $base_dir 
-```
-
-e.g.
-
-```shell
-./stop.sh dev .
-```
+This project is licensed under the [MIT License](./LICENSE). Feel free to fork it and use as a starting point. You can also open an issues and contribute directly to this code base. Thank you in advance🙂!
