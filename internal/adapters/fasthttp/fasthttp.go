@@ -21,13 +21,13 @@ func NewRouter(config *models.Config) *Router {
 }
 
 // TODO: setup auth middleware
-func (r *Router) SetRouter(services *models.Application, log logger.Logger) *router.Router {
+func (r *Router) SetRouter(services ports.Services, log logger.Logger) *router.Router {
 	r.setRouterConfig()
-	r.setDataRouter(services.DataSvc, log)
-	r.setAccountRouter(services.AccountSvc, log)
-	r.setPluginRouter(services.PluginSvc, log)
-	r.setScheduleRouter(services.ScheduleSvc, log)
-	r.setGraphQLRouter(services.GraphQLSvc, log)
+	r.setDataRouter(services.DataService(), log)
+	r.setAccountRouter(services.AccountManagementService(), log)
+	r.setPluginRouter(services.PluginService(), log)
+	r.setScheduleRouter(services.ScheduleService(), log)
+	r.setGraphQLRouter(services.GraphQLService(), log)
 	r.setRouterConfig()
 	return r.router
 }
@@ -49,7 +49,7 @@ func (r *Router) setDataRouter(ops ports.DataOps, log logger.Logger) *router.Rou
 	handler := Data{DataOps: ops, Logger: log}
 	dataGroup := r.setV1Router().Group("/data")
 	{
-		dataGroup.GET("/graph", handler.Graph)
+		dataGroup.GET("/chess", handler.Chess)
 		dataGroup.GET("/github", handler.GitHub)
 	}
 	return r.router

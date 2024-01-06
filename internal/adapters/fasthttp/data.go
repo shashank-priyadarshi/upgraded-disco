@@ -11,24 +11,26 @@ type Data struct {
 	logger.Logger
 }
 
-func (d *Data) Graph(ctx *fasthttp.RequestCtx) {
+func (d *Data) Chess(ctx *fasthttp.RequestCtx) {
 
-	d.Logger.Infof("Fetch graph data called: ", ctx)
-	data, err := d.DataOps.GetGraphData()
+	data, err := d.DataOps.Chess()
 	if err != nil || data == nil {
 		ctx.Err()
 		return
 	}
+
 	ctx.SetBody(data.([]byte))
 	ctx.Done()
 }
 
 func (d *Data) GitHub(ctx *fasthttp.RequestCtx) {
-	data, err := d.DataOps.GetGitHubData()
+
+	data, err := d.DataOps.GitHub()
 	if err != nil || data == nil {
 		ctx.Err()
 		return
 	}
+
 	ctx.SetBody(data.([]byte))
 	ctx.Done()
 }

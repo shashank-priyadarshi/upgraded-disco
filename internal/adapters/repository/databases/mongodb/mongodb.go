@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/repository/databases/batch_ops"
 
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
@@ -12,8 +13,9 @@ import (
 )
 
 type MongoDatabase struct {
-	client *mongo.Client
-	logger logger.Logger
+	client   *mongo.Client
+	logger   logger.Logger
+	BatchOps batch_ops.BatchOps
 }
 
 func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, error) {
@@ -29,10 +31,14 @@ func NewMongoDBInstance(log logger.Logger, config interface{}) (*MongoDatabase, 
 	if err != nil {
 		return &MongoDatabase{}, fmt.Errorf("error connecting to mongo db: %v", err)
 	}
-	return &MongoDatabase{
-		logger: log,
+
+	mDB := &MongoDatabase{
 		client: client,
-	}, nil
+		logger: log,
+	}
+	mDB.BatchOps = batch_ops.BatchOps{mDB}
+
+	return mDB, nil
 }
 
 func createConnectionString(user, password, host string) (connStr string) {

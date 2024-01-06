@@ -6,16 +6,17 @@ type Service struct {
 	db interface{}
 }
 
-// TODO
+func (s Service) Create(schedule interface{}) (interface{}, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (s Service) List(schedule interface{}) (interface{}, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s Service) Create(schedule interface{}) (interface{}, error) {
-	//TODO implement me
-	panic("implement me")
-}
+func (s Service) Update(schedule interface{}) error { return nil }
 
 func (s Service) Delete(schedule interface{}) error {
 	//TODO implement me

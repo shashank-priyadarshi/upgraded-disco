@@ -1,4 +1,4 @@
-package databases
+package batch_ops
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"

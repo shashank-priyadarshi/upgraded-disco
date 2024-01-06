@@ -9,27 +9,30 @@ type Services interface {
 }
 
 type DataOps interface {
-	GetGraphData() (interface{}, error)
-	GetGitHubData() (interface{}, error)
+	Chess() (interface{}, error)
+	GitHub() (interface{}, error)
 }
 
 type AccountOps interface {
-	RegisterUser(interface{}) error
+	Register(interface{}) error
 	Login(interface{}) (interface{}, error)
-	ResetPassword(interface{}) error
-	DeleteUser(interface{}) error
+	Update(interface{}) error
+	Delete(interface{}) error
 }
 
 type PluginOps interface {
-	List() (interface{}, error)
-	Update(interface{}) error
 	Install(interface{}) error
+	List() (interface{}, error)
+	Info(string, string, ...interface{}) (interface{}, error)
+	Upgrade(interface{}) error
 	Trigger(interface{}) error
+	Uninstall(string) error
 }
 
 type ScheduleOps interface {
 	List(interface{}) (interface{}, error)
 	Create(interface{}) (interface{}, error)
+	Update(interface{}) error
 	Delete(interface{}) error
 }
 

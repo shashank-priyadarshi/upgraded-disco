@@ -68,6 +68,8 @@ func (g GitHub) getStarredRepos() (err error) {
 		starredRepositories = append(starredRepositories, response.Data.Viewer.StarredRepositories.Nodes...)
 	}
 
+	fmt.Println(starredRepositoriesCount)
+
 	return
 }
 
@@ -92,6 +94,7 @@ func (g GitHub) getFollowedUsers() (err error) {
 		response = data.(followedUsersResponse)
 		followedUsers = append(followedUsers, response.Data.Viewer.Following.Nodes...)
 	}
+	fmt.Println(followedUsersCount)
 
 	return
 }
