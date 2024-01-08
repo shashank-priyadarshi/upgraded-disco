@@ -3,7 +3,7 @@ package mongodb
 import (
 	"context"
 	"fmt"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/repository/databases/batch_ops"
+	"github.com/shashank-priyadarshi/upgraded-disco/internal/application/databases/batch_ops"
 
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"

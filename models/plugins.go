@@ -1,7 +1,13 @@
 package models
 
 type PluginsConfig struct {
+	Plugins         []Plugin
 	Endpoint, Token string
+}
+
+type Plugin struct {
+	Name      string
+	Languages []string
 }
 
 type Metadata struct {
