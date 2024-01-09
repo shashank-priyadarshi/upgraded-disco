@@ -8,7 +8,7 @@ import (
 
 type Plugins struct {
 	ports.PluginOps
-	logger.Logger
+	log logger.Logger
 }
 
 func (p *Plugins) Install(ctx *fasthttp.RequestCtx) {
@@ -40,7 +40,11 @@ func (p *Plugins) Update(ctx *fasthttp.RequestCtx) {
 }
 
 func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
-	err := p.PluginOps.Trigger(ctx.Request.Body())
+	var pluginID string
+	pluginID = getPathParts(string(ctx.URI().Path()))[2]
+
+	p.log.Infof("PluginID: %s", pluginID)
+	err := p.PluginOps.Trigger(pluginID)
 	if err != nil {
 		ctx.Err()
 		return
@@ -49,7 +53,9 @@ func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
 }
 
 func (p *Plugins) Delete(ctx *fasthttp.RequestCtx) {
-	err := p.PluginOps.Trigger(ctx.Request.Body())
+	var pluginID string
+	pluginID = getPathParts(string(ctx.URI().Path()))[2]
+	err := p.PluginOps.Uninstall(pluginID)
 	if err != nil {
 		ctx.Err()
 		return

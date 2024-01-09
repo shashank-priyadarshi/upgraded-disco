@@ -75,7 +75,7 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 	// update: auth
 	// install: auth
 	// trigger: auth
-	handler := Plugins{PluginOps: ops, Logger: log}
+	handler := Plugins{PluginOps: ops, log: log}
 	pluginGroup := r.setV1Router().Group("/plugins")
 	{
 		pluginGroup.POST("/", handler.Install)
