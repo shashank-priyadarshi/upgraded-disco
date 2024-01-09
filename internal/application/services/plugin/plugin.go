@@ -37,22 +37,22 @@ func NewApplication(log logger.Logger, database interface{}, broker pubsub.PubSu
 
 func (s *Service) Install(i interface{}) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func (s *Service) List() (interface{}, error) {
 	//TODO implement me
-	panic("implement me")
+	return nil, nil
 }
 
 func (s *Service) Info(s3 string, s2 string, i ...interface{}) (interface{}, error) {
 	//TODO implement me
-	panic("implement me")
+	return nil, nil
 }
 
 func (s *Service) Upgrade(i interface{}) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func (s *Service) Trigger(plugin string) error {
@@ -65,5 +65,5 @@ func (s *Service) Trigger(plugin string) error {
 
 func (s *Service) Uninstall(s2 string) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }

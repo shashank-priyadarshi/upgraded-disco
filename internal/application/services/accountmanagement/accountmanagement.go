@@ -24,19 +24,19 @@ func (s Service) Register(userData interface{}) error {
 // Can be email or username, if empty, needs to be API or JWT token
 func (s Service) Login(interface{}) (interface{}, error) {
 	//TODO implement me
-	panic("implement me")
+	return nil, nil
 }
 
 // Send password reset email
 func (s Service) Update(interface{}) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 // Send account deletion confirmation email
 func (s Service) Delete(interface{}) error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func NewApplication(log logger.Logger, database interface{}) *Service {

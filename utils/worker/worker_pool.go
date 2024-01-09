@@ -15,15 +15,15 @@ type Pool struct {
 
 func (w *Pool) SetPubSub(sub pubsub.PubSub) {
 	//TODO implement me
-	panic("implement me")
+	return
 }
 
 func (w *Pool) Close() error {
 	//TODO implement me
-	panic("implement me")
+	return nil
 }
 
 func (w *Pool) Wait() {
 	//TODO implement me
-	panic("implement me")
+	return
 }

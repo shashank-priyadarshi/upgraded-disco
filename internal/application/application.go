@@ -12,6 +12,7 @@ import (
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/pubsub"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/smtp"
 )
 
 type Application struct {
@@ -24,6 +25,10 @@ type Application struct {
 	ScheduleSvc          ports.ScheduleOps
 	GraphQLSvc           ports.GraphQLOps
 	BrokerSvc            pubsub.PubSub
+	SMTPSvc              struct {
+		smtp.Server
+		smtp.Client
+	}
 }
 
 func NewApplication(log logger.Logger, configs map[string]models.DBConfig, pluginConfig *models.PluginsConfig) *Application {
@@ -35,12 +40,12 @@ func NewApplication(log logger.Logger, configs map[string]models.DBConfig, plugi
 		pluginConfig: pluginConfig,
 	}
 
-	application.brokerService().dataService().accountManagementService().pluginService().scheduleService().build()
+	application.withBrokerService().withSMTPService().withDataService().withAccountManagementService().withPluginService().withScheduleService().build()
 
 	return application
 }
 
-func (a *Application) dataService() *Application {
+func (a *Application) withDataService() *Application {
 	dataSvcMongoDBConfig := a.dbConfigs[constants.DB_MONGODB]
 	dataSvcMongoDBConfig.Database = []interface{}{"Graph", "GitHub"}
 	dataSvcMongoDBConfig.Collection = []interface{}{} // TODO
@@ -48,7 +53,7 @@ func (a *Application) dataService() *Application {
 	return a
 }
 
-func (a *Application) accountManagementService() *Application {
+func (a *Application) withAccountManagementService() *Application {
 	accountSvcMariaDBConfig := a.dbConfigs[constants.DB_MARIADB]
 	accountSvcMariaDBConfig.Database = []interface{}{"Account"}
 	accountSvcMariaDBConfig.Table = []interface{}{"User", "Secrets"}
@@ -57,7 +62,7 @@ func (a *Application) accountManagementService() *Application {
 	return a
 }
 
-func (a *Application) pluginService() *Application {
+func (a *Application) withPluginService() *Application {
 	pluginSvcMongoDBConfig := a.dbConfigs[constants.DB_MONGODB]
 	pluginSvcMongoDBConfig.Database = []interface{}{"Chess", "GitHub"}
 	pluginSvcMongoDBConfig.Collection = []interface{}{} // TODO
@@ -68,7 +73,7 @@ func (a *Application) pluginService() *Application {
 	return a
 }
 
-func (a *Application) scheduleService() *Application {
+func (a *Application) withScheduleService() *Application {
 	scheduleSvcMongoDBConfig := a.dbConfigs[constants.DB_MONGODB]
 	scheduleSvcMongoDBConfig.Database = []interface{}{"Schedule"}
 	scheduleSvcMongoDBConfig.Collection = []interface{}{} // TODO
@@ -82,12 +87,35 @@ func (a *Application) graphQLService() *Application {
 	return a
 }
 
-func (a *Application) brokerService() *Application {
+func (a *Application) withBrokerService() *Application {
 	if broker, err := pubsub.NewBroker(); err != nil {
 		a.log.Errorf("Error initializing broker service: ", err)
 	} else {
 		a.BrokerSvc = broker
 	}
+	return a
+}
+
+func (a *Application) withSMTPService() *Application {
+	var server smtp.Server
+	var client smtp.Client
+	var err error
+
+	if server, err = smtp.NewSMTPServer(smtp.SMTPServerConfig{}, func(message *smtp.Message) error {
+		return nil
+	}, a.log.WithSubmodule("smtp").WithSubmodule("server")); err != nil {
+		a.log.Errorf("Error initializing SMTP server: ", err)
+		return a
+	}
+
+	if client, err = smtp.NewSMTPClient(smtp.SMTPServerConfig{}, a.log.WithSubmodule("smtp").WithSubmodule("client")); err != nil {
+		a.log.Errorf("Error initializing SMTP client: ", err)
+		return a
+	}
+
+	a.SMTPSvc.Server = server
+	a.SMTPSvc.Client = client
+
 	return a
 }
 

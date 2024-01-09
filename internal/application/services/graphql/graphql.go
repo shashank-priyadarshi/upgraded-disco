@@ -9,7 +9,7 @@ type Service struct {
 // TODO
 func (s Service) GraphQL(query interface{}) (interface{}, error) {
 	//TODO implement me
-	panic("implement me")
+	return nil, nil
 }
 
 func NewApplication(log logger.Logger, database interface{}) *Service {
