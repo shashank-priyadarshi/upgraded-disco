@@ -1,99 +1,87 @@
 package config
 
 import (
-	"encoding/base64"
 	"fmt"
-	"os"
-	"strings"
-
-	logger "github.com/rs/zerolog/log"
+	"github.com/shashank-priyadarshi/upgraded-disco/constants"
+	models "github.com/shashank-priyadarshi/upgraded-disco/models"
+	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	"github.com/spf13/viper"
 )
 
-type Configuration struct {
-	SQLURI         string
-	MongoURI       string
-	DBNAME         string
-	SERVERORIGIN   string
-	ALLOWEDORIGIN  string
-	GITHUBTOKEN    string
-	GITHUBUSERNAME string
-	SECRETKEY      []byte
-	Ports
-	NewRelic
-	Collections
-}
-type Ports struct {
-	Server string
-	GitHub string
-}
-type NewRelic struct {
-	Application string
-	License     string
-	LogForward  bool
-}
-type Collections struct {
-	GITHUBDATA string
-	GRAPHDATA  string
+type Source struct {
+	ConfigSource, ConfigPath string
 }
 
-func FetchConfig() Configuration {
-	if strings.EqualFold("0", os.Getenv("SETUP")) {
-		return Configuration{
-			SQLURI:         "root@tcp(mysql:3306)/db",
-			MongoURI:       "mongodb://mongodb:27017/test",
-			DBNAME:         "test",
-			SERVERORIGIN:   "http://localhost:4200",
-			GITHUBTOKEN:    os.Getenv("GH"),
-			GITHUBUSERNAME: "shashank-priyadarshi",
-			ALLOWEDORIGIN:  "http://localhost:4200",
-			SECRETKEY:      fetchSecretKey(),
-			Ports: Ports{
-				Server: "8085",
-				GitHub: "8086",
-			},
-			Collections: Collections{
-				GITHUBDATA: "g",
-				GRAPHDATA:  "gr",
-			},
-			NewRelic: NewRelic{
-				Application: "",
-				License:     "",
-				LogForward:  false,
-			},
+// Load based on config Source and ConfigPath, use switch case to Load config from env var or from yaml, toml, json using viper
+func (s *Source) Load(log logger.Logger) (config models.Config, err error) {
+	if err = s.getConfigFile(); err != nil {
+		return config, fmt.Errorf("error looking up for file %s at location %s: %v", s.ConfigSource, s.ConfigPath, err)
+	}
+	if config, err = setConfig(); err != nil {
+		return config, fmt.Errorf("error reading config from file %s at location %s: %v", s.ConfigSource, s.ConfigPath, err)
+	}
+	return config, nil
+}
+
+// Refresh based on config Source and ConfigPath
+func (s *Source) Refresh() (config models.Config, err error) {
+	if config, err = setConfig(); err != nil {
+		return config, fmt.Errorf("error refreshing config from file %s at location %s: %v", s.ConfigSource, s.ConfigPath, err)
+	}
+	return config, nil
+}
+
+func (s *Source) getConfigFile() error {
+	viper.SetConfigFile(fmt.Sprintf("%s/%s", s.ConfigPath, s.ConfigSource))
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func setConfig() (config models.Config, err error) {
+	dbConfig := make(map[string]models.DBConfig)
+	dbConfig[constants.DB_REDIS] = models.DBConfig{
+		Username:           viper.Get("database.redis.username").(string),
+		Password:           viper.Get("database.redis.password").(string),
+		Host:               viper.Get("database.redis.host").(string),
+		Database:           viper.Get("database.redis.database").([]interface{}),
+		MaxIdleConnections: viper.Get("database.redis.idle").(int),
+		MaxOpenConnections: viper.Get("database.redis.idle").(int),
+	}
+	dbConfig[constants.DB_MARIADB] = models.DBConfig{
+		Username:           viper.Get("database.mariadb.username").(string),
+		Password:           viper.Get("database.mariadb.password").(string),
+		Host:               viper.Get("database.mariadb.host").(string),
+		Database:           viper.Get("database.mariadb.database").([]interface{}),
+		MaxIdleConnections: viper.Get("database.mariadb.idle").(int),
+		MaxOpenConnections: viper.Get("database.mariadb.open").(int),
+	}
+	dbConfig[constants.DB_MONGODB] = models.DBConfig{
+		Username: viper.Get("database.mongo.username").(string),
+		Password: viper.Get("database.mongo.password").(string),
+		Host:     viper.Get("database.mongo.host").(string),
+	}
+	config.DBConfig = dbConfig
+
+	plugins := viper.Get("plugins").([]interface{})
+	var pluginsConfig []models.Plugin
+	for _, val := range plugins {
+		pluginMap := val.(map[string]interface{})
+		languages := pluginMap["languages"].([]interface{})
+
+		plugin := models.Plugin{
+			Name: pluginMap["name"].(string),
 		}
-	}
-	return Configuration{
-		DBNAME:         os.Getenv("DB_NAME"),
-		SQLURI:         os.Getenv("SQL_URI"),
-		MongoURI:       os.Getenv("MONGO_URI"),
-		GITHUBTOKEN:    os.Getenv("GITHUB_TOKEN"),
-		ALLOWEDORIGIN:  os.Getenv("ALLOWED_ORIGIN"),
-		GITHUBUSERNAME: os.Getenv("GITHUB_USERNAME"),
-		SERVERORIGIN:   fmt.Sprintf("http://localhost:%v", os.Getenv("SERVER_PORT")),
-		SECRETKEY:      fetchSecretKey(),
-		Ports: Ports{
-			Server: os.Getenv("SERVER_PORT"),
-			GitHub: os.Getenv("GITHUB_PORT"),
-		},
-		Collections: Collections{
-			GITHUBDATA: os.Getenv("GITHUB"),
-			GRAPHDATA:  os.Getenv("GRAPH"),
-		},
-		NewRelic: NewRelic{
-			Application: os.Getenv("NEWRELIC_APP"),
-			License:     os.Getenv("NEWRELIC_LICENSE"),
-			LogForward:  os.Getenv("NEWRELIC_LOG_FORWARD") == "true",
-		},
-	}
-}
 
-func fetchSecretKey() (key []byte) {
-	// Read the secret key from the environment variable
-	encodedKey := os.Getenv("SECRET_KEY")
-	key, err := base64.StdEncoding.DecodeString(encodedKey)
-	if err != nil {
-		logger.Info().Err(err).Msg("failed to decode secret key: ")
-		return []byte("")
+		for _, language := range languages {
+			plugin.Languages = append(plugin.Languages, language.(string))
+		}
+
+		pluginsConfig = append(pluginsConfig, plugin)
 	}
+
+	config.PluginsConfig.Plugins = pluginsConfig
+	config.ServerConfig.Port = viper.Get("server.port").(string)
 	return
 }
