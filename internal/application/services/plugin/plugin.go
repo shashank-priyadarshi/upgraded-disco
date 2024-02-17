@@ -1,22 +1,21 @@
 package plugin
 
 import (
-	"fmt"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/pubsub"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Service struct {
 	plugin *Plugin
 	log    logger.Logger
 	db     interface{}
-	broker pubsub.PubSub
+	//broker pubsub.PubSub
 }
 
-func NewApplication(log logger.Logger, database interface{}, broker pubsub.PubSub, config *models.PluginsConfig) *Service {
+func NewApplication(log logger.Logger, database interface{}, config *models.PluginsConfig) *Service {
+	//func NewApplication(log logger.Logger, database interface{}, broker pubsub.PubSub, config *models.PluginsConfig) *Service {
 
-	log.Infof("Initialising plugin service")
+	log.Info("Initialising plugin service")
 	db := database.(models.Repository)
 	plugin := initPlugin(&db, config, log)
 
@@ -28,9 +27,9 @@ func NewApplication(log logger.Logger, database interface{}, broker pubsub.PubSu
 		5. Worker pool subscribes to JOBS topic and publishes to PLUGINS topic
 	*/
 	return &Service{
-		log:    log,
-		db:     database,
-		broker: broker,
+		log: log,
+		db:  database,
+		//broker: broker,
 		plugin: plugin,
 	}
 }
@@ -56,14 +55,14 @@ func (s *Service) Upgrade(i interface{}) error {
 }
 
 func (s *Service) Trigger(plugin string) error {
-	if err := s.broker.Publish("JOBS", plugin); err != nil {
-		s.log.Errorf("Error publishing plugin trigger request to PLUGINS topic for plugin: ", plugin)
-		return fmt.Errorf("Error triggering plugin")
-	}
-	subscriberID := s.broker.Subscribe("PLUGINS", func(message interface{}) {
-		s.log.Infof("Result of plugin execution received on channel PLUGINS: %s", message)
-	})
-	s.log.Infof("Subcriber ID for this job: %s", subscriberID)
+	//if err := s.broker.Publish("JOBS", plugin); err != nil {
+	//	s.log.Errorf("Error publishing plugin trigger request to PLUGINS topic for plugin: ", plugin)
+	//	return fmt.Errorf("Error triggering plugin")
+	//}
+	//subscriberID := s.broker.Subscribe("PLUGINS", func(message interface{}) {
+	//	s.log.Info("Result of plugin execution received on channel PLUGINS: %s", message)
+	//})
+	//s.log.Info("Subcriber ID for this job: %s", subscriberID)
 	return nil
 }
 

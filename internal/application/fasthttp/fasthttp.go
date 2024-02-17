@@ -6,7 +6,7 @@ import (
 	"github.com/fasthttp/router"
 	_ "github.com/go-playground/validator/v10"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Router struct {

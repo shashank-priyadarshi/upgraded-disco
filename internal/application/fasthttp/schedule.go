@@ -2,7 +2,7 @@ package fasthttp
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 	"github.com/valyala/fasthttp"
 )
 

@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Config struct {
@@ -13,5 +13,5 @@ type Config struct {
 
 type Repository struct {
 	Log                     logger.Logger
-	Cache, MariaDB, MongoDB ports.Database
+	Cache, MariaDB, MongoDB ports.Repository
 }
