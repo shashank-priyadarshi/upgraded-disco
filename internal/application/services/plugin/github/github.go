@@ -1,12 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/shashank-priyadarshi/upgraded-disco/constants"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	http2 "github.com/shashank-priyadarshi/upgraded-disco/utils/http"
 	"net/http"
 )
 
@@ -101,14 +99,14 @@ func (g GitHub) getFollowedUsers() (err error) {
 
 func getData(endpoint, query, token string, data interface{}) (interface{}, error) {
 
-	responseBytes, err := http2.HttpClient("POST", endpoint, query, "Bearer", token)
-	if err != nil {
-		return err, fmt.Errorf("HTTP POST request to endpoint %s to fetch starred repositories failed with status err: %v", endpoint, err)
-	}
-
-	if err = json.Unmarshal(responseBytes, &data); err != nil {
-		return nil, fmt.Errorf("error unmarshaling starred repository payload: %v", err)
-	}
+	//responseBytes, err := http2.HttpClient("POST", endpoint, query, "Bearer", token)
+	//if err != nil {
+	//	return err, fmt.Errorf("HTTP POST request to endpoint %s to fetch starred repositories failed with status err: %v", endpoint, err)
+	//}
+	//
+	//if err = json.Unmarshal(responseBytes, &data); err != nil {
+	//	return nil, fmt.Errorf("error unmarshaling starred repository payload: %v", err)
+	//}
 
 	return data, nil
 }

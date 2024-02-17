@@ -1,6 +1,6 @@
 package graphql
 
-import "github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+import logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 
 type Service struct {
 	db interface{}
@@ -14,7 +14,7 @@ func (s Service) GraphQL(query interface{}) (interface{}, error) {
 
 func NewApplication(log logger.Logger, database interface{}) *Service {
 
-	log.Infof("Initialising GraphQL service")
+	log.Info("Initialising GraphQL service")
 	return &Service{
 		db: database,
 	}

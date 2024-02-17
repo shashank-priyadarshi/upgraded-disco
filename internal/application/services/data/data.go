@@ -2,7 +2,7 @@ package data
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Service struct {
@@ -11,15 +11,15 @@ type Service struct {
 
 // TODO
 func (s Service) Chess() (interface{}, error) {
-	return s.db.MongoDB.Get(nil)
+	return s.db.MongoDB.Query(nil), nil
 }
 
 func (s Service) GitHub() (interface{}, error) {
-	return s.db.MongoDB.Get(nil)
+	return s.db.MongoDB.Query(nil), nil
 }
 
 func NewApplication(log logger.Logger, database interface{}) *Service {
-	log.Infof("Initialising data service")
+	log.Info("Initialising data service")
 
 	return &Service{
 		db: database.(models.Repository),

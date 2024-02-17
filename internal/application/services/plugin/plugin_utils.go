@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 )
 
 type Plugin struct {
