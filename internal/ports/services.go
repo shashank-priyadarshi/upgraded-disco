@@ -25,7 +25,7 @@ type PluginOps interface {
 	List() (interface{}, error)
 	Info(string, string, ...interface{}) (interface{}, error)
 	Upgrade(interface{}) error
-	Trigger(interface{}) error
+	Trigger(string) error
 	Uninstall(string) error
 }
 

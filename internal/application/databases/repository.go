@@ -1,8 +1,7 @@
-package repository
+package databases
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/constants"
-	"github.com/shashank-priyadarshi/upgraded-disco/internal/adapters/repository/databases"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 )
@@ -18,7 +17,7 @@ func NewRepository(log logger.Logger) *Repository {
 
 func (r *Repository) WithRedisCache(config models.DBConfig) *Repository {
 
-	if cache, err := databases.NewDatabase(constants.DB_REDIS, r.Log, config); err != nil {
+	if cache, err := NewDatabase(constants.DB_REDIS, r.Log, config); err != nil {
 		r.Log.Errorf("Error initialising Redis cache: ", err)
 		return nil
 	} else {
@@ -29,7 +28,7 @@ func (r *Repository) WithRedisCache(config models.DBConfig) *Repository {
 
 func (r *Repository) WithMariaDB(config models.DBConfig) *Repository {
 
-	if mariaDB, err := databases.NewDatabase(constants.DB_MARIADB, r.Log, config); err != nil {
+	if mariaDB, err := NewDatabase(constants.DB_MARIADB, r.Log, config); err != nil {
 		r.Log.Errorf("Error initialising MariaDB: ", err)
 		return nil
 	} else {
@@ -40,7 +39,7 @@ func (r *Repository) WithMariaDB(config models.DBConfig) *Repository {
 
 func (r *Repository) WithMongoDB(config models.DBConfig) *Repository {
 
-	if mongoDB, err := databases.NewDatabase(constants.DB_MONGODB, r.Log, config); err != nil {
+	if mongoDB, err := NewDatabase(constants.DB_MONGODB, r.Log, config); err != nil {
 		r.Log.Errorf("Error initialising MongoDB: ", err)
 		return nil
 	} else {

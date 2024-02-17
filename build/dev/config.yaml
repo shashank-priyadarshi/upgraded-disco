@@ -6,17 +6,18 @@ database:
     username: ""
     password: ""
     host: "localhost:6379"
-    database: ["0"]
+    database: [ "0" ]
     idle: 5
     open: 5
   mariadb:
     username: "root"
     password: ""
     host: "localhost:3306"
-    database: ["mydatabase"]
+    database: [ "mydatabase" ]
     idle: 5
     open: 5
   mongo:
     username: ""
     password: ""
     host: "localhost:27017"
+plugins: [ { name: github, languages: [ "go" ] } ]

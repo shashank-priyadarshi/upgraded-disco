@@ -4,6 +4,7 @@ import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
 
 	"github.com/fasthttp/router"
+	_ "github.com/go-playground/validator/v10"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
 	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
 )
@@ -21,6 +22,8 @@ func NewRouter(config *models.Config) *Router {
 }
 
 // TODO: setup auth middleware
+// TODO: setup payload validators at controller layers
+// TODO: setup proper http response codes
 func (r *Router) SetRouter(services ports.Services, log logger.Logger) *router.Router {
 	r.setRouterConfig()
 	r.setDataRouter(services.DataService(), log)
@@ -72,7 +75,7 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 	// update: auth
 	// install: auth
 	// trigger: auth
-	handler := Plugins{PluginOps: ops, Logger: log}
+	handler := Plugins{PluginOps: ops, log: log}
 	pluginGroup := r.setV1Router().Group("/plugins")
 	{
 		pluginGroup.POST("/", handler.Install)

@@ -63,6 +63,25 @@ func setConfig() (config models.Config, err error) {
 		Host:     viper.Get("database.mongo.host").(string),
 	}
 	config.DBConfig = dbConfig
+
+	plugins := viper.Get("plugins").([]interface{})
+	var pluginsConfig []models.Plugin
+	for _, val := range plugins {
+		pluginMap := val.(map[string]interface{})
+		languages := pluginMap["languages"].([]interface{})
+
+		plugin := models.Plugin{
+			Name: pluginMap["name"].(string),
+		}
+
+		for _, language := range languages {
+			plugin.Languages = append(plugin.Languages, language.(string))
+		}
+
+		pluginsConfig = append(pluginsConfig, plugin)
+	}
+
+	config.PluginsConfig.Plugins = pluginsConfig
 	config.ServerConfig.Port = viper.Get("server.port").(string)
 	return
 }
