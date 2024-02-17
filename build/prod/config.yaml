@@ -1,0 +1,19 @@
+database:
+  redis:
+    username: ""
+    password: ""
+    host: ""
+    database: ""
+    idle: 0
+    open: 0
+  mariadb:
+    username: ""
+    password: ""
+    host: ""
+    database: ""
+    idle: 0
+    open: 0
+  mongo:
+    username: ""
+    password: ""
+    host: ""

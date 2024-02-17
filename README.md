@@ -1,82 +1,29 @@
-Backend for [my portfolio website](ssnk.in)
-<br>
-This backend has several packages:
+# Upgraded Disco
 
-- server: primary server accepting external requests
-  <br>
-  <i>Endpoints:
+This repository hosts the backend for my [website](https://ssnk.in). It is written in Go, and code has been organized
+based on hexagonal architecture. The application uses MariaDB, MongoDB and Redis.
 
-1. biodata: GET
-2. githubdata: GET
-3. login: POST
-4. todos: POST
-5. logout: POST <b>planned</b>
-6. graphql: POST
-7. trigger: POST
-8. schedule: POST
-9. register: POST
-10. temptoken: POST <b>planned</b>
-11. resetpassword: POST <b>planned</b>
-    </i>
-    <br>
+## Components & Architecture
 
-- todos: returns open todos list from MongoDB
-  <br>
-  <i>Endpoints:
+It is a fairly simple, but evolving application, but the high level flow looks like this:
+![High Level Diagram](./assets/images/hld.png)
 
-1. list: POST
-2. new: POST
-3. done: POST
-   </i><br>
+The services like Data, Schedule, Account et ce-tera are not microservices as of now, but Go packages that implement the
+generalised Service interface in the [ports package](./internal/ports).
 
-- ghintegration: use GitHub REST API and aggregate data and push to MongoDB
-  <br>
-  <i>Endpoints:
+Here's a brief description of the services:
 
-1. trigger: POST
-   </i><br>
+- Account Service: Facilitate account management services like register, login, update and delete account, session
+  management et ce-tera.
+- Data Service: Facilitate data fetching(might extend to perform other tasks).
+- Schedule Service: Facilitate calendar blocking based on availability(might involve in-house SMTP server).
+- Plugin Service: Facilitate running scripts/integrations as plugin(will be language and task agnostic).
+- GraphQL Service: Currently not under development.
 
-- auth: handles authorization
-  <br>
-  <i>Endpoints:
+## Project Setup and Deployment
 
-1. signup: POST
-2. login: POST <b>planned</b>
-3. logout: POST <b>planned</b>
-4. temptoken: POST <b>planned</b>
-5. resetpassword: POST <b>planned</b>
-   </i><br>
-   <br>
-   <i>Packages:
-   1. session: <b>planned</b>
-      - limit sessions for user,
-      - fetch list of open sesssions,
-      - allow session termination before login,
-      - invalidate session in a week
-        <br>
-        <i>Endpoints:
-      1. </i><br>
+This project uses docker-compose for deployment. You can follow the [DEPLOY.md](./DEPLOY.md) file for instructions.
 
-</i><br>
+## License
 
-- db: handles connection to sql & nosql db
-  <br>
-  <i>Packages:
-
-1. mongoconnection: MongoDB connection
-2. sqlconnection: MySQL connection
-   </i><br>
-
-- config: reads and stores all environment variables
-- middleware
-- common
-  <br>
-
-  <b>Note:
-
-  - Only the primary server accepts external requests, todos and ghintegration micro-services accept requests from the server only
-  - All REST endpoints will eventually disallow external connections, only /graphql will be available
-  - Internal communication between micro services will migrate from REST to gRPC
-  - middleware package might be removed, dependent on requirements after moving to gin
-  - [gin-contrib/logger](https://github.com/gin-contrib/logger) for path logging, [gin-contrib/cors](https://github.com/gin-contrib/cors) for CORS
-    </b>
+This project is licensed under the [MIT License](./LICENSE). Feel free to fork it and use as a starting point. You can also open an issues and contribute directly to this code base. Thank you in advance🙂!

@@ -1,8 +1,5 @@
-tmp
-*.json
-.vscode/
-coverage.out
+.idea
+/tmp
 *.exe
-*tmp*
-cloned-repos/
+*.log
 vendor/
