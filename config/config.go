@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/shashank-priyadarshi/upgraded-disco/constants"
 	models "github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 	"github.com/spf13/viper"
 )
 

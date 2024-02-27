@@ -1,8 +1,9 @@
 package accountmanagement
 
 import (
+	"context"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Service struct {
@@ -13,9 +14,9 @@ type Service struct {
 // Send account confirmation email
 func (s Service) Register(userData interface{}) error {
 	user := userData.(models.RegisterUser)
-	if s.db.MariaDB.Exists(user.Username) || s.db.MariaDB.Exists(user.Email) {
-	}
-	_, err := s.db.MariaDB.Create(user)
+	//if s.db.MariaDB.Exists(user.Username) || s.db.MariaDB.Exists(user.Email) {
+	//}
+	_, err := s.db.MariaDB.Create(context.TODO(), user)
 	if err != nil {
 	}
 	return nil
@@ -41,7 +42,7 @@ func (s Service) Delete(interface{}) error {
 
 func NewApplication(log logger.Logger, database interface{}) *Service {
 
-	log.Infof("Initialising account management service")
+	log.Info("Initialising account management service")
 	return &Service{
 		db: database.(models.Repository),
 	}

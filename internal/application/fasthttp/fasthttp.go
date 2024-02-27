@@ -6,7 +6,7 @@ import (
 	"github.com/fasthttp/router"
 	_ "github.com/go-playground/validator/v10"
 	"github.com/shashank-priyadarshi/upgraded-disco/models"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 )
 
 type Router struct {
@@ -21,6 +21,7 @@ func NewRouter(config *models.Config) *Router {
 	}
 }
 
+// TODO: check path parameter parsing using fasthttp or look at gin
 // TODO: setup auth middleware
 // TODO: setup payload validators at controller layers
 // TODO: setup proper http response codes
@@ -64,8 +65,8 @@ func (r *Router) setAccountRouter(ops ports.AccountOps, log logger.Logger) *rout
 	{
 		accountGroup.POST("/signup", handler.Register)
 		accountGroup.POST("/login", handler.Login)
-		accountGroup.PUT("/:id", handler.Update)
-		accountGroup.DELETE("/:id", handler.Delete)
+		accountGroup.PUT("/{id}", handler.Update)
+		accountGroup.DELETE("/{id}", handler.Delete)
 	}
 	return r.router
 }
@@ -80,10 +81,10 @@ func (r *Router) setPluginRouter(ops ports.PluginOps, log logger.Logger) *router
 	{
 		pluginGroup.POST("/", handler.Install)
 		pluginGroup.GET("/", handler.Get)
-		pluginGroup.GET("/:id", handler.Get)
-		pluginGroup.PUT("/:id", handler.Update)
-		pluginGroup.POST("/:id/trigger", handler.Trigger)
-		pluginGroup.DELETE("/:id", handler.Delete)
+		pluginGroup.GET("/{id}", handler.Get)
+		pluginGroup.PUT("/{id}", handler.Update)
+		pluginGroup.POST("/{id}/trigger", handler.Trigger)
+		pluginGroup.DELETE("/{id}", handler.Delete)
 	}
 	return r.router
 }
@@ -95,9 +96,9 @@ func (r *Router) setScheduleRouter(ops ports.ScheduleOps, log logger.Logger) *ro
 	{
 		scheduleGroup.POST("/", handler.Create)
 		scheduleGroup.GET("/", handler.Get)
-		scheduleGroup.GET("/:id", handler.Get)
-		scheduleGroup.PUT("/:id", handler.Update)
-		scheduleGroup.DELETE("/:id", handler.Delete)
+		scheduleGroup.GET("/{id}", handler.Get)
+		scheduleGroup.PUT("/{id}", handler.Update)
+		scheduleGroup.DELETE("/{id}", handler.Delete)
 	}
 	return r.router
 }

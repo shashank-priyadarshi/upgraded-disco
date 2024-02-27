@@ -1,11 +1,11 @@
 package models
 
 type RegisterUser struct {
-	Name, Email, Password, Username string 
+	Name, Email, Password, Username string
 }
 
 type Login struct {
-	ID, Password string 
+	ID, Password string
 }
 
 type ResetPassword struct {
@@ -13,5 +13,5 @@ type ResetPassword struct {
 }
 
 type DeleteUser struct {
-	Email, Username, Password string 
+	Email, Username, Password string
 }

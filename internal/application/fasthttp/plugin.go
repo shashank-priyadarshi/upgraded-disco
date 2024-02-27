@@ -2,7 +2,7 @@ package fasthttp
 
 import (
 	"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"
-	"github.com/shashank-priyadarshi/upgraded-disco/utils/logger"
+	logger "github.com/shashank-priyadarshi/utilities/logger/ports"
 	"github.com/valyala/fasthttp"
 )
 
@@ -43,7 +43,6 @@ func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
 	var pluginID string
 	pluginID = getPathParts(string(ctx.URI().Path()))[2]
 
-	p.log.Infof("PluginID: %s", pluginID)
 	err := p.PluginOps.Trigger(pluginID)
 	if err != nil {
 		ctx.Err()
@@ -55,6 +54,7 @@ func (p *Plugins) Trigger(ctx *fasthttp.RequestCtx) {
 func (p *Plugins) Delete(ctx *fasthttp.RequestCtx) {
 	var pluginID string
 	pluginID = getPathParts(string(ctx.URI().Path()))[2]
+
 	err := p.PluginOps.Uninstall(pluginID)
 	if err != nil {
 		ctx.Err()
