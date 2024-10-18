@@ -9,12 +9,11 @@ type Service struct {
 	db models.Repository
 }
 
-// TODO
-func (s Service) Chess() (interface{}, error) {
+func (s *Service) Chess() (interface{}, error) {
 	return s.db.MongoDB.Query(nil), nil
 }
 
-func (s Service) GitHub() (interface{}, error) {
+func (s *Service) GitHub() (interface{}, error) {
 	return s.db.MongoDB.Query(nil), nil
 }
 

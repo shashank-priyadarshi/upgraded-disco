@@ -1,0 +1,45 @@
+{"Time":"2024-07-29T17:21:32.991351944+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/cmd"}
+{"Time":"2024-07-29T17:21:32.991452452+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/cmd","Output":"FAIL\tgithub.com/shashank-priyadarshi/upgraded-disco/cmd [build failed]\n"}
+{"Time":"2024-07-29T17:21:32.991459835+05:30","Action":"fail","Package":"github.com/shashank-priyadarshi/upgraded-disco/cmd","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991468185+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/config"}
+{"Time":"2024-07-29T17:21:32.991497218+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/config","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/config\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991505456+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/config","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991518158+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/constants"}
+{"Time":"2024-07-29T17:21:32.991523889+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/constants","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/constants\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991529479+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/constants","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991537705+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application"}
+{"Time":"2024-07-29T17:21:32.991542722+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application","Output":"FAIL\tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application [build failed]\n"}
+{"Time":"2024-07-29T17:21:32.991547422+05:30","Action":"fail","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991554924+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/fasthttp"}
+{"Time":"2024-07-29T17:21:32.991559818+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/fasthttp","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/fasthttp\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991566025+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/fasthttp","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991572853+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/accountmanagement"}
+{"Time":"2024-07-29T17:21:32.991577579+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/accountmanagement","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/accountmanagement\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991582665+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/accountmanagement","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.99166613+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/data"}
+{"Time":"2024-07-29T17:21:32.991672934+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/data","Output":"FAIL\tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/data [build failed]\n"}
+{"Time":"2024-07-29T17:21:32.991678226+05:30","Action":"fail","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/data","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991684139+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/graphql"}
+{"Time":"2024-07-29T17:21:32.991690466+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/graphql","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/graphql\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991698065+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/graphql","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991704903+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin"}
+{"Time":"2024-07-29T17:21:32.991709593+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin","Output":"FAIL\tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin [build failed]\n"}
+{"Time":"2024-07-29T17:21:32.991713389+05:30","Action":"fail","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin","Elapsed":0}
+{"Time":"2024-07-29T17:21:32.991719482+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/chess"}
+{"Time":"2024-07-29T17:21:32.99172439+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/chess","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/chess\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:32.991728506+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/chess","Elapsed":0}
+{"Time":"2024-07-29T17:21:33.009575032+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/github"}
+{"Time":"2024-07-29T17:21:33.009598126+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/github","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/github\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:33.009603853+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/github","Elapsed":0}
+{"Time":"2024-07-29T17:21:33.009612092+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/linkedin"}
+{"Time":"2024-07-29T17:21:33.009617042+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/linkedin","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/linkedin\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:33.009620007+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/plugin/linkedin","Elapsed":0}
+{"Time":"2024-07-29T17:21:33.009625651+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/schedule"}
+{"Time":"2024-07-29T17:21:33.009629286+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/schedule","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/application/services/schedule\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:33.009632684+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/application/services/schedule","Elapsed":0}
+{"Time":"2024-07-29T17:21:33.009636993+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/ports"}
+{"Time":"2024-07-29T17:21:33.009640954+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/ports","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/internal/ports\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:33.00964381+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/internal/ports","Elapsed":0}
+{"Time":"2024-07-29T17:21:33.009648986+05:30","Action":"start","Package":"github.com/shashank-priyadarshi/upgraded-disco/models"}
+{"Time":"2024-07-29T17:21:33.009657578+05:30","Action":"output","Package":"github.com/shashank-priyadarshi/upgraded-disco/models","Output":"?   \tgithub.com/shashank-priyadarshi/upgraded-disco/models\t[no test files]\n"}
+{"Time":"2024-07-29T17:21:33.009660632+05:30","Action":"skip","Package":"github.com/shashank-priyadarshi/upgraded-disco/models","Elapsed":0}

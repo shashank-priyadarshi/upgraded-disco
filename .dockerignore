@@ -1,0 +1,272 @@
+# flyctl launch added from .gitignore
+**/.idea
+tmp
+**/*.exe
+**/*.log
+**/vendor
+
+# flyctl launch added from .idea/.gitignore
+# Default ignored files
+.idea/shelf
+.idea/workspace.xml
+# Editor-based HTTP Client requests
+.idea/httpRequests
+# Datasource local storage ignored files
+.idea/dataSources
+.idea/dataSources.local.xml
+
+# flyctl launch added from vendor/github.com/fasthttp/router/.gitignore
+# Binaries for programs and plugins
+vendor/github.com/fasthttp/router/**/*.exe
+vendor/github.com/fasthttp/router/**/*.exe~
+vendor/github.com/fasthttp/router/**/*.dll
+vendor/github.com/fasthttp/router/**/*.so
+vendor/github.com/fasthttp/router/**/*.dylib
+
+# Test binary, built with `go test -c`
+vendor/github.com/fasthttp/router/**/*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+vendor/github.com/fasthttp/router/**/*.out
+vendor/github.com/fasthttp/router/**/.coverprofile
+
+# Dependency directories (remove the comment below to include it)
+vendor/github.com/fasthttp/router/**/vendor
+
+# IDE
+vendor/github.com/fasthttp/router/**/.vscode
+
+# flyctl launch added from vendor/github.com/fsnotify/fsnotify/.gitignore
+# go test -c output
+vendor/github.com/fsnotify/fsnotify/**/*.test
+vendor/github.com/fsnotify/fsnotify/**/*.test.exe
+
+# Output of go build ./cmd/fsnotify
+vendor/github.com/fsnotify/fsnotify/fsnotify
+vendor/github.com/fsnotify/fsnotify/fsnotify.exe
+
+# flyctl launch added from vendor/github.com/go-playground/locales/.gitignore
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+vendor/github.com/go-playground/locales/**/*.o
+vendor/github.com/go-playground/locales/**/*.a
+vendor/github.com/go-playground/locales/**/*.so
+
+# Folders
+vendor/github.com/go-playground/locales/**/_obj
+vendor/github.com/go-playground/locales/**/_test
+
+# Architecture specific extensions/prefixes
+vendor/github.com/go-playground/locales/**/*.[568vq]
+vendor/github.com/go-playground/locales/**/[568vq].out
+
+vendor/github.com/go-playground/locales/**/*.cgo1.go
+vendor/github.com/go-playground/locales/**/*.cgo2.c
+vendor/github.com/go-playground/locales/**/_cgo_defun.c
+vendor/github.com/go-playground/locales/**/_cgo_gotypes.go
+vendor/github.com/go-playground/locales/**/_cgo_export.*
+
+vendor/github.com/go-playground/locales/**/_testmain.go
+
+vendor/github.com/go-playground/locales/**/*.exe
+vendor/github.com/go-playground/locales/**/*.test
+vendor/github.com/go-playground/locales/**/*.prof
+
+# flyctl launch added from vendor/github.com/go-playground/universal-translator/.gitignore
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+vendor/github.com/go-playground/universal-translator/**/*.o
+vendor/github.com/go-playground/universal-translator/**/*.a
+vendor/github.com/go-playground/universal-translator/**/*.so
+
+# Folders
+vendor/github.com/go-playground/universal-translator/**/_obj
+vendor/github.com/go-playground/universal-translator/**/_test
+
+# Architecture specific extensions/prefixes
+vendor/github.com/go-playground/universal-translator/**/*.[568vq]
+vendor/github.com/go-playground/universal-translator/**/[568vq].out
+
+vendor/github.com/go-playground/universal-translator/**/*.cgo1.go
+vendor/github.com/go-playground/universal-translator/**/*.cgo2.c
+vendor/github.com/go-playground/universal-translator/**/_cgo_defun.c
+vendor/github.com/go-playground/universal-translator/**/_cgo_gotypes.go
+vendor/github.com/go-playground/universal-translator/**/_cgo_export.*
+
+vendor/github.com/go-playground/universal-translator/**/_testmain.go
+
+vendor/github.com/go-playground/universal-translator/**/*.exe
+vendor/github.com/go-playground/universal-translator/**/*.test
+vendor/github.com/go-playground/universal-translator/**/*.prof
+vendor/github.com/go-playground/universal-translator/**/*.coverprofile
+
+# flyctl launch added from vendor/github.com/go-playground/validator/v10/.gitignore
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+vendor/github.com/go-playground/validator/v10/**/*.o
+vendor/github.com/go-playground/validator/v10/**/*.a
+vendor/github.com/go-playground/validator/v10/**/*.so
+
+# Folders
+vendor/github.com/go-playground/validator/v10/**/_obj
+vendor/github.com/go-playground/validator/v10/**/_test
+vendor/github.com/go-playground/validator/v10/**/bin
+
+# Architecture specific extensions/prefixes
+vendor/github.com/go-playground/validator/v10/**/*.[568vq]
+vendor/github.com/go-playground/validator/v10/**/[568vq].out
+
+vendor/github.com/go-playground/validator/v10/**/*.cgo1.go
+vendor/github.com/go-playground/validator/v10/**/*.cgo2.c
+vendor/github.com/go-playground/validator/v10/**/_cgo_defun.c
+vendor/github.com/go-playground/validator/v10/**/_cgo_gotypes.go
+vendor/github.com/go-playground/validator/v10/**/_cgo_export.*
+
+vendor/github.com/go-playground/validator/v10/**/_testmain.go
+
+vendor/github.com/go-playground/validator/v10/**/*.exe
+vendor/github.com/go-playground/validator/v10/**/*.test
+vendor/github.com/go-playground/validator/v10/**/*.prof
+vendor/github.com/go-playground/validator/v10/**/*.test
+vendor/github.com/go-playground/validator/v10/**/*.out
+vendor/github.com/go-playground/validator/v10/**/*.txt
+vendor/github.com/go-playground/validator/v10/**/*.DS_Store
+vendor/github.com/go-playground/validator/v10/**/cover.html
+vendor/github.com/go-playground/validator/v10/**/README.html
+vendor/github.com/go-playground/validator/v10/**/.idea
+
+# flyctl launch added from vendor/github.com/hashicorp/hcl/.gitignore
+vendor/github.com/hashicorp/hcl/**/y.output
+
+# ignore intellij files
+vendor/github.com/hashicorp/hcl/**/.idea
+vendor/github.com/hashicorp/hcl/**/*.iml
+vendor/github.com/hashicorp/hcl/**/*.ipr
+vendor/github.com/hashicorp/hcl/**/*.iws
+
+vendor/github.com/hashicorp/hcl/**/*.test
+
+# flyctl launch added from vendor/github.com/leodido/go-urn/.gitignore
+vendor/github.com/leodido/go-urn/**/*.exe
+vendor/github.com/leodido/go-urn/**/*.dll
+vendor/github.com/leodido/go-urn/**/*.so
+vendor/github.com/leodido/go-urn/**/*.dylib
+
+vendor/github.com/leodido/go-urn/**/*.test
+
+vendor/github.com/leodido/go-urn/**/*.out
+vendor/github.com/leodido/go-urn/**/*.txt
+
+vendor/github.com/leodido/go-urn/**/vendor
+vendor/github.com/leodido/go-urn/removecomments
+
+# flyctl launch added from vendor/github.com/magiconair/properties/.gitignore
+vendor/github.com/magiconair/properties/**/*.sublime-project
+vendor/github.com/magiconair/properties/**/*.sublime-workspace
+vendor/github.com/magiconair/properties/**/*.un~
+vendor/github.com/magiconair/properties/**/*.swp
+vendor/github.com/magiconair/properties/**/.idea
+vendor/github.com/magiconair/properties/**/*.iml
+
+# flyctl launch added from vendor/github.com/pelletier/go-toml/v2/.gitignore
+vendor/github.com/pelletier/go-toml/v2/**/test_program/test_program_bin
+vendor/github.com/pelletier/go-toml/v2/**/fuzz
+vendor/github.com/pelletier/go-toml/v2/**/cmd/tomll/tomll
+vendor/github.com/pelletier/go-toml/v2/**/cmd/tomljson/tomljson
+vendor/github.com/pelletier/go-toml/v2/**/cmd/tomltestgen/tomltestgen
+vendor/github.com/pelletier/go-toml/v2/**/dist
+vendor/github.com/pelletier/go-toml/v2/**/tests
+
+# flyctl launch added from vendor/github.com/sagikazarmark/locafero/.gitignore
+vendor/github.com/sagikazarmark/locafero/.devenv
+vendor/github.com/sagikazarmark/locafero/.direnv
+vendor/github.com/sagikazarmark/locafero/.task
+vendor/github.com/sagikazarmark/locafero/bin
+vendor/github.com/sagikazarmark/locafero/build
+vendor/github.com/sagikazarmark/locafero/tmp
+vendor/github.com/sagikazarmark/locafero/var
+vendor/github.com/sagikazarmark/locafero/vendor
+
+# flyctl launch added from vendor/github.com/sagikazarmark/slog-shim/.gitignore
+vendor/github.com/sagikazarmark/slog-shim/.devenv
+vendor/github.com/sagikazarmark/slog-shim/.direnv
+vendor/github.com/sagikazarmark/slog-shim/.task
+vendor/github.com/sagikazarmark/slog-shim/build
+
+# flyctl launch added from vendor/github.com/spf13/afero/.gitignore
+vendor/github.com/spf13/afero/**/sftpfs/file1
+vendor/github.com/spf13/afero/**/sftpfs/test
+
+# flyctl launch added from vendor/github.com/spf13/cast/.gitignore
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+vendor/github.com/spf13/cast/**/*.o
+vendor/github.com/spf13/cast/**/*.a
+vendor/github.com/spf13/cast/**/*.so
+
+# Folders
+vendor/github.com/spf13/cast/**/_obj
+vendor/github.com/spf13/cast/**/_test
+
+# Architecture specific extensions/prefixes
+vendor/github.com/spf13/cast/**/*.[568vq]
+vendor/github.com/spf13/cast/**/[568vq].out
+
+vendor/github.com/spf13/cast/**/*.cgo1.go
+vendor/github.com/spf13/cast/**/*.cgo2.c
+vendor/github.com/spf13/cast/**/_cgo_defun.c
+vendor/github.com/spf13/cast/**/_cgo_gotypes.go
+vendor/github.com/spf13/cast/**/_cgo_export.*
+
+vendor/github.com/spf13/cast/**/_testmain.go
+
+vendor/github.com/spf13/cast/**/*.exe
+vendor/github.com/spf13/cast/**/*.test
+
+vendor/github.com/spf13/cast/**/*.bench
+
+# flyctl launch added from vendor/github.com/spf13/pflag/.gitignore
+vendor/github.com/spf13/pflag/**/.idea/*
+
+
+# flyctl launch added from vendor/github.com/spf13/viper/.gitignore
+vendor/github.com/spf13/viper/.devenv
+vendor/github.com/spf13/viper/.direnv
+vendor/github.com/spf13/viper/.idea
+vendor/github.com/spf13/viper/.pre-commit-config.yaml
+vendor/github.com/spf13/viper/bin
+vendor/github.com/spf13/viper/build
+vendor/github.com/spf13/viper/var
+vendor/github.com/spf13/viper/vendor
+
+# flyctl launch added from vendor/github.com/subosito/gotenv/.gitignore
+vendor/github.com/subosito/gotenv/**/*.test
+vendor/github.com/subosito/gotenv/**/*.out
+vendor/github.com/subosito/gotenv/**/annotate.json
+vendor/github.com/subosito/gotenv/**/profile.cov
+
+# flyctl launch added from vendor/github.com/valyala/fasthttp/.gitignore
+vendor/github.com/valyala/fasthttp/**/tags
+vendor/github.com/valyala/fasthttp/**/*.pprof
+vendor/github.com/valyala/fasthttp/**/*.fasthttp.gz
+vendor/github.com/valyala/fasthttp/**/*.fasthttp.br
+vendor/github.com/valyala/fasthttp/**/.idea
+vendor/github.com/valyala/fasthttp/**/.vscode
+vendor/github.com/valyala/fasthttp/**/.DS_Store
+vendor/github.com/valyala/fasthttp/**/vendor
+
+# flyctl launch added from vendor/go.uber.org/multierr/.gitignore
+vendor/go.uber.org/multierr/vendor
+vendor/go.uber.org/multierr/**/cover.html
+vendor/go.uber.org/multierr/**/cover.out
+vendor/go.uber.org/multierr/bin
+
+# flyctl launch added from vendor/golang.org/x/sys/unix/.gitignore
+vendor/golang.org/x/sys/unix/**/_obj
+vendor/golang.org/x/sys/unix/**/unix.test
+
+# flyctl launch added from vendor/gopkg.in/ini.v1/.gitignore
+vendor/gopkg.in/ini.v1/**/testdata/conf_out.ini
+vendor/gopkg.in/ini.v1/**/ini.sublime-project
+vendor/gopkg.in/ini.v1/**/ini.sublime-workspace
+vendor/gopkg.in/ini.v1/**/testdata/conf_reflect.ini
+vendor/gopkg.in/ini.v1/**/.idea
+vendor/gopkg.in/ini.v1/.vscode
+vendor/gopkg.in/ini.v1/**/.DS_Store
+fly.toml

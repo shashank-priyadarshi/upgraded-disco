@@ -78,7 +78,7 @@ func (a *Application) withScheduleService() *Application {
 	return a
 }
 
-func (a *Application) graphQLService() *Application {
+func (a *Application) withGraphQLService() *Application {
 	//a.GraphQLSvc = graphql.NewApplication(a.log.WithSubmodule("graphql"), databases.NewRepository(a.log.WithSubmodule("repository")).Build())
 	return a
 }
