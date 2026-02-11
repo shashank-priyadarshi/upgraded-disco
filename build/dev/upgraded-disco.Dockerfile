@@ -1,4 +1,4 @@
-FROM golang:1.23rc2-alpine as builder
+FROM golang:1.26rc3-alpine as builder
 ARG CONFIG_SOURCE
 ARG CONFIG_PATH
 WORKDIR /app
